@@ -21,7 +21,6 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
-
 --
 -- Table structure for table `bestelling`
 --
@@ -66,7 +65,8 @@ CREATE TABLE IF NOT EXISTS `klant` (
   `postcode` varchar(6) NOT NULL,
   `toevoeging` varchar(6) NOT NULL,
   `huisnummer` varchar(6) NOT NULL,
-  `woonplaats` varchar(26) NOT NULL
+  `woonplaats` varchar(26) NOT NULL,
+  CONSTRAINT klant_constraint UNIQUE (voornaam,email,achternaam)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
