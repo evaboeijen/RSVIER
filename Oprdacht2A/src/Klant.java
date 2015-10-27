@@ -1,18 +1,25 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
+/**
+ *
+ * @author Jesse
+ */
 public class Klant {
-int    klant_id;
+int    klant_id = (int)(Math.random() * 10000);
 String voornaam;
 String achternaam;
 String tussenvoegsel;
 String email;
 
-
-
 public Klant() {}
 
 
 public int getKlant_id() {
-	return klant_id;
+    	return klant_id;
 }
 public void setKlant_id(int klant_id) {
 	this.klant_id = klant_id;
@@ -50,5 +57,7 @@ public void setEmail(String email) {
 	this.email = email;
 }
 
-
+public String toString(){
+	return "Klant Id: " + klant_id + ". Klant gegevens: " + voornaam + " " + tussenvoegsel + " " + achternaam + " " + email; 
+}
 }
