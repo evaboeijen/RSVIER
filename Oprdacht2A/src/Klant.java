@@ -50,5 +50,7 @@ public void setEmail(String email) {
 	this.email = email;
 }
 
-
+public String toString(){
+	return "Klant Id: " + klant_id + ". Klant gegevens: " + voornaam + " " + tussenvoegsel + " " + achternaam + " " + email; 
+}
 }
