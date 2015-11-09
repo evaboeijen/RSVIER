@@ -1,9 +1,6 @@
 
 public class Test {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		KlantDaoImpl test = new KlantDaoImpl();
 		Klant klant = new Klant();
