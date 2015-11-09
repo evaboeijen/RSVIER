@@ -2,16 +2,13 @@
 public class Test {
 
 	public static void main(String[] args) {
-		KlantDaoImpl test = new KlantDaoImpl();
-		Klant klant = new Klant();
+		BestellingDaoImpl test = new BestellingDaoImpl();
+		Bestelling bestelling = new Bestelling();
 		
-		klant.setKlant_id(klant.getKlant_id());
-		klant.setVoornaam("Agung");
-		klant.setTussenvoegsel("");
-		klant.setAchternaam("Udijana");
+		bestelling.setBestelling_id(bestelling.getBestelling_id());
 		
 		test.getConnection();
-		test.insert(klant);
+		test.insert(bestelling);
 		test.closeConnection();
 	}
 
