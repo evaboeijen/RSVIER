@@ -1,11 +1,4 @@
-/**
- * 
- */
 
-/**
- * @author Agung
- *
- */
 public class Test {
 
 	/**
