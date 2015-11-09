@@ -1,35 +1,31 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.LinkedList;
 import java.util.List;
 
-/**
- * 
- */
 
-/**
- * @author Agung
- *
- */
-public class BestellingDaoImpl implements BestellingDao {
+public class BestellingDaoImpl extends Bestelling implements BestellingDao {
 	
 	
 	Connection connection = null;
 		 
-	   public Connection getConnection(){
-	        
-	        try {
-	            Class.forName("com.mysql.jdbc.Driver");
-	            
-	            if(connection == null){ 
-	                String dbURL = "jdbc:mysql://localhost:3308/MySQL56";
-	                String username = "root";
-	                String password = "mysql";
-	
-	        
-	                Connection conn = DriverManager.getConnection(dbURL, username, password);
-	            }
+	public Connection getConnection() {
+
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+
+			if (connection == null) {
+				String dbURL = "jdbc:mysql://localhost:3306/javabook";
+				String username = "root";
+				String password = "mysql";
+
+				connection = DriverManager.getConnection(dbURL, username, password);
+				System.out.println("Verbinding is gemaakt");
+			}
 	 
 	        } catch (ClassNotFoundException e) {
 	 
@@ -46,29 +42,37 @@ public class BestellingDaoImpl implements BestellingDao {
 	    }
 	    
 	   @Override
-	    public void insert(Bestelling bestelling_id){
+	    public void insert(Bestelling bestelling){
 	        
 	        PreparedStatement preparedStatement ;
 	        
 	        try {
 	                        
-	            String sql = "insert into Klant (klant_id, voornaam, tussenvoegsel, achternaam, email) values (?, ?, ?, ?, ?)";
+	            String sql = "insert into Bestelling (bestelling_id, klant_id, artikel1_id, artikel1_naam, artikel1_aantal, artikel1_prijs, artikel2_id, artikel2_naam, artikel2_aantal, artikel2_prijs, artikel3_id, artikel3_naam, artikel3_aantal, artikel3_prijs) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	            preparedStatement = connection.prepareStatement(sql);
-	            preparedStatement.setInt(1, klant.getKlant_id());
-	            preparedStatement.setString(2, klant.getVoornaam());
-	            preparedStatement.setString(3, klant.getTussenvoegsel());
-	            preparedStatement.setString(4, klant.getAchternaam());
-	            preparedStatement.setString(5, klant.getEmail());
-	            
+	            preparedStatement.setInt(1, bestelling.getBestelling_id());
+	            preparedStatement.setInt(2, bestelling.getKlant_id());
+	            preparedStatement.setInt(3, bestelling.getArtikel1_id());
+	            preparedStatement.setString(4, bestelling.getArtikel1_naam());
+	            preparedStatement.setInt(5, bestelling.getArtikel1_aantal());
+	            preparedStatement.setDouble(6, bestelling.getArtikel1_prijs());	  
+	            preparedStatement.setInt(7, bestelling.getArtikel2_id());
+	            preparedStatement.setString(8, bestelling.getArtikel2_naam());
+	            preparedStatement.setInt(9, bestelling.getArtikel2_aantal());
+	            preparedStatement.setDouble(10, bestelling.getArtikel2_prijs());	
+	            preparedStatement.setInt(11, bestelling.getArtikel3_id());
+	            preparedStatement.setString(12, bestelling.getArtikel3_naam());
+	            preparedStatement.setInt(13, bestelling.getArtikel3_aantal());
+	            preparedStatement.setDouble(14, bestelling.getArtikel3_prijs());	
+	                   	            
 	            preparedStatement.executeUpdate();
 	            preparedStatement.close();
 	            
 	        } catch (SQLException e) {
-	            // TODO Auto-generated catch block
 	            e.printStackTrace();
 	        }
-	        System.out.println(klant);
-	        System.out.println("Klant succesvol toegevoegd");
+	        System.out.println(bestelling);
+	        System.out.println("Bestelling succesvol toegevoegd");
 	    }
 	 
 	   @Override
@@ -105,12 +109,10 @@ public class BestellingDaoImpl implements BestellingDao {
 			return null;
 		}
 	
-		public void update(Klant klant) {
+		public void update(Bestelling bestelling) {
 			// TODO Auto-generated method stub
 	            try {
-	             Integer number = klant.getKlant_id();
-	                
-			String sql = "UPDATE klant SET voornaam=?, tussenvoegsel=?, achternaam=?, email=? WHERE klant_id = number";
+	             String sql = "UPDATE klant SET voornaam=?, tussenvoegsel=?, achternaam=?, email=? WHERE klant_id = number";
 	
 	                PreparedStatement statement = connection.prepareStatement(sql);
 	                statement.setString(2, "Frank");
@@ -127,7 +129,7 @@ public class BestellingDaoImpl implements BestellingDao {
 	        }
 		}
 	
-		public void delete(Klant klant) {
+		public void delete(Bestelling bestelling) {
 			// TODO Auto-generated method stub
 			
 		}
@@ -146,17 +148,7 @@ public class BestellingDaoImpl implements BestellingDao {
 
 
 
-		@Override
-		public void update(Bestelling bestelling) {
-			// TODO Auto-generated method stub
-			
-		}
 
-		@Override
-		public void delete(Bestelling bestelling) {
-			// TODO Auto-generated method stub
-			
-		}
 	}
 	
 	
