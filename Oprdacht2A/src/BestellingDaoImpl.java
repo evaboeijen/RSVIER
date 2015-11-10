@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class BestellingDaoImpl extends Bestelling implements BestellingDao {
+public class BestellingDaoImpl implements BestellingDao {
 	
 	
 	Connection connection = null;
@@ -23,8 +23,7 @@ public class BestellingDaoImpl extends Bestelling implements BestellingDao {
 				String username = "root";
 				String password = "mysql";
 
-				connection = DriverManager.getConnection(dbURL, username, password);
-				System.out.println("Verbinding is gemaakt");
+				connection = DriverManager.getConnection(dbURL, username, password);		
 			}
 	 
 	        } catch (ClassNotFoundException e) {
@@ -36,13 +35,13 @@ public class BestellingDaoImpl extends Bestelling implements BestellingDao {
 	            e.printStackTrace();
 	             
 	        }
-	        System.out.println("Connection succesful");
+	        System.out.println("Verbinding is gemaakt");
 	        return connection;
 	        
 	    }
 	    
 	   @Override
-	    public void insert(Bestelling bestelling){
+	    public void create(Bestelling bestelling){
 	        
 	        PreparedStatement preparedStatement ;
 	        
@@ -76,22 +75,31 @@ public class BestellingDaoImpl extends Bestelling implements BestellingDao {
 	    }
 	 
 	   @Override
-	    public List<Klant> select() {
-	        List<Klant> klanten = new LinkedList<Klant>();
+	    public List<Bestelling> read() {
+	        List<Bestelling> bestellingen = new LinkedList<Bestelling>();
 	         try {
 	                Statement statement = connection.createStatement();
-	                ResultSet resultSet = statement.executeQuery("SELECT * FROM klant");
+	                ResultSet resultSet = statement.executeQuery("SELECT * FROM bestelling");
 	                 
-	                Klant klant;
+	                Bestelling bestelling;
 	                while(resultSet.next()){
-	                    klant = new Klant();
-	                    klant.setKlant_id(Integer.parseInt(resultSet.getString("klant_id")));
-	                    klant.setVoornaam(resultSet.getString("voornaam"));
-	                    klant.setTussenvoegsel(resultSet.getString("tussenvoegsel"));
-	                    klant.setAchternaam(resultSet.getString("achternaam"));
-	                    klant.setEmail(resultSet.getString("email"));
-	                    
-	                    klanten.add(klant);
+	                    bestelling = new Bestelling();
+	                    bestelling.setBestelling_id(Integer.parseInt(resultSet.getString("bestelling_id")));
+	                    bestelling.setKlant_id(Integer.parseInt(resultSet.getString("klant_id")));
+	                    bestelling.setArtikel1_id(Integer.parseInt(resultSet.getString("artikel1_id")));
+	                    bestelling.setArtikel1_naam(resultSet.getString("artikel1_naam"));
+	                    bestelling.setArtikel1_aantal(Integer.parseInt(resultSet.getString("artikel1_aantal")));
+	                    bestelling.setArtikel1_prijs(Double.parseDouble(resultSet.getString("artikel1_prijs")));
+	                    bestelling.setArtikel2_id(Integer.parseInt(resultSet.getString("artikel2_id")));
+	                    bestelling.setArtikel2_naam(resultSet.getString("artikel2_naam"));
+	                    bestelling.setArtikel2_aantal(Integer.parseInt(resultSet.getString("artikel2_aantal")));
+	                    bestelling.setArtikel2_prijs(Double.parseDouble(resultSet.getString("artikel2_prijs")));
+	                    bestelling.setArtikel3_id(Integer.parseInt(resultSet.getString("artikel3_id")));
+	                    bestelling.setArtikel3_naam(resultSet.getString("artikel3_naam"));
+	                    bestelling.setArtikel3_aantal(Integer.parseInt(resultSet.getString("artikel3_aantal")));
+	                    bestelling.setArtikel3_prijs(Double.parseDouble(resultSet.getString("artikel3_prijs")));
+	                  
+	                    bestellingen.add(bestelling);
 	                }
 	                resultSet.close();
 	                statement.close();
@@ -99,40 +107,54 @@ public class BestellingDaoImpl extends Bestelling implements BestellingDao {
 	            } catch (SQLException e) {
 	                e.printStackTrace();
 	            }
-	            System.out.println(klanten);
-	            return klanten;
+	            System.out.println(bestellingen);
+	            return bestellingen;
 	    }
-	    
-	    @Override
-		public Klant getKlant(int klant_id) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-	
+
 		public void update(Bestelling bestelling) {
-			// TODO Auto-generated method stub
+			
 	            try {
-	             String sql = "UPDATE klant SET voornaam=?, tussenvoegsel=?, achternaam=?, email=? WHERE klant_id = number";
+	             
+	            	List<Bestelling> bestellingen = read();            	
+	            	
+	            	 if (bestellingen.get(11) != null) {
+	            		 System.out.println("Maximum aantal artikelen voor deze bestelling bereikt");
+	            		 return;
+	            	 }
+	            	
+	            	String sql = "UPDATE bestelling SET artikel?_id=?, artikel?_naam=?, artikel?_aantal=?, artikel?_prijs=? WHERE bestelling_id = number";
 	
 	                PreparedStatement statement = connection.prepareStatement(sql);
-	                statement.setString(2, "Frank");
-	                statement.setString(3, "de");
-	                statement.setString(4, "Boer");
-	                statement.setString(5, "frankdeboer@gmail.com");
+	                statement.setInt(2, 12345);
+	                statement.setString(3, "TestArtikel");
+	                statement.setInt(4, 69);
+	                statement.setDouble(5, 20.25);
 	
 	                int rowsUpdated = statement.executeUpdate();
 	                if (rowsUpdated > 0) {
-	                System.out.println("An existing user was updated successfully!");
+	                System.out.println("Artikel is succesvol toegevoegd!");
 	                }
 	        } catch (SQLException e){
 	                e.printStackTrace();
 	        }
 		}
 	
+		@Override
 		public void delete(Bestelling bestelling) {
-			// TODO Auto-generated method stub
-			
+			try {
+
+				PreparedStatement statement = connection.prepareStatement("DELETE FROM Bestelling WHERE Bestelling_id=?");
+				statement.setInt(1, bestelling.getBestelling_id());
+
+				int rowsDeleted = statement.executeUpdate();
+				if (rowsDeleted > 0) {
+					System.out.println("De bestelling is gewist uit de database");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();	
+			}
 		}
+
 	 
 	
 	     

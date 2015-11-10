@@ -7,9 +7,9 @@ public class Test {
 		
 		bestelling.setBestelling_id(bestelling.getBestelling_id());
 		
-		test.getConnection();
+		/* test.getConnection();
 		test.insert(bestelling);
-		test.closeConnection();
+		test.closeConnection(); */
 	}
 
 }
