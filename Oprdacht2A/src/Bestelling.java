@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
 public class Bestelling {
-	Klant besteller;
-	int   artikel_aantal;
-	ArrayList <Artikel> bestellingsLijst = null;
+	// Klant besteller;
+	// int   artikel_aantal;
+	// ArrayList <Artikel> bestellingsLijst = null;
 	int bestelling_id = (int)(Math.random() * 10000);;
 	int klant_id;
 	int artikel1_id;
