@@ -84,20 +84,20 @@ public class BestellingDaoImpl implements BestellingDao {
 	                Bestelling bestelling;
 	                while(resultSet.next()){
 	                    bestelling = new Bestelling();
-	                    bestelling.setBestelling_id(Integer.parseInt(resultSet.getString("bestelling_id")));
-	                    bestelling.setKlant_id(Integer.parseInt(resultSet.getString("klant_id")));
-	                    bestelling.setArtikel1_id(Integer.parseInt(resultSet.getString("artikel1_id")));
+	                    bestelling.setBestelling_id(resultSet.getInt("bestelling_id"));
+	                    bestelling.setKlant_id(resultSet.getInt("klant_id"));
+	                    bestelling.setArtikel1_id(resultSet.getInt("artikel1_id"));
 	                    bestelling.setArtikel1_naam(resultSet.getString("artikel1_naam"));
-	                    bestelling.setArtikel1_aantal(Integer.parseInt(resultSet.getString("artikel1_aantal")));
-	                    bestelling.setArtikel1_prijs(Double.parseDouble(resultSet.getString("artikel1_prijs")));
-	                    bestelling.setArtikel2_id(Integer.parseInt(resultSet.getString("artikel2_id")));
+	                    bestelling.setArtikel1_aantal(resultSet.getInt("artikel1_aantal"));
+	                    bestelling.setArtikel1_prijs(resultSet.getDouble("artikel1_prijs"));
+	                    bestelling.setArtikel2_id(resultSet.getInt("artikel2_id"));
 	                    bestelling.setArtikel2_naam(resultSet.getString("artikel2_naam"));
-	                    bestelling.setArtikel2_aantal(Integer.parseInt(resultSet.getString("artikel2_aantal")));
-	                    bestelling.setArtikel2_prijs(Double.parseDouble(resultSet.getString("artikel2_prijs")));
-	                    bestelling.setArtikel3_id(Integer.parseInt(resultSet.getString("artikel3_id")));
+	                    bestelling.setArtikel2_aantal(resultSet.getInt("artikel2_aantal"));
+	                    bestelling.setArtikel2_prijs(resultSet.getDouble("artikel2_prijs"));
+	                    bestelling.setArtikel3_id(resultSet.getInt("artikel3_id"));
 	                    bestelling.setArtikel3_naam(resultSet.getString("artikel3_naam"));
-	                    bestelling.setArtikel3_aantal(Integer.parseInt(resultSet.getString("artikel3_aantal")));
-	                    bestelling.setArtikel3_prijs(Double.parseDouble(resultSet.getString("artikel3_prijs")));
+	                    bestelling.setArtikel3_aantal(resultSet.getInt("artikel3_aantal"));
+	                    bestelling.setArtikel3_prijs(resultSet.getDouble("artikel3_prijs"));
 	                  
 	                    bestellingen.add(bestelling);
 	                }
@@ -116,27 +116,46 @@ public class BestellingDaoImpl implements BestellingDao {
 	            try {
 	             
 	            	List<Bestelling> bestellingen = read();            	
-	            	
+	            	         	
+	            	String sql2 = "UPDATE bestelling SET artikel2_id=?, artikel2_naam=?, artikel2_aantal=?, artikel2_prijs=? WHERE bestelling_id = number";
+	            	String sql3 = "UPDATE bestelling SET artikel3_id=?, artikel3_naam=?, artikel3_aantal=?, artikel3_prijs=? WHERE bestelling_id = number";	
+	            	                
 	            	 if (bestellingen.get(11) != null) {
 	            		 System.out.println("Maximum aantal artikelen voor deze bestelling bereikt");
 	            		 return;
 	            	 }
-	            	
-	            	String sql = "UPDATE bestelling SET artikel?_id=?, artikel?_naam=?, artikel?_aantal=?, artikel?_prijs=? WHERE bestelling_id = number";
-	
-	                PreparedStatement statement = connection.prepareStatement(sql);
-	                statement.setInt(2, 12345);
-	                statement.setString(3, "TestArtikel");
-	                statement.setInt(4, 69);
-	                statement.setDouble(5, 20.25);
-	
-	                int rowsUpdated = statement.executeUpdate();
-	                if (rowsUpdated > 0) {
-	                System.out.println("Artikel is succesvol toegevoegd!");
-	                }
-	        } catch (SQLException e){
+	                	                
+	            	 else if (bestellingen.get(7) == null) {	                
+	 	                 PreparedStatement statement2 = connection.prepareStatement(sql2);
+	            		 statement2.setInt(7, bestelling.getArtikel2_id());
+	            		 statement2.setString(8, bestelling.getArtikel2_naam());
+	            		 statement2.setInt(9, bestelling.getArtikel2_aantal());
+	            		 statement2.setDouble(10, bestelling.getArtikel2_prijs()); 
+	            		 
+	 	            	 int rowsUpdated2 = statement2.executeUpdate();
+		                 if (rowsUpdated2 > 0) {
+		                 System.out.println("Artikel is succesvol toegevoegd!");
+	            	 } 
+	            	 
+	            	 else if (bestellingen.get(7) != null && bestellingen.get(11) == null) {
+	            		 PreparedStatement statement3 = connection.prepareStatement(sql3);
+	            		 statement3.setInt(11, bestelling.getArtikel3_id());
+	            		 statement3.setString(12, bestelling.getArtikel3_naam());
+	            		 statement3.setInt(13, bestelling.getArtikel3_aantal());
+	            		 statement3.setDouble(14, bestelling.getArtikel3_prijs());
+	            		 
+	 	            	 int rowsUpdated3 = statement3.executeUpdate();
+		                 if (rowsUpdated3 > 0) {
+		                 System.out.println("Artikel is succesvol toegevoegd!");
+		                 }
+	            	 }
+	            	 }
+	            }
+	            	                	            		            			                
+               	                       
+	           catch (SQLException e) {
 	                e.printStackTrace();
-	        }
+	           }
 		}
 	
 		@Override
