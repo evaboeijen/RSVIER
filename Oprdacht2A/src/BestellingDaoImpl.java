@@ -1,12 +1,5 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.LinkedList;
-import java.util.List;
-
+import java.sql.*;
+import java.util.*;
 
 public class BestellingDaoImpl implements BestellingDao {
 	
@@ -16,27 +9,33 @@ public class BestellingDaoImpl implements BestellingDao {
 	public void initializeDB() {
 	
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			System.out.println("Driver loaded");
+			 Class.forName("com.mysql.jdbc.Driver");
+			System.out.println("Driver is geladen	");
 
 			if (connection == null) {
-				String dbURL = "jdbc:mysql://localhost:3306/opdracht1";
+				String dbURL = "jdbc:mysql://localhost:3306/test";
 				String username = "root";
-				String password = "";
+				String password = "mysql";
 
-				connection = DriverManager.getConnection(dbURL, username, password);		
+
+				connection = DriverManager.getConnection(dbURL, username, password);	
+				System.out.println("Verbinding is gemaakt");
 			}
-	 
-	        } catch (ClassNotFoundException e) {
-	 
+	 	} 
+
+		catch (ClassNotFoundException e) {
+ 
 	            e.printStackTrace();
-	             
-	        } catch (SQLException e) {
+	             	        } 
+		
+		catch (SQLException e) {
 	             
 	            e.printStackTrace();
 	             
 	        }
-	        System.out.println("Verbinding is gemaakt");
+	        
+		
+
 	        
 	        
 	    }
