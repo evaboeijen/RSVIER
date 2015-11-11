@@ -13,15 +13,16 @@ public class BestellingDaoImpl implements BestellingDao {
 	
 	Connection connection = null;
 		 
-	public Connection getConnection() {
-
+	public void initializeDB() {
+	
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
+			System.out.println("Driver loaded");
 
 			if (connection == null) {
-				String dbURL = "jdbc:mysql://localhost:3306/javabook";
+				String dbURL = "jdbc:mysql://localhost:3306/opdracht1";
 				String username = "root";
-				String password = "mysql";
+				String password = "";
 
 				connection = DriverManager.getConnection(dbURL, username, password);		
 			}
@@ -36,7 +37,7 @@ public class BestellingDaoImpl implements BestellingDao {
 	             
 	        }
 	        System.out.println("Verbinding is gemaakt");
-	        return connection;
+	        
 	        
 	    }
 	    
@@ -44,10 +45,11 @@ public class BestellingDaoImpl implements BestellingDao {
 	    public void create(Bestelling bestelling){
 	        
 	        PreparedStatement preparedStatement ;
+            String sql = "insert into Bestelling (bestelling_id, klant_id, artikel1_id, artikel1_naam, artikel1_aantal, artikel1_prijs, artikel2_id, artikel2_naam, artikel2_aantal, artikel2_prijs, artikel3_id, artikel3_naam, artikel3_aantal, artikel3_prijs) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 	        
 	        try {
 	                        
-	            String sql = "insert into Bestelling (bestelling_id, klant_id, artikel1_id, artikel1_naam, artikel1_aantal, artikel1_prijs, artikel2_id, artikel2_naam, artikel2_aantal, artikel2_prijs, artikel3_id, artikel3_naam, artikel3_aantal, artikel3_prijs) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	            preparedStatement = connection.prepareStatement(sql);
 	            preparedStatement.setInt(1, bestelling.getBestelling_id());
 	            preparedStatement.setInt(2, bestelling.getKlant_id());
@@ -159,11 +161,12 @@ public class BestellingDaoImpl implements BestellingDao {
 		}
 	
 		@Override
-		public void delete(Bestelling bestelling) {
+		public void delete(int bestelling_id) {
 			try {
 
-				PreparedStatement statement = connection.prepareStatement("DELETE FROM Bestelling WHERE Bestelling_id=?");
-				statement.setInt(1, bestelling.getBestelling_id());
+				PreparedStatement statement = connection.prepareStatement("DELETE FROM Bestelling WHERE bestelling_id=?");
+				// statement.setInt(1, bestelling.getBestelling_id());
+				statement.setInt(1, bestelling_id);
 
 				int rowsDeleted = statement.executeUpdate();
 				if (rowsDeleted > 0) {
@@ -177,7 +180,7 @@ public class BestellingDaoImpl implements BestellingDao {
 	 
 	
 	     
-	    public void closeConnection(){
+	    public void closeDBConnection(){
 	        try {
 	              if (connection != null) {
 	                  connection.close();

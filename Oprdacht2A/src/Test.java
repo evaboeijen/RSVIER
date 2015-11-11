@@ -2,14 +2,15 @@
 public class Test {
 
 	public static void main(String[] args) {
-		BestellingDaoImpl test = new BestellingDaoImpl();
-		Bestelling bestelling = new Bestelling();
+		BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
+		Bestelling bestelling = new Bestelling(1000, 1000, 1000, "test artikel", 1000, 1000.50, 2000, "test artikel2", 2000, 2000.50, 3000, "test artikel3", 3000, 3000.50);
+		bestellingDaoImpl.initializeDB();
+							
+		bestellingDaoImpl.create(bestelling);
 		
-		bestelling.setBestelling_id(bestelling.getBestelling_id());
+		bestellingDaoImpl.delete(1000); // test - delete bestelling met bestelling_id = 1000
 		
-		/* test.getConnection();
-		test.insert(bestelling);
-		test.closeConnection(); */
+		bestellingDaoImpl.closeDBConnection(); 
 	}
 
 }
