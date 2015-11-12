@@ -1,5 +1,6 @@
 
 public class Adres {
+	int klant_id;
 	String straatnaam;
 	String postcode;
 	String toevoeging;
