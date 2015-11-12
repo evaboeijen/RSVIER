@@ -45,15 +45,15 @@ public abstract class AdresDaoImpl extends Adres implements AdresDao{
 	public void insert(Adres adres) {
 		PreparedStatement preparedStatement = null;
 
-        	try {
-        		
         		String sql = "INSERT INTO Klant" +  "(straatnaam, postcode, toevoeging, huisnummer, woonplaats) values" + "(?, ?, ?, ?, ?)";
-        		preparedStatement = connection.prepareStatement(sql);
-            		preparedStatement.setString (1, "Grote Markt");
-            		preparedStatement.setString (2, "0000AA");
-            		preparedStatement.setString (3, "");
-            		preparedStatement.setInt    (4, 1);
-            		preparedStatement.setString (5, "Amsterdam");
+        			try {
+        			preparedStatement = connection.prepareStatement(sql);
+        			
+            		preparedStatement.setString (1, adres.getStraatnaam());
+            		preparedStatement.setString (2, adres.getPostcode());
+            		preparedStatement.setString (3, adres.getToevoeging());
+            		preparedStatement.setInt    (4, adres.getHuisnummer());
+            		preparedStatement.setString (5, adres.getWoonplaats());
 
             		preparedStatement.executeUpdate();
             		preparedStatement.close();
@@ -97,18 +97,18 @@ public abstract class AdresDaoImpl extends Adres implements AdresDao{
 	}
 
 	@Override
-	public void updateAdres(int klant_id) {												/* nu nog in dezelfde tabel!!! */
+	public void updateAdres(Adres adres) {												/* nu nog in dezelfde tabel!!! */
 		try {
 			getConnection();
-
-		String sql = "UPDATE Klant SET straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id = " + klant_id;
-
+		
+		String sql = "UPDATE Klant SET straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id = ? ";
+		
                PreparedStatement statement = connection.prepareStatement(sql);
-               statement.setString(2, "Straatnaam");
-               statement.setString(3, "Postcode");
-               statement.setString(4, "Toevoeging");
-               statement.setString(5, "123");
-               statement.setString(6, "Woonplaats");
+               statement.setString(2, adres.getStraatnaam());
+               statement.setString(3, adres.getPostcode());
+               statement.setString(4, adres.getToevoeging());
+               statement.setInt(5, adres.getHuisnummer());
+               statement.setString(6, adres.getWoonplaats());
 
                int rowsUpdated = statement.executeUpdate();
                if (rowsUpdated > 0) {
@@ -118,12 +118,13 @@ public abstract class AdresDaoImpl extends Adres implements AdresDao{
                e.printStackTrace();
        }
 	}
+		
 
 	@Override
-	public void deleteAdres(int klant_id) {												/* nu nog in dezelfde tabel!!!*/
+	public void deleteAdres(Adres adres) {											/* nu nog in dezelfde tabel!!!*/
 		try{ 
-		PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Klant straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id = " + klant_id + ";");
-
+		PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Klant straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id = ?");
+		
 		int rowsUpdated = preparedStatement.executeUpdate();
 			if (rowsUpdated > 0) {
 				System.out.println("Het adres is succesvol verwijdert ");
@@ -132,15 +133,13 @@ public abstract class AdresDaoImpl extends Adres implements AdresDao{
 		}catch (SQLException e){
 			e.printStackTrace();
 		}
-
-
 	}
 
 	@Override
-	public void getAdres(int klant_id) {
+	public void getAdres(Adres adres) {
 		try{
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM klant WHERE klant_id = " + klant_id);
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM klant WHERE klant_id = ?");
 				ResultSetMetaData rSMetaData = resultSet.getMetaData();
 				int kolommen = rSMetaData.getColumnCount();
 
@@ -156,5 +155,4 @@ public abstract class AdresDaoImpl extends Adres implements AdresDao{
 				e.printStackTrace();
 				}
 		}
-
 }
