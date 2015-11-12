@@ -1,14 +1,49 @@
+import java.util.List;
 
 public class Test {
 
 	public static void main(String[] args) {
 		BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
 		Bestelling bestelling = new Bestelling(1000, 1000, 1000, "test artikel", 1000, 1000.50, 2000, "test artikel2", 2000, 2000.50, 3000, "test artikel3", 3000, 3000.50);
+		Bestelling bestelling2 = new Bestelling(2000, 2000, 1000, "test artikel", 1000, 1000.50, 2000, "test artikel2", 2000, 2000.50);
+		Bestelling bestelling3 = new Bestelling(50, 30, 200, "iphone 6s plus", 10, 1200.99);
+		
+		
 		bestellingDaoImpl.initializeDB();
 							
-		bestellingDaoImpl.create(bestelling);
+		bestellingDaoImpl.create(bestelling);	// testen van create methode - invoeren van nieuwe bestelling met 3 artikelen
+		bestellingDaoImpl.create(bestelling2); // testen van create methode - invoeren van nieuwe bestelling met 2 artikelen
+		bestellingDaoImpl.create(bestelling3); // testen van create methode - invoeren van nieuwe bestelling met 2 artikelen
+		
+		
+		List<Bestelling> lijst = bestellingDaoImpl.read();	// lees en toon alle bestellingen uit de Bestelling tabel
+		
+		System.out.println();
+		System.out.println();	
+		
+		for (Bestelling overzicht : lijst) {
+			System.out.println("Klantnummer : " + overzicht.klant_id + ". Ordernummer : " + overzicht.bestelling_id);
+			System.out.println("---------------------------------------------");
+			System.out.println("Artikelnummer: " + overzicht.artikel1_id + ". Artikelnaam: " + overzicht.artikel1_naam + ". Aantal: "+ overzicht.artikel1_aantal + ". Prijs: " + overzicht.artikel1_prijs);
+			System.out.println("Artikelnummer: " + overzicht.artikel2_id + ". Artikelnaam: " + overzicht.artikel2_naam + ". Aantal: "+ overzicht.artikel2_aantal + ". Prijs: " + overzicht.artikel2_prijs);
+			System.out.println("Artikelnummer: " + overzicht.artikel3_id + ". Artikelnaam: " + overzicht.artikel3_naam + ". Aantal: "+ overzicht.artikel3_aantal + ". Prijs: " + overzicht.artikel3_prijs);
+			System.out.println();
+			System.out.println();			
+		}
+		
+		
+		bestellingDaoImpl.update(5000, 9999, "ipad", 2000, 499.99);	// voeg een ipad artikel toe aan ordernummer 5000 die al aan zijn maximaal aantal artikelen van 3 zit
+
+		bestellingDaoImpl.update(1111, 9999, "ipad", 2000, 499.99);	// voeg een ipad artikel toe aan ordernummer 1111
+		
+		bestellingDaoImpl.update(5555555, 9999, "ipad", 2000, 499.99);	// voeg een ipad artikel toe aan een niet bestaande bestelling
+		
+		bestellingDaoImpl.update(555558080, 9999, "ipad", 2000, 499.99);	// voeg een ipad artikel toe aan een niet bestaande bestelling
 		
 		bestellingDaoImpl.delete(1000); // test - delete bestelling met bestelling_id = 1000
+		bestellingDaoImpl.delete(2000); // test - delete bestelling met bestelling_id = 2000
+		bestellingDaoImpl.delete(30); // test - delete bestelling met bestelling_id = 30 (die niet bestaat)
+		bestellingDaoImpl.delete(50); // test - delete bestelling met bestelling_id = 30 (die niet bestaat)
 		
 		bestellingDaoImpl.closeDBConnection(); 
 	}
