@@ -6,12 +6,10 @@ public interface AdresDao {
 
 		public List<Adres> select();
 
-		public void getAdres(int klant_id);
+		public void getAdres(Adres adres);
 
-		public void updateAdres(int klant_id);
+		public void updateAdres(Adres adres);
 
-		public void deleteAdres(int klant_id);
+		public void deleteAdres(Adres adres);
 
 	}
-
-
