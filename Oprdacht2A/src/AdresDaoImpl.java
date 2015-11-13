@@ -8,8 +8,8 @@ import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class AdresDaoImpl extends Adres implements AdresDao{
-	Connection connection = getConnection();
+public class AdresDaoImpl implements AdresDao{
+	Connection connection = null;
 	
 	public Connection getConnection(){
 
@@ -33,7 +33,7 @@ public abstract class AdresDaoImpl extends Adres implements AdresDao{
 
             e.printStackTrace();
         }
-        System.out.println("Connection succesful");
+        
         return connection;
 	}
 
