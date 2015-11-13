@@ -1,13 +1,12 @@
-import java.sql.*;
 import java.util.*;
 
-public interface ArtikelDao {
-    public Connection getConnection();  
-public List<Artikel> selectAll();   
-public Artikel getArtikel(int artikel_id);
 
-public void insert(Artikel artikel);   
-public void update(Artikel artikel);   
-public void delete(Artikel artikel);
+public interface KlantDao {
 
+public void create(Klant klant);    
+public List<Klant> read();   
+public Klant getKlant(int klant_id);
+public Klant getKlant(String voornaam);
+public void update(Klant klant);   
+public void delete(Klant klant);
 }
