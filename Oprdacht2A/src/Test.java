@@ -31,19 +31,29 @@ public class Test {
 			System.out.println();			
 		}
 		
-		
-		bestellingDaoImpl.update(5000, 9999, "ipad", 2000, 499.99);	// voeg een ipad artikel toe aan ordernummer 5000 die al aan zijn maximaal aantal artikelen van 3 zit
+		Bestelling updateBestelling5000 = new Bestelling(5000, 1234, 9999, "ipad", 2000, 499.99);		
+		bestellingDaoImpl.update(updateBestelling5000);	// voeg een ipad artikel toe aan ordernummer 5000 die al aan zijn maximaal aantal artikelen van 3 zit
 
-		bestellingDaoImpl.update(1111, 9999, "ipad", 2000, 499.99);	// voeg een ipad artikel toe aan ordernummer 1111
+		Bestelling updateBestelling1111 = new Bestelling(1111, 1111, 9999, "ipad", 2000, 499.99);
+		bestellingDaoImpl.update(updateBestelling1111);	// voeg een ipad artikel toe aan ordernummer 1111
 		
-		bestellingDaoImpl.update(5555555, 9999, "ipad", 2000, 499.99);	// voeg een ipad artikel toe aan een niet bestaande bestelling
+		Bestelling updateBestelling9999 = new Bestelling(5555555, 0000, 9999, "ipad", 2000, 499.99);
+		bestellingDaoImpl.update(updateBestelling9999);	// voeg een ipad artikel toe aan een niet bestaande bestelling (en een niet bestaande klant)
 		
-		bestellingDaoImpl.update(555558080, 9999, "ipad", 2000, 499.99);	// voeg een ipad artikel toe aan een niet bestaande bestelling
+		Bestelling updateBestelling888888 = new Bestelling(888888, 0000, 9999, "ipad", 2000, 499.99);
+		bestellingDaoImpl.update(updateBestelling888888);	// voeg een ipad artikel toe aan een niet bestaande bestelling (en een niet bestaande klant)
+				
+		Bestelling deleteBestelling1000 = new Bestelling (1000);
+		bestellingDaoImpl.delete(deleteBestelling1000); // test - delete bestelling met bestelling_id = 1000
 		
-		bestellingDaoImpl.delete(1000); // test - delete bestelling met bestelling_id = 1000
-		bestellingDaoImpl.delete(2000); // test - delete bestelling met bestelling_id = 2000
-		bestellingDaoImpl.delete(30); // test - delete bestelling met bestelling_id = 30 (die niet bestaat)
-		bestellingDaoImpl.delete(50); // test - delete bestelling met bestelling_id = 30 (die niet bestaat)
+		Bestelling deleteBestelling2000 = new Bestelling (2000);
+		bestellingDaoImpl.delete(deleteBestelling2000); // test - delete bestelling met bestelling_id = 2000
+		
+		Bestelling deleteBestelling30 = new Bestelling (30);
+		bestellingDaoImpl.delete(deleteBestelling30); // test - delete bestelling met bestelling_id = 30 (die niet bestaat)
+		
+		Bestelling deleteBestelling50 = new Bestelling (50);
+		bestellingDaoImpl.delete(deleteBestelling50); // test - delete bestelling met bestelling_id = 30 (die niet bestaat)
 		
 		bestellingDaoImpl.closeDBConnection(); 
 	}
