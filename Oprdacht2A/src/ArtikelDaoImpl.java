@@ -5,8 +5,8 @@ public class ArtikelDaoImpl implements ArtikelDao {
     
     Connection connection = null;
 
-   @Override
-   public Connection getConnection(){
+
+   public Connection initializeDB(){
         
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -36,7 +36,7 @@ public class ArtikelDaoImpl implements ArtikelDao {
     }
    
    @Override
-    public List<Artikel> selectAll() {
+    public List<Artikel> read() {
     
         List<Artikel> artikellen = new ArrayList<>();
          
@@ -50,15 +50,15 @@ public class ArtikelDaoImpl implements ArtikelDao {
                     artikel.setArtikel1_id(resultSet.getInt("Artikel1_id"));
                     artikel.setArtikel1_naam(resultSet.getString("Artikel1_naam"));
                     artikel.setArtikel1_aantal(resultSet.getInt("Artikel1_aantal"));
-                    artikel.setArtikel1_prijs(resultSet.getFloat("Artikel1_prijs"));
+                    artikel.setArtikel1_prijs(resultSet.getDouble("Artikel1_prijs"));
                     artikel.setArtikel2_id(resultSet.getInt("Artikel2_id"));
                     artikel.setArtikel2_naam(resultSet.getString("Artikel2_naam"));
                     artikel.setArtikel2_aantal(resultSet.getInt("Artikel2_aantal"));
-                    artikel.setArtikel2_prijs(resultSet.getFloat("Artikel2_prijs"));
+                    artikel.setArtikel2_prijs(resultSet.getDouble("Artikel2_prijs"));
                     artikel.setArtikel3_id(resultSet.getInt("Artikel3_id"));
                     artikel.setArtikel3_naam(resultSet.getString("Artikel3_naam"));
                     artikel.setArtikel3_aantal(resultSet.getInt("Artikel3_aantal"));
-                    artikel.setArtikel3_prijs(resultSet.getFloat("Artikel3_prijs"));
+                    artikel.setArtikel3_prijs(resultSet.getDouble("Artikel3_prijs"));
                     
                     
                     
@@ -104,7 +104,7 @@ public Artikel getArtikel(int artikel_id){
                 artikel.setArtikel1_id(artikel_id);
                 artikel.setArtikel1_naam(result.getString("Artikel1_naam"));
                 artikel.setArtikel1_aantal(result.getInt("Artikel1_aantal"));
-                artikel.setArtikel1_prijs(result.getFloat("Artikel1_prijs"));
+                artikel.setArtikel1_prijs(result.getDouble("Artikel1_prijs"));
                 System.out.println("artikel id:" + artikel_id + " artikel naam " + artikel.getArtikel1_naam() + " artikel aantal " + artikel.getArtikel1_aantal() + " artikel prijs " + artikel.getArtikel1_prijs());
              } 
             } else if (artikel_id == artikel2){
@@ -118,7 +118,7 @@ public Artikel getArtikel(int artikel_id){
                 artikel.setArtikel2_id(artikel_id);
                 artikel.setArtikel2_naam(result.getString("Artikel2_naam"));
                 artikel.setArtikel2_aantal(result.getInt("Artikel2_aantal"));
-                artikel.setArtikel2_prijs(result.getFloat("Artikel2_prijs"));
+                artikel.setArtikel2_prijs(result.getDouble("Artikel2_prijs"));
                 System.out.println("artikel id:" + artikel_id + " artikel naam " + artikel.getArtikel2_naam() + " artikel aantal " + artikel.getArtikel2_aantal() + " artikel prijs " + artikel.getArtikel2_prijs());
              }
             } else if (artikel_id == artikel3){
@@ -130,7 +130,7 @@ public Artikel getArtikel(int artikel_id){
                artikel.setArtikel3_id(artikel_id);
                 artikel.setArtikel3_naam(result.getString("Artikel3_naam"));
                 artikel.setArtikel3_aantal(result.getInt("Artikel3_aantal"));
-                artikel.setArtikel3_prijs(result.getFloat("Artikel3_prijs"));
+                artikel.setArtikel3_prijs(result.getDouble("Artikel3_prijs"));
                 System.out.println("artikel id:" + artikel_id + " artikel naam " + artikel.getArtikel3_naam() + " artikel aantal " + artikel.getArtikel3_aantal() + " artikel prijs " + artikel.getArtikel3_prijs());
              }
                           
@@ -149,7 +149,7 @@ public Artikel getArtikel(int artikel_id){
 
   
    @Override
-    public void insert(Artikel artikel){
+    public void create(Artikel artikel){
         
         
         List<Artikel> artikellen = new ArrayList<>();
@@ -286,7 +286,7 @@ public Artikel getArtikel(int artikel_id){
 
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM Bestelling WHERE bestelling_id=?");
 				statement.setInt(1, artikel.getBestelling_id());
-                                
+                                ;
 
 				int rowsDeleted = statement.executeUpdate();
 				if (rowsDeleted > 0) {
@@ -301,7 +301,7 @@ public Artikel getArtikel(int artikel_id){
 
 
      
-    public void closeConnection(){
+    public void closeDBConnection(){
         try {
               if (connection != null) {
                   connection.close();
