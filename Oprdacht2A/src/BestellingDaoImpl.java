@@ -109,9 +109,17 @@ public class BestellingDaoImpl implements BestellingDao {
 	    }
 
 	@Override
-	public void update(int bestelling_id, int new_artikel_id, String new_artikel_naam, int new_artikel_aantal, double new_artikel_prijs) {	//methode om artikelen toe te voegen, zoals vereist in de algemene specificaties
-	                 	        
-					PreparedStatement preparedStatement ;
+	// public void update(int bestelling_id, int new_artikel_id, String new_artikel_naam, int new_artikel_aantal, double new_artikel_prijs) {	// oude methode
+
+	public void update(Bestelling bestelling) {        // zelfde methode als hiervoor, alleen nu met een object als parameter        	        
+	
+        int bestelling_id = bestelling.getBestelling_id();       
+        int new_artikel_id = bestelling.getArtikel1_id();
+        String new_artikel_naam = bestelling.getArtikel1_naam();
+        int new_artikel_aantal = bestelling.getArtikel1_aantal();
+        double new_artikel_prijs = bestelling.getArtikel1_prijs();	
+					
+		PreparedStatement preparedStatement ;
 					String sql = "select * from Bestelling where bestelling_id = ?";
 	    	        
 	   	         try {	   	                                
@@ -168,7 +176,7 @@ public class BestellingDaoImpl implements BestellingDao {
 			            		 
 			 	            	 int rowsUpdated3 = statement3.executeUpdate();
 				                 if (rowsUpdated3 > 0) {
-					                 System.out.println(new_artikel_naam + " (" + new_artikel_aantal + "stuks)" + " is succesvol toegevoegd!");
+					                 System.out.println(new_artikel_naam + " (" + new_artikel_aantal + " stuks)" + " is succesvol toegevoegd!");
 					                 System.out.println("Deze bestelling bevat nu het maximale aantal van 3 verschillende artikelen.");
 				                 }
 			            	 }
@@ -192,7 +200,10 @@ public class BestellingDaoImpl implements BestellingDao {
             	
 	           	
 		@Override
-	public void delete(int bestelling_id) {
+	public void delete(Bestelling bestelling) {
+			
+			int bestelling_id = bestelling.getBestelling_id(); 
+			
 			try {
 
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM Bestelling WHERE bestelling_id=?");
