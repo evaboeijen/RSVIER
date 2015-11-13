@@ -31,15 +31,15 @@ CREATE TABLE IF NOT EXISTS `bestelling` (
   `artikel1_id` int(11) NOT NULL,
   `artikel1_naam` varchar(20) NOT NULL,
   `artikel1_aantal` int(11) NOT NULL,
-  `artikel1_prijs` int(11) NOT NULL,
-  `artikel2_id` int(11) NOT NULL,
-  `artikel2_naam` varchar(20) NOT NULL,
-  `artikel2_aantal` int(11) NOT NULL,
-  `artikel2_prijs` int(11) NOT NULL,
-  `artikel3_id` int(11) NOT NULL,
-  `artikel3_naam` varchar(20) NOT NULL,
-  `artikel3_aantal` int(11) NOT NULL,
-  `artikel3_prijs` int(11) NOT NULL
+  `artikel1_prijs` double NOT NULL,
+  `artikel2_id` int(11),
+  `artikel2_naam` varchar(20),
+  `artikel2_aantal` int(11),
+  `artikel2_prijs` double,
+  `artikel3_id` int(11),
+  `artikel3_naam` varchar(20),
+  `artikel3_aantal` int(11),
+  `artikel3_prijs` double
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
