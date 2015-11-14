@@ -39,12 +39,18 @@ public class BestellingDaoImplTest {
 
 	@Test
 	public void testCreate() {
-		fail("Not yet implemented");
+		BestellingDaoImpl testBestellingDaoImpl = new BestellingDaoImpl();
+		Bestelling testBestelling = new Bestelling(9000, 9000, 9000, "test jUnit artikel1", 9000, 9000.99, 10000, "test jUnit artikel2", 10000, 1999.99, 20000, "test jUnit artikel4", 20000, 22222.99);	
+		// hier wil je eigenlijk testen of het aantal rijen dat geinsert wordt, gelijk is aan 14
+		// probleem is dat de create method void teruggeeft en je er daarom geen assert methode op los kan laten
 	}
-
+	
+		
+		
 	@Test
 	public void testRead() {
-		fail("Not yet implemented");
+		BestellingDaoImpl testBestellingDaoImpl = new BestellingDaoImpl();
+		assertEquals("Number of rows is 3", 3 , testBestellingDaoImpl.read().size());
 	}
 
 	@Test
