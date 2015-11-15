@@ -21,6 +21,9 @@ public class Test {
 		System.out.println();
 		System.out.println();	
 		
+		System.out.println("Overzicht van alle bestellingen: ");
+		System.out.println("=================================");
+		
 		for (Bestelling overzicht : lijst) {
 			System.out.println("Klantnummer : " + overzicht.klant_id + ". Ordernummer : " + overzicht.bestelling_id);
 			System.out.println("---------------------------------------------");
