@@ -38,9 +38,10 @@ public class BestellingDaoImpl implements BestellingDao {
 	    }
 	    
 	@Override
-	public void create(Bestelling bestelling){
+	public int create(Bestelling bestelling){
 	        
 	        PreparedStatement preparedStatement ;
+	        int rowsCreated = 0;
             String sql = "insert into Bestelling (bestelling_id, klant_id, artikel1_id, artikel1_naam, artikel1_aantal, artikel1_prijs, artikel2_id, artikel2_naam, artikel2_aantal, artikel2_prijs, artikel3_id, artikel3_naam, artikel3_aantal, artikel3_prijs) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	        
@@ -62,15 +63,21 @@ public class BestellingDaoImpl implements BestellingDao {
 	            preparedStatement.setInt(13, bestelling.getArtikel3_aantal());
 	            preparedStatement.setDouble(14, bestelling.getArtikel3_prijs());	
 	                   	            
-	            preparedStatement.executeUpdate();
+	            rowsCreated = preparedStatement.executeUpdate();	            
 	            preparedStatement.close();
+	        
 	            
 	        } catch (SQLException e) {
 	            e.printStackTrace();
 	        }
 	        System.out.println();
 	        System.out.println("Bestelling met ordernummer " + bestelling.getBestelling_id() + " succesvol toegevoegd");
-	    }
+	        
+	        System.out.println("Aantal rijen toegevoegd : " + rowsCreated);
+	        
+	        return rowsCreated;
+	       
+		}
 	 
 	@Override
 	public List<Bestelling> read() {
@@ -109,15 +116,16 @@ public class BestellingDaoImpl implements BestellingDao {
 	    }
 
 	@Override
-	// public void update(int bestelling_id, int new_artikel_id, String new_artikel_naam, int new_artikel_aantal, double new_artikel_prijs) {	// oude methode
-
-	public void update(Bestelling bestelling) {        // zelfde methode als hiervoor, alleen nu met een object als parameter        	        
+	public int update(Bestelling bestelling) {       	        
 	
         int bestelling_id = bestelling.getBestelling_id();       
         int new_artikel_id = bestelling.getArtikel1_id();
         String new_artikel_naam = bestelling.getArtikel1_naam();
         int new_artikel_aantal = bestelling.getArtikel1_aantal();
         double new_artikel_prijs = bestelling.getArtikel1_prijs();	
+               
+        int rowsUpdated2 = 0;
+        int rowsUpdated3 = 0;
 					
 		PreparedStatement preparedStatement ;
 					String sql = "select * from Bestelling where bestelling_id = ?";
@@ -130,8 +138,9 @@ public class BestellingDaoImpl implements BestellingDao {
 	   		            
 	   		            if (!rset.next()) {
 	   		            	System.out.println();
-	   		            	System.out.println("Het opgegeven bestellings ID / Ordernummer " + bestelling_id + " bestaat niet");	   		      
-	   		            	return;
+	   		            	System.out.println("Het opgegeven bestellings ID / Ordernummer " + bestelling_id + " bestaat niet. \nDerhalve kan er niks aan worden toegevoegd.");	
+	   			   		  	System.out.println("Aantal rijen geupdate : 0");
+	   			   		  	return 0;
 	   		            }
 	   		            
 	   		            rset.beforeFirst();
@@ -148,8 +157,7 @@ public class BestellingDaoImpl implements BestellingDao {
 			            	String sql3 = "UPDATE bestelling SET artikel3_id=?, artikel3_naam=?, artikel3_aantal=?, artikel3_prijs=? WHERE bestelling_id = ?";	
 			            	                
 			            	 if (artikelnummer3 != 0) {
-			            		 System.out.println("Maximum aantal artikelen voor deze bestelling bereikt");
-			            		 return;
+			            		 System.out.println("Er kan niks aan worden toegevoegd, \nwant het maximum aantal artikelen voor deze bestelling is al bereikt.");		            		 
 			            	 }
 			                	                
 			            	 else if (artikelnummer2 == 0) {	                
@@ -160,7 +168,7 @@ public class BestellingDaoImpl implements BestellingDao {
 			            		 statement2.setDouble(4, new_artikel_prijs);
 			            		 statement2.setInt(5, bestelling_id);
 			            		 
-			 	            	 int rowsUpdated2 = statement2.executeUpdate();
+			 	            	 rowsUpdated2 = statement2.executeUpdate();
 				                 if (rowsUpdated2 > 0) {
 				                 System.out.println(new_artikel_naam + " (" + new_artikel_aantal + " stuks)" + " is succesvol toegevoegd!");
 				                 } 
@@ -174,7 +182,7 @@ public class BestellingDaoImpl implements BestellingDao {
 			            		 statement3.setDouble(4, new_artikel_prijs);
 			            		 statement3.setInt(5, bestelling_id);
 			            		 
-			 	            	 int rowsUpdated3 = statement3.executeUpdate();
+			 	            	 rowsUpdated3 = statement3.executeUpdate();
 				                 if (rowsUpdated3 > 0) {
 					                 System.out.println(new_artikel_naam + " (" + new_artikel_aantal + " stuks)" + " is succesvol toegevoegd!");
 					                 System.out.println("Deze bestelling bevat nu het maximale aantal van 3 verschillende artikelen.");
@@ -184,7 +192,7 @@ public class BestellingDaoImpl implements BestellingDao {
 		                    
 		               
 	   		            }
-	   		            
+	   		            	   		           
 		                rset.close();
 		                preparedStatement.close();
 		                 
@@ -193,30 +201,55 @@ public class BestellingDaoImpl implements BestellingDao {
 				    catch (SQLException e) {
 		                e.printStackTrace();
 		            }
-	   		               		            
-		  }
+	   		             
+	   	  if(rowsUpdated2 > 0) {	   	          	         
+	   		  System.out.println("Aantal rijen geupdate : " + rowsUpdated2);
+	   		  return rowsUpdated2;
+	   	  }
+	   	  else if (rowsUpdated3 > 0) {
+	   		  System.out.println("Aantal rijen geupdate : " + rowsUpdated3);
+	   		  return rowsUpdated3;
+	   	  }
+	   	  else {
+	   		  System.out.println("Aantal rijen geupdate : 0");
+	   		  return 0;
+	   	  }
+	   	     	     	   	  
+	}
 		
 	            	 
             	
 	           	
 		@Override
-	public void delete(Bestelling bestelling) {
+	public int delete(Bestelling bestelling) {
 			
 			int bestelling_id = bestelling.getBestelling_id(); 
+			int rowsDeleted = 0;
 			
 			try {
 
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM Bestelling WHERE bestelling_id=?");
 				statement.setInt(1, bestelling_id);
 
-				int rowsDeleted = statement.executeUpdate();
+				rowsDeleted = statement.executeUpdate();
 				if (rowsDeleted > 0) {
 					System.out.println();
-					System.out.println("De bestelling met ordernummer " + bestelling_id + " is gewist uit de database");
+					System.out.println("De bestelling met ordernummer " + bestelling_id + " is gewist uit de database.");													
 				}
-			} catch (SQLException e) {
+				else {
+					System.out.println();
+					System.out.println("De bestelling met ordernummer " + bestelling_id + " bestaat niet.");	
+				}
+									
+			} 
+			
+			catch (SQLException e) {
 				e.printStackTrace();	
 			}
+		
+			System.out.println("Ordernummer / bestelling ID: " + bestelling_id + ". Aantal rijen verwijderd : " + rowsDeleted);			
+			return rowsDeleted;
+		
 		}
 
 	 
