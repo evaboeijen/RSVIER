@@ -41,8 +41,9 @@ public class BestellingDaoImplTest {
 	public void testCreate() {
 		BestellingDaoImpl testBestellingDaoImpl = new BestellingDaoImpl();
 		Bestelling testBestelling = new Bestelling(9000, 9000, 9000, "test jUnit artikel1", 9000, 9000.99, 10000, "test jUnit artikel2", 10000, 1999.99, 20000, "test jUnit artikel4", 20000, 22222.99);	
-		// hier wil je eigenlijk testen of het aantal rijen dat geinsert wordt, gelijk is aan 14
-		// probleem is dat de create method void teruggeeft en je er daarom geen assert methode op los kan laten
+		testBestellingDaoImpl.initializeDB();
+		assertEquals("Number of rows created is 1", 1, testBestellingDaoImpl.create(testBestelling));
+		testBestellingDaoImpl.closeDBConnection();
 	}
 	
 		
@@ -50,17 +51,27 @@ public class BestellingDaoImplTest {
 	@Test
 	public void testRead() {
 		BestellingDaoImpl testBestellingDaoImpl = new BestellingDaoImpl();
+		testBestellingDaoImpl.initializeDB();
 		assertEquals("Number of rows is 3", 3 , testBestellingDaoImpl.read().size());
+		testBestellingDaoImpl.closeDBConnection();
 	}
 
 	@Test
 	public void testUpdate() {
-		fail("Not yet implemented");
+		BestellingDaoImpl testBestellingDaoImpl = new BestellingDaoImpl();
+		Bestelling testBestelling = new Bestelling(1111, 6969, 6969, "jUnit test update method", 6969, 6969.99);	
+		testBestellingDaoImpl.initializeDB();
+		assertEquals("Number of rows created is 1", 1, testBestellingDaoImpl.update(testBestelling));
+		testBestellingDaoImpl.closeDBConnection();
 	}
 
 	@Test
 	public void testDelete() {
-		fail("Not yet implemented");
+		BestellingDaoImpl testBestellingDaoImpl = new BestellingDaoImpl();
+		Bestelling testBestelling = new Bestelling(9000);
+		testBestellingDaoImpl.initializeDB();
+		assertEquals("Number of rows deleted is 1", 1, testBestellingDaoImpl.delete(testBestelling));
+		testBestellingDaoImpl.closeDBConnection();
 	}
 
 	@Test
