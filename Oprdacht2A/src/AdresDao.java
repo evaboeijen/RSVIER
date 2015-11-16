@@ -4,12 +4,16 @@ public interface AdresDao {
 
 		public void insert(Adres adres);
 
-		public List<Adres> select();
+		public List<Adres> readAllAdresses();
 
-		public void getAdres(Adres adres);
+		public List<Adres> searchStraatnaam(String straatnaam);
+
+		public List<Adres> searchPostcodeAndHuisnummer(String postcode, int huisnummer);
 
 		public void updateAdres(Adres adres);
 
 		public void deleteAdres(Adres adres);
 
 	}
+
+
