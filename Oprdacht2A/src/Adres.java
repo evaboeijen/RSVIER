@@ -1,5 +1,8 @@
+
 public class Adres {
-	int klant_id;
+	
+	static int klant_id;
+	
 	String straatnaam;
 	String postcode;
 	String toevoeging;
@@ -48,6 +51,20 @@ public class Adres {
 	}
 	
 	
+	public int getKlant_id() {
+		return klant_id;
+	}
+
+
+	@Override
+	public String toString() {
+		return"Straatnaam: " +  getStraatnaam() + 
+				"\nPostcode: " + getPostcode() + 
+				"\nToevoeging: " + 	getToevoeging() + 
+				"\nHuisnummer: " + getHuisnummer() + 
+				"\nWoonplaats: " + getWoonplaats() + 
+				"\n\nKlant_id: " + getKlant_id();
+	}
 	
 
 }
