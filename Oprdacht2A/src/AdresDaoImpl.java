@@ -52,18 +52,17 @@ public class AdresDaoImpl implements AdresDao{
 
 	@Override
 	public void insert(Adres adres) {
-		int klant_id = adres.getKlant_id();
+		int klant_idAdres = adres.getKlant_id();
         	try {
         			PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Klant" + 
         			"(straatnaam, postcode, toevoeging, huisnummer, woonplaats) values (?, ?, ?, ?, ?)" + 
-        			"WHERE klant_id = ?");
-        			preparedStatement.setInt(1,klant_id);
+        			"WHERE klant_id = klant_idAdres");
 
-            		preparedStatement.setString(2, adres.getStraatnaam());
-            		preparedStatement.setString(3, adres.getPostcode());
-            		preparedStatement.setString(4, adres.getToevoeging());
-            		preparedStatement.setInt(5, adres.getHuisnummer());
-            		preparedStatement.setString(6, adres.getWoonplaats());
+            		preparedStatement.setString(1, adres.getStraatnaam());
+            		preparedStatement.setString(2, adres.getPostcode());
+            		preparedStatement.setString(3, adres.getToevoeging());
+            		preparedStatement.setInt(4, adres.getHuisnummer());
+            		preparedStatement.setString(5, adres.getWoonplaats());
 
             		
             		preparedStatement.executeUpdate();
@@ -109,20 +108,20 @@ public class AdresDaoImpl implements AdresDao{
 
 	@Override
 	public void updateAdres(Adres adres) {											/* nu nog in dezelfde tabel!!! */
-		int klant_id = adres.getKlant_id();
+		int klant_idAdres = adres.getKlant_id();
 		try {
 			getConnection();
 		
-		String sql = "UPDATE Klant SET straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id =? ";
+		String sql = "UPDATE Klant SET straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id = klant_idAdres ";
 		
                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-               preparedStatement.setInt(1,klant_id);
+              
                
-               preparedStatement.setString(2, adres.getStraatnaam());
-               preparedStatement.setString(3, adres.getPostcode());
-               preparedStatement.setString(4, adres.getToevoeging());
-               preparedStatement.setInt(5, adres.getHuisnummer());
-               preparedStatement.setString(6, adres.getWoonplaats());
+               preparedStatement.setString(1, adres.getStraatnaam());
+               preparedStatement.setString(2, adres.getPostcode());
+               preparedStatement.setString(3, adres.getToevoeging());
+               preparedStatement.setInt(4, adres.getHuisnummer());
+               preparedStatement.setString(5, adres.getWoonplaats());
 
                int rowsUpdated = preparedStatement.executeUpdate();
                if (rowsUpdated > 0) {
@@ -135,12 +134,11 @@ public class AdresDaoImpl implements AdresDao{
 
 	@Override
 	public void deleteAdres(Adres adres) {											/* nu nog in dezelfde tabel!!!*/
-		int klant_id = adres.getKlant_id();
+		int klant_idAdres = adres.getKlant_id();
 		
 		try{ 
-			PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Klant straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id =?");
-			preparedStatement.setInt(1,  klant_id);
-		
+			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE TABLE Klant straatnaam=null, postcode=null, toevoeging=null, huisnummer=null, woonplaats=null WHERE klant_id = klant_idAdres");
+					
 			int rowsUpdated = preparedStatement.executeUpdate();
 				
 				if (rowsUpdated > 0) {
@@ -153,12 +151,12 @@ public class AdresDaoImpl implements AdresDao{
 	}
 
 	@Override
-	public List<Adres> searchStraatnaam(String straatnaam) {
+	public List<Adres> searchStraatnaam(String stringStraatnaam) {
 		List<Adres> adressenStraatnaam = new LinkedList<Adres>();
 		
 		try {
 			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT straatnaam FROM klant"); 	/* nu nog in dezelfde tabel!!! */
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM klant WHERE straatnaam = stringStraatnaam "); 	/* nu nog in dezelfde tabel!!! */
 
 				Adres adres;
 				while(resultSet.next()){
@@ -181,12 +179,12 @@ public class AdresDaoImpl implements AdresDao{
    return adressenStraatnaam;
 	}
 	
-	public List<Adres> searchPostcodeAndHuisnummer(String postcode, int huisnummer) {
+	public List<Adres> searchPostcodeAndHuisnummer(String stringPostcode, int intHuisnummer) {
 		List<Adres> adressenPostcodeAndHuisnummer = new LinkedList<Adres>();
 		
 		try {
 			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT postcode AND huisnummer FROM klant"); 	/* nu nog in dezelfde tabel!!! */
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM klant Where postcode = stringPostcode AND huisnummer = intHuisnummer"); 	/* nu nog in dezelfde tabel!!! */
 
 				Adres adres;
 				while(resultSet.next()){

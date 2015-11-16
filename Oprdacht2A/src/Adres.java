@@ -1,7 +1,7 @@
 
 public class Adres {
 	
-	static int klant_id;
+	private int klant_id;
 	
 	String straatnaam;
 	String postcode;
