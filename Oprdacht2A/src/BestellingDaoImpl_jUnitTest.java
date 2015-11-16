@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class BestellingDaoImplTest {
+public class BestellingDaoImpl_jUnitTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
