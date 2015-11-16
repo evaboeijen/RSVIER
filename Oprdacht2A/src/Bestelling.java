@@ -23,6 +23,11 @@ public class Bestelling {
 	public Bestelling() {		
 	}
 	
+	// constructor alleen voor bestelling_id
+	public Bestelling(int bestelling_id) {		
+		this.bestelling_id = bestelling_id;
+	}
+		
 	// constructor voor 1 artikel
 	public Bestelling(int bestelling_id, int klant_id, int artikel1_id, String artikel1_naam, int artikel1_aantal, double artikel1_prijs) {		
 		this.bestelling_id = bestelling_id;
