@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class Test {
+public class MainTest_Bestelling {
 
 	public static void main(String[] args) {
 		BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
