@@ -11,6 +11,15 @@ public class Adres {
 
 	public Adres(){}
 	
+	public Adres(int klant_id, String straatnaam, String postcode, String toevoeging, int huisnummer, String woonplaats ){
+	this.klant_id =  klant_id;
+	this.straatnaam = straatnaam;
+	this.postcode = postcode;
+	this.toevoeging = toevoeging;
+	this.huisnummer = huisnummer;
+	this.woonplaats = woonplaats;
+	}
+	
 	public String getStraatnaam() {
 		return straatnaam;
 	}
@@ -54,7 +63,10 @@ public class Adres {
 	public int getKlant_id() {
 		return klant_id;
 	}
-
+	
+	public void setKlant_id(int klant_id){
+		this.klant_id = klant_id;
+	}
 
 	@Override
 	public String toString() {

@@ -5,19 +5,12 @@ import java.sql.ResultSetMetaData;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class AdresDaoImpl implements AdresDao{
 	Connection connection = null;
-	
-	public AdresDaoImpl(Connection connection) {
-		super();
-		this.connection = connection;
-	}
-
-	public AdresDaoImpl() {
-	}
 	
 	public Connection getConnection(){
 
@@ -30,7 +23,7 @@ public class AdresDaoImpl implements AdresDao{
                 String username = "root";
                 String password = "";
 
-                Connection connection = DriverManager.getConnection(dbURL, username, password);
+                connection = DriverManager.getConnection(dbURL, username, password);
                 System.out.println("Verbinding is gemaakt");
             }
  
@@ -46,32 +39,35 @@ public class AdresDaoImpl implements AdresDao{
         return connection;
 	}
 
-	public void closeConnection() throws SQLException {
-		connection.close();
+	public void closeConnection() {
+		try {
+            if (connection != null) {
+                connection.close();
+                System.out.println("Verbinding is gesloten");
+            }
+          } catch (Exception e) { 
+          }
 	}
 
 	@Override
 	public void insert(Adres adres) {
 		
-        	try {
-        			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Klant" + 
-        			"(straatnaam, postcode, toevoeging, huisnummer, woonplaats) values (?, ?, ?, ?, ?)" + 
-        			"WHERE klant_id =?");
+			try {
+				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Klant SET straatnaam=? , postcode=? , toevoeging=? , huisnummer=? , woonplaats=? WHERE klant_id=?");
 
-            		preparedStatement.setString(1, adres.getStraatnaam());
-            		preparedStatement.setString(2, adres.getPostcode());
-            		preparedStatement.setString(3, adres.getToevoeging());
-            		preparedStatement.setInt(4, adres.getHuisnummer());
-            		preparedStatement.setString(5, adres.getWoonplaats());
-            		preparedStatement.setInt(6,  adres.getKlant_id());
-            		
-            		preparedStatement.executeUpdate();
-            		preparedStatement.close();
-            		connection.close();
+					preparedStatement.setString(1, adres.getStraatnaam());
+					preparedStatement.setString(2, adres.getPostcode());
+					preparedStatement.setString(3, adres.getToevoeging());
+					preparedStatement.setInt(4, adres.getHuisnummer());
+					preparedStatement.setString(5, adres.getWoonplaats());
+					preparedStatement.setInt(6,  adres.getKlant_id());
 
-        	} catch (SQLException e) {
-        		e.printStackTrace();
-        }
+					preparedStatement.executeUpdate();
+					preparedStatement.close();
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 
         System.out.println(adres.toString());
         System.out.println("Adres succesvol toegevoegd");
@@ -79,20 +75,23 @@ public class AdresDaoImpl implements AdresDao{
 
 	@Override
 	public List<Adres> readAllAdresses() {
-		List<Adres> adressen = new LinkedList<Adres>();
+		List<Adres> adressen = new ArrayList<Adres>();
 
 			try {
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM klant"); 	/* nu nog in dezelfde tabel!!! */
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM klant"); 
 
 					Adres adres;
 					while(resultSet.next()){
+						
 						adres = new Adres();
+						
 						adres.setStraatnaam(resultSet.getString("straatnaam"));
 						adres.setPostcode(resultSet.getString("postcode"));
 						adres.setToevoeging(resultSet.getString("toevoeging"));
-						adres.setHuisnummer(Integer.parseInt(resultSet.getString("huisnummer")));
+						adres.setHuisnummer(resultSet.getInt("huisnummer"));
 						adres.setWoonplaats(resultSet.getString("woonplaats"));
+						adres.setKlant_id(resultSet.getInt("klant_id"));
 
 						adressen.add(adres);
 					}
@@ -110,13 +109,9 @@ public class AdresDaoImpl implements AdresDao{
 	public void updateAdres(Adres adres) {																/* nu nog in dezelfde tabel!!! */
 		
 		try {
-			getConnection();
-		
-		String sql = "UPDATE Klant SET straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id =? ";
-		
-               PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			
+               PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Klant SET straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id =? ");
               
-               
                preparedStatement.setString(1, adres.getStraatnaam());
                preparedStatement.setString(2, adres.getPostcode());
                preparedStatement.setString(3, adres.getToevoeging());
@@ -131,7 +126,7 @@ public class AdresDaoImpl implements AdresDao{
                			System.out.println("Een bestaand adres is succesvol geupdate ");
                     }
        } catch (SQLException e){
-               e.printStackTrace();
+         e.printStackTrace();
        }
 		
 	}
@@ -141,7 +136,7 @@ public class AdresDaoImpl implements AdresDao{
 		
 		try{ 
 			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE TABLE Klant straatnaam=null, postcode=null, toevoeging=null, huisnummer=null, woonplaats=null" + 
-			"WHERE klant_id = ?");
+			"WHERE klant_id=?");
 			preparedStatement.setInt(1, adres.getKlant_id());		
 			
 			int rowsUpdated = preparedStatement.executeUpdate();
@@ -161,7 +156,7 @@ public class AdresDaoImpl implements AdresDao{
 		
 		try {
 			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM klant WHERE straatnaam = " + straatnaam); 	/* nu nog in dezelfde tabel!!! */
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM klant WHERE straatnaam= " + straatnaam); 	/* nu nog in dezelfde tabel!!! */
 
 				Adres adres;
 				while(resultSet.next()){
@@ -180,7 +175,8 @@ public class AdresDaoImpl implements AdresDao{
 		} catch (SQLException e) {
                 e.printStackTrace();
                 }
-   System.out.println(adressenStraatnaam);
+   
+		System.out.println(adressenStraatnaam);
    return adressenStraatnaam;
 	}
 	
@@ -189,7 +185,7 @@ public class AdresDaoImpl implements AdresDao{
 		
 		try {
 			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM klant Where postcode = " + postcode + "AND huisnummer = " + huisnummer); 	/* nu nog in dezelfde tabel!!! */
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM klant WHERE postcode =" + postcode + "AND huisnummer = " + huisnummer); 	/* nu nog in dezelfde tabel!!! */
 
 				Adres adres;
 				while(resultSet.next()){
@@ -204,9 +200,11 @@ public class AdresDaoImpl implements AdresDao{
 				}
 				resultSet.close();
 				statement.close();
+		
 		} catch (SQLException e) {
             e.printStackTrace();
             }
+		
 		System.out.println(adressenPostcodeAndHuisnummer);
 		return adressenPostcodeAndHuisnummer;
 	}
