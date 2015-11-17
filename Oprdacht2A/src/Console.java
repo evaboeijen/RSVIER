@@ -1,6 +1,43 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.*;
+
+
 public class Console {
 
 	public static void main(String[] args) {
+							
+		Console.initializeDB();
+		Scanner input = new Scanner(System.in);		
+        int keuze = input.nextInt();
+		
+        Menus.hoofdMenu();             
+                                         
+        switch (keuze) {
+            case 1:
+                Menus.crudMenu();
+                break;
+                
+            case 2:
+                Menus.klasseSelectieMenu();
+                break;
+                
+            case 3:
+                Console.initializeDB();
+                break;
+                	
+            case 4:
+                System.out.println("Tot de volgende keer...");
+                System.exit(1);
+                break;
+            
+            default:
+                System.out.println("Ongeldige optie");
+        }
+        
+		input.close();
+	}
 	
 
 		// inlogscherm wordt getoond met invoerveld voor databaseurl, user, password,
@@ -42,6 +79,65 @@ public class Console {
 		// indien user optie 5 heeft gekozen in hoofdmenu, wordt het programmaatje beeindigd 
 	
 		
-	}
+		public static void initializeDB() {
+			
+			Scanner input = new Scanner(System.in);
+			
+			System.out.print("Voer database hostname in: ");
+			String dbHostName = input.nextLine();
+			System.out.print("Database port: ");
+			int dbPort = input.nextInt();
+			input.nextLine();
+			System.out.print("Database gebruikersnaam: ");
+			String dbUsername = input.nextLine();
+			System.out.print("Wachtwoord: ");
+			String dbPassword = input.nextLine();
+			
+			input.close();
+									
+			Connection connection = null;
+			
+			try {
+				 Class.forName("com.mysql.jdbc.Driver");
+				System.out.println("Driver is geladen	");
 
+				if (connection == null) {
+					String dbURL = ("jdbc:mysql://localhost:" + dbPort + "/" + dbHostName);
+					String username = dbUsername;
+					String password = dbPassword;
+					connection = DriverManager.getConnection(dbURL, username, password);	
+					System.out.println("Verbinding is gemaakt");
+				}
+		 	} 
+
+			catch (ClassNotFoundException e) {
+	 
+		            e.printStackTrace();
+		    } 
+			
+			catch (SQLException e) {
+		             
+		            e.printStackTrace();	             
+		    }
+											
+
+	    }
+		
+		
+/*		public static void logOut() {
+			 try {
+	              if (connection != null) {
+	                  Console.connection.close();
+	              }
+			 }     
+	              	              
+	         catch (Exception e) { 
+	            	e.printStackTrace();
+	         }
+		
+		}  */
+		
+		
 }
+
+
