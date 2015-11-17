@@ -6,9 +6,9 @@ public interface AdresDao {
 
 		public List<Adres> readAllAdresses();
 
-		public List<Adres> searchStraatnaam(String straatnaam);
+		public List<Adres> searchAdres(String straatnaam);
 
-		public List<Adres> searchPostcodeAndHuisnummer(String postcode, int huisnummer);
+		public List<Adres> searchAdres(String postcode, int huisnummer);
 
 		public void updateAdres(Adres adres);
 

@@ -52,9 +52,9 @@ public class AdresDaoImpl implements AdresDao{
 
 	@Override
 	public void insert(Adres adres) {
-		int klant_id = adres.getKlant_id();
+		
         	try {
-        			PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Klant" + 
+        			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Klant" + 
         			"(straatnaam, postcode, toevoeging, huisnummer, woonplaats) values (?, ?, ?, ?, ?)" + 
         			"WHERE klant_id =?");
 
@@ -63,7 +63,7 @@ public class AdresDaoImpl implements AdresDao{
             		preparedStatement.setString(3, adres.getToevoeging());
             		preparedStatement.setInt(4, adres.getHuisnummer());
             		preparedStatement.setString(5, adres.getWoonplaats());
-
+            		preparedStatement.setInt(6,  adres.getKlant_id());
             		
             		preparedStatement.executeUpdate();
             		preparedStatement.close();
@@ -108,7 +108,7 @@ public class AdresDaoImpl implements AdresDao{
 
 	@Override
 	public void updateAdres(Adres adres) {																/* nu nog in dezelfde tabel!!! */
-		int klant_id = adres.getKlant_id();
+		
 		try {
 			getConnection();
 		
@@ -122,42 +122,46 @@ public class AdresDaoImpl implements AdresDao{
                preparedStatement.setString(3, adres.getToevoeging());
                preparedStatement.setInt(4, adres.getHuisnummer());
                preparedStatement.setString(5, adres.getWoonplaats());
+               preparedStatement.setInt(6, adres.getKlant_id());
 
                int rowsUpdated = preparedStatement.executeUpdate();
-               if (rowsUpdated > 0) {
-               System.out.println("Een bestaand adres is succesvol geupdate ");
-               }
+               preparedStatement.close();
+               		
+               		if (rowsUpdated > 0) {
+               			System.out.println("Een bestaand adres is succesvol geupdate ");
+                    }
        } catch (SQLException e){
                e.printStackTrace();
        }
+		
 	}
 
 	@Override
 	public void deleteAdres(Adres adres) {																/* nu nog in dezelfde tabel!!!*/
-		int klant_id = adres.getKlant_id();
 		
 		try{ 
 			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE TABLE Klant straatnaam=null, postcode=null, toevoeging=null, huisnummer=null, woonplaats=null" + 
 			"WHERE klant_id = ?");
-					
+			preparedStatement.setInt(1, adres.getKlant_id());		
+			
 			int rowsUpdated = preparedStatement.executeUpdate();
+			preparedStatement.close();	
 				
 				if (rowsUpdated > 0) {
 					System.out.println("Het adres is succesvol verwijdert ");
-
-			}
+				}
 		}catch (SQLException e){
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public List<Adres> searchStraatnaam(String straatnaam) {
+	public List<Adres> searchAdres(String straatnaam) {
 		List<Adres> adressenStraatnaam = new LinkedList<Adres>();
 		
 		try {
 			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM klant WHERE straatnaam =? "); 	/* nu nog in dezelfde tabel!!! */
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM klant WHERE straatnaam = " + straatnaam); 	/* nu nog in dezelfde tabel!!! */
 
 				Adres adres;
 				while(resultSet.next()){
@@ -180,12 +184,12 @@ public class AdresDaoImpl implements AdresDao{
    return adressenStraatnaam;
 	}
 	
-	public List<Adres> searchPostcodeAndHuisnummer(String stringPostcode, int intHuisnummer) {
+	public List<Adres> searchAdres(String postcode, int huisnummer) {
 		List<Adres> adressenPostcodeAndHuisnummer = new LinkedList<Adres>();
 		
 		try {
 			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM klant Where postcode = stringPostcode AND huisnummer = intHuisnummer"); 	/* nu nog in dezelfde tabel!!! */
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM klant Where postcode = " + postcode + "AND huisnummer = " + huisnummer); 	/* nu nog in dezelfde tabel!!! */
 
 				Adres adres;
 				while(resultSet.next()){
