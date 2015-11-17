@@ -9,10 +9,11 @@ public class Console {
 	public static void main(String[] args) {
 							
 		Console.initializeDB();
-		Scanner input = new Scanner(System.in);		
-        int keuze = input.nextInt();
 		
-        Menus.hoofdMenu();             
+		Scanner input = new Scanner(System.in);		     
+        Menus.hoofdMenu(); 
+        
+        int keuze = input.nextInt();
                                          
         switch (keuze) {
             case 1:
@@ -34,10 +35,10 @@ public class Console {
             
             default:
                 System.out.println("Ongeldige optie");
-        }
+        } 
         
-		input.close();
-	}
+	
+	} 
 	
 
 		// inlogscherm wordt getoond met invoerveld voor databaseurl, user, password,
@@ -93,35 +94,44 @@ public class Console {
 			System.out.print("Wachtwoord: ");
 			String dbPassword = input.nextLine();
 			
-			input.close();
+			
 									
 			Connection connection = null;
 			
 			try {
 				 Class.forName("com.mysql.jdbc.Driver");
-				System.out.println("Driver is geladen	");
+				System.out.println("Database driver is geladen	");
 
 				if (connection == null) {
 					String dbURL = ("jdbc:mysql://localhost:" + dbPort + "/" + dbHostName);
 					String username = dbUsername;
 					String password = dbPassword;
 					connection = DriverManager.getConnection(dbURL, username, password);	
-					System.out.println("Verbinding is gemaakt");
+					System.out.println("Database verbinding is gemaakt");
 				}
 		 	} 
-
-			catch (ClassNotFoundException e) {
-	 
-		            e.printStackTrace();
-		    } 
 			
+			catch (ClassNotFoundException e) {
+				
+	            e.printStackTrace();
+			} 
+		
 			catch (SQLException e) {
-		             
-		            e.printStackTrace();	             
-		    }
-											
-
-	    }
+	             
+	            e.printStackTrace();	             
+			}
+			
+		}
+		
+/*			finally {
+			    if (input != null) { 
+			        System.out.println("Closing Scanner");
+			        input.close();
+			    } else { 
+			        System.out.println("Scanner not open");
+			    } 
+			} 																	
+	    } */
 		
 		
 /*		public static void logOut() {
