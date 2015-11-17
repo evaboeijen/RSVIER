@@ -1,9 +1,11 @@
+package dao;
+
 import java.sql.*;
 import java.util.*;
 
 public class ArtikelDaoImpl implements ArtikelDao {
     
-    Connection connection = null;
+    public Connection connection = null;
 
 
    public Connection initializeDB(){
@@ -76,7 +78,7 @@ public class ArtikelDaoImpl implements ArtikelDao {
     }
 
 @Override
-public Artikel getArtikel(int artikel_id){
+public Artikel readArtikel(int artikel_id){
 
         Artikel artikel = new Artikel();
         ResultSet result = null;
