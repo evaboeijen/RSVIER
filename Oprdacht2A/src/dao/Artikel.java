@@ -1,3 +1,4 @@
+package dao;
 
 public class Artikel {
 int     bestelling_id;
