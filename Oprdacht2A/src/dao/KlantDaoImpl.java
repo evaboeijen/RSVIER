@@ -1,9 +1,13 @@
+package dao;
+
 import java.sql.*;
 import java.util.*;
 
+
+
 public class KlantDaoImpl implements KlantDao {
 
-	Connection connection = null;
+	public Connection connection = null;
 
 
    public Connection initializeDB(){
@@ -96,7 +100,7 @@ public class KlantDaoImpl implements KlantDao {
     }
     
     @Override
-    public Klant getKlant(int klant_id) {
+    public Klant readKlant(int klant_id) {
 	
         
         Klant klant = new Klant();
@@ -129,7 +133,7 @@ public class KlantDaoImpl implements KlantDao {
 }
  
     @Override
- public Klant getKlant(String voornaam) {
+ public Klant readKlant(String voornaam) {
 	
         Klant klant = null;
         ResultSet result;
