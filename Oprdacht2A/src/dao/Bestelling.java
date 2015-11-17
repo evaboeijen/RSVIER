@@ -1,21 +1,23 @@
+package dao;
+
 public class Bestelling {
 	// Klant besteller;
 	// int   artikel_aantal;
 	// ArrayList <Artikel> bestellingsLijst = null;
-	int bestelling_id;
-	int klant_id;
-	int artikel1_id;
-	String artikel1_naam;
-	int artikel1_aantal;
-	double artikel1_prijs; 
-	int artikel2_id;
-	String artikel2_naam;
-	int artikel2_aantal;
-	double artikel2_prijs; 
-	int artikel3_id;
-	String artikel3_naam;
-	int artikel3_aantal;
-	double artikel3_prijs;
+	private int bestelling_id;
+	private int klant_id;
+	private int artikel1_id;
+	private String artikel1_naam;
+	private int artikel1_aantal;
+	private double artikel1_prijs; 
+	private int artikel2_id;
+	private String artikel2_naam;
+	private int artikel2_aantal;
+	private double artikel2_prijs; 
+	private int artikel3_id;
+	private String artikel3_naam;
+	private int artikel3_aantal;
+	private double artikel3_prijs;
 
 
 	

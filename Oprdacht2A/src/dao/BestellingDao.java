@@ -1,3 +1,4 @@
+package dao;
 import java.util.List;
 
 // comment field added for eGit test

@@ -1,6 +1,5 @@
 import java.util.List;
-
-//comment field added for eGit test
+import dao.*;
 
 public class MainTest_Bestelling {
 
@@ -27,11 +26,11 @@ public class MainTest_Bestelling {
 		System.out.println("=================================");
 		
 		for (Bestelling overzicht : lijst) {
-			System.out.println("Klantnummer : " + overzicht.klant_id + ". Ordernummer : " + overzicht.bestelling_id);
+			System.out.println("Klantnummer : " + overzicht.getKlant_id() + ". Ordernummer : " + overzicht.getBestelling_id());
 			System.out.println("---------------------------------------------");
-			System.out.println("Artikelnummer: " + overzicht.artikel1_id + ". Artikelnaam: " + overzicht.artikel1_naam + ". Aantal: "+ overzicht.artikel1_aantal + ". Prijs: " + overzicht.artikel1_prijs);
-			System.out.println("Artikelnummer: " + overzicht.artikel2_id + ". Artikelnaam: " + overzicht.artikel2_naam + ". Aantal: "+ overzicht.artikel2_aantal + ". Prijs: " + overzicht.artikel2_prijs);
-			System.out.println("Artikelnummer: " + overzicht.artikel3_id + ". Artikelnaam: " + overzicht.artikel3_naam + ". Aantal: "+ overzicht.artikel3_aantal + ". Prijs: " + overzicht.artikel3_prijs);
+			System.out.println("Artikelnummer: " + overzicht.getArtikel1_id() + ". Artikelnaam: " + overzicht.getArtikel1_naam() + ". Aantal: "+ overzicht.getArtikel1_aantal() + ". Prijs: " + overzicht.getArtikel1_prijs());
+			System.out.println("Artikelnummer: " + overzicht.getArtikel2_id() + ". Artikelnaam: " + overzicht.getArtikel2_naam() + ". Aantal: "+ overzicht.getArtikel2_aantal() + ". Prijs: " + overzicht.getArtikel2_prijs());
+			System.out.println("Artikelnummer: " + overzicht.getArtikel3_id() + ". Artikelnaam: " + overzicht.getArtikel3_naam() + ". Aantal: "+ overzicht.getArtikel3_aantal() + ". Prijs: " + overzicht.getArtikel3_prijs());
 			System.out.println();
 			System.out.println();			
 		}

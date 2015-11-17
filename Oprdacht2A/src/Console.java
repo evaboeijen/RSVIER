@@ -1,43 +1,53 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.*;
+import java.io.*;
+import menu.*;
+import dao.*;
 
 
 public class Console {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 							
-		Console.initializeDB();
+		DatabaseConnection.initializeDB();
 		
-		Scanner input = new Scanner(System.in);		     
-        Menus.hoofdMenu(); 
-        
-        int keuze = input.nextInt();
-                                         
-        switch (keuze) {
-            case 1:
-                Menus.crudMenu();
-                break;
+		HoofdMenu hoofdmenu = new HoofdMenu();
+		CrudMenu crudmenu = new CrudMenu();
+		KlasseSelectieMenu klasseselectiemenu = new KlasseSelectieMenu();
+		
+		hoofdmenu.printMenu(); 
+		try (Scanner input = new Scanner(System.in);) {		     
+               
+			int keuze = input.nextInt();
+		       
+			switch (keuze) {
+            	case 1:
+            		crudmenu.printMenu();
+            		break;
                 
-            case 2:
-                Menus.klasseSelectieMenu();
-                break;
+            	case 2:
+            		klasseselectiemenu.printMenu();
+            		break;
                 
-            case 3:
-                Console.initializeDB();
-                break;
+            	case 3:
+            		//Connection.logOut(connection);
+            		break;
                 	
-            case 4:
-                System.out.println("Tot de volgende keer...");
-                System.exit(1);
-                break;
+            	case 4:
+            		System.out.println("Tot de volgende keer...");
+            		System.exit(1);
+            		break;
             
-            default:
-                System.out.println("Ongeldige optie");
-        } 
+            	default:
+            		System.out.println("Ongeldige optie");
+			} 
         
-	
+		}
+		
+		finally {
+			// zinnige code			
+		}
+		
+		
 	} 
 	
 
@@ -80,73 +90,7 @@ public class Console {
 		// indien user optie 5 heeft gekozen in hoofdmenu, wordt het programmaatje beeindigd 
 	
 		
-		public static void initializeDB() {
-			
-			Scanner input = new Scanner(System.in);
-			
-			System.out.print("Voer database hostname in: ");
-			String dbHostName = input.nextLine();
-			System.out.print("Database port: ");
-			int dbPort = input.nextInt();
-			input.nextLine();
-			System.out.print("Database gebruikersnaam: ");
-			String dbUsername = input.nextLine();
-			System.out.print("Wachtwoord: ");
-			String dbPassword = input.nextLine();
-			
-			
-									
-			Connection connection = null;
-			
-			try {
-				 Class.forName("com.mysql.jdbc.Driver");
-				System.out.println("Database driver is geladen	");
 
-				if (connection == null) {
-					String dbURL = ("jdbc:mysql://localhost:" + dbPort + "/" + dbHostName);
-					String username = dbUsername;
-					String password = dbPassword;
-					connection = DriverManager.getConnection(dbURL, username, password);	
-					System.out.println("Database verbinding is gemaakt");
-				}
-		 	} 
-			
-			catch (ClassNotFoundException e) {
-				
-	            e.printStackTrace();
-			} 
-		
-			catch (SQLException e) {
-	             
-	            e.printStackTrace();	             
-			}
-			
-		}
-		
-/*			finally {
-			    if (input != null) { 
-			        System.out.println("Closing Scanner");
-			        input.close();
-			    } else { 
-			        System.out.println("Scanner not open");
-			    } 
-			} 																	
-	    } */
-		
-		
-/*		public static void logOut() {
-			 try {
-	              if (connection != null) {
-	                  Console.connection.close();
-	              }
-			 }     
-	              	              
-	         catch (Exception e) { 
-	            	e.printStackTrace();
-	         }
-		
-		}  */
-		
 		
 }
 
