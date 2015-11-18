@@ -140,13 +140,8 @@ public class AdresDaoImpl implements AdresDao{
 	public void deleteAdres(Adres adres) {																/* nu nog in dezelfde tabel!!!*/
 		
 		try{ 
-			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE klant straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id=?");
-			preparedStatement.setString(1, "del");
-			preparedStatement.setString(2, "del");
-			preparedStatement.setString(3, "del");
-			preparedStatement.setInt(4, 0);
-			preparedStatement.setString(5, "del");
-			preparedStatement.setInt(6, adres.getKlant_id());		
+			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE klant SET straatnaam='-', postcode='-', toevoeging='-', huisnummer='-', woonplaats='-' WHERE klant_id=?");
+			preparedStatement.setInt(1, adres.getKlant_id());		
 			
 			int rowsUpdated = preparedStatement.executeUpdate();
 			preparedStatement.close();	

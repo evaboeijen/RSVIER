@@ -1,3 +1,5 @@
+package dao;
+
 import java.util.List;
 import business.*;
 
@@ -18,7 +20,6 @@ public interface AdresDao {
 		public void updateAdres(Adres adres);
 
 		public void deleteAdres(Adres adres);
-
-	}
-
+		
+}
 
