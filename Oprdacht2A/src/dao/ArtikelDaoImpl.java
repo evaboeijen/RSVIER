@@ -135,10 +135,14 @@ public Artikel readArtikel(int artikel_id){
                 artikel.setArtikel3_prijs(result.getDouble("Artikel3_prijs"));
                 System.out.println("artikel id:" + artikel_id + " artikel naam " + artikel.getArtikel3_naam() + " artikel aantal " + artikel.getArtikel3_aantal() + " artikel prijs " + artikel.getArtikel3_prijs());
              }
-                          
+            
+             
             } else {
                 System.out.println("Artikel zit niet in de bestellinglijst");
             }
+            result.close();
+            statement.close();
+           
            }
             
         } catch (SQLException e){
@@ -194,7 +198,7 @@ public Artikel readArtikel(int artikel_id){
     
     
    @Override
-  public void update(Artikel artikel) {        // zelfde methode als hiervoor, alleen nu met een object als parameter        	        
+  public void update(Artikel artikel) {              
 	
         int bestelling_id = artikel.getBestelling_id();       
         int new_artikel_id = artikel.getArtikel1_id();
@@ -280,25 +284,87 @@ public Artikel readArtikel(int artikel_id){
 
         @Override
 	public void delete(Artikel artikel) {
-		
-       	
 			
-			
-			try {
-
-				PreparedStatement statement = connection.prepareStatement("DELETE FROM Bestelling WHERE bestelling_id=?");
-				statement.setInt(1, artikel.getBestelling_id());
-                                ;
-
-				int rowsDeleted = statement.executeUpdate();
-				if (rowsDeleted > 0) {
-					
-					System.out.println("Alle artikellen zijn verwijdert uit de bestelling");
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();	
-			}
-		}
+    		 					
+    	    	        
+    	   	         try {	 
+    	   	        	 
+    	   	        	PreparedStatement preparedStatement = connection.prepareStatement("select * from Bestelling where bestelling_id=?");	   		            	   		            
+	   		            preparedStatement.setInt(1, artikel.getBestelling_id());	   		                   	            
+	   		            ResultSet result = preparedStatement.executeQuery();
+	   		           		            
+	   		            
+	   		            if (!result.next()) {
+	   		            	System.out.println();
+	   		            	System.out.println("Het opgegeven bestellings ID / Ordernummer " + artikel.getBestelling_id() + " bestaat niet");	   		      
+	   		            	return;
+	   		            }
+	   		            
+	   		            result.beforeFirst();
+	   		            
+	   		            System.out.println();
+	   		            System.out.println("Het opgegeven bestellings ID / Ordernummer luidt: " + artikel.getBestelling_id());
+    	   	        	 
+    	   	        	 Statement statement = connection.createStatement();
+    	   	         
+    	   	        	result = statement.executeQuery("SELECT * FROM Bestelling");
+    	                
+    	               while(result.next()){
+    	                 int artikel1 = result.getInt("Artikel1_id");
+    	                 int artikel2 = result.getInt("Artikel2_id");
+    	                 int artikel3 = result.getInt("Artikel3_id");
+    	                 
+    	   		             			            			            	                
+    			            	 if (artikel1 == artikel.getArtikel1_id()) {
+    			                     PreparedStatement statement1 = connection.prepareStatement("UPDATE bestelling SET artikel1_id=0, artikel1_naam=null, artikel1_aantal=0, artikel1_prijs=0 WHERE bestelling_id=?");
+    			            		 statement1.setInt(1, artikel.getBestelling_id());
+    			            		 
+    			            		 int rowsUpdated = statement1.executeUpdate();
+    			                     if (rowsUpdated > 0) {
+    			     	System.out.println("Het artikel is gewist!");
+    			     }
+    			                     statement1.close();
+    			            	 }
+    			            		            
+    			            	 else if (artikel2 == artikel.getArtikel1_id()) {	                
+    			 	                 PreparedStatement statement2 = connection.prepareStatement("UPDATE bestelling SET artikel2_id=0, artikel2_naam=null, artikel2_aantal=0, artikel2_prijs=0 WHERE bestelling_id=?");
+    			            		 statement2.setInt(1, artikel.getBestelling_id());
+    			            		 
+    			            		 int rowsUpdated = statement2.executeUpdate();
+    			                     if (rowsUpdated > 0) {
+    			     	System.out.println("Het artikel is gewist!");
+    			     }
+    			                     statement2.close();
+    			            	 }
+    			            	 
+    			            	 else if (artikel3 == artikel.getArtikel1_id()) {	                
+    			 	                 PreparedStatement statement3 = connection.prepareStatement("UPDATE bestelling SET artikel3_id=0 artikel3_naam=null, artikel3_aantal=0, artikel3_prijs=0 WHERE bestelling_id=?");
+    			            		 statement3.setInt(1, artikel.getBestelling_id());
+    			            		 
+    			            		 int rowsUpdated = statement3.executeUpdate();
+    			                     if (rowsUpdated > 0) {
+    			     	System.out.println("Het artikel is gewist!");
+    			     }
+    			                     statement3.close();
+    			            	 }
+    		                   
+    			            	 else {
+    			            		 System.out.println("Artikel zit niet in de bestelling");
+    			            	 }
+    		               
+    	   		            }
+    	   		            
+    		                result.close();
+    		                statement.close();
+    		                 
+    		            } 
+    				                 
+    				    catch (SQLException e) {
+    		                e.printStackTrace();
+    		            }
+    	   		               		            
+    		  }
+      
 
 
 
