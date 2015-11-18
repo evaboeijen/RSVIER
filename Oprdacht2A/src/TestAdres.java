@@ -1,3 +1,5 @@
+import java.sql.PreparedStatement;
+import business.*; 
 import dao.*;
 
 public class TestAdres {
@@ -8,21 +10,20 @@ public class TestAdres {
 		
 		System.out.println("");
 		
-		Adres adres1 = new Adres(1,"Teststraat","1234AB", "boven", 5 ,"Ergens");
-		Adres adres2 = new Adres(2,"Tweede teststraat","1234AB", "onder", 10 ,"Nergens");
-		Adres adres3 = new Adres(3,"Derdede teststraat","1234AB", "onder", 10 ,"Nergens");
-		Adres adres4 = new Adres(4,"Vierde teststraat","1234AB", "onder", 10 ,"Nergens");
+		Adres adres1 = new Adres(1,"Waar","1234AB", "boven", 5 ,"Ergens");
+		Adres adres2 = new Adres(2,"Tweede teststraat","1234AB", "onder", 10 , "Nergens");
+		Adres adres3 = new Adres(3,"Derdede teststraat","1234AB", "onder", 10 , "Nergens");
+		Adres adres4 = new Adres(4,"Vierde teststraat","1234AB", "onder", 10 , "Nergens");
 		
-		adresDaoImpl.insert(adres1);
-		adresDaoImpl.insert(adres2);
-		adresDaoImpl.insert(adres3);
-		adresDaoImpl.insert(adres4);
+		System.out.println("\n1 ________________________________________");
 		
-		System.out.println("\n ________________________________________");
+		adresDaoImpl.updateAdres(adres1);
 		
-		adresDaoImpl.readAllAdresses();
+		System.out.println("\n2 ________________________________________");
 		
-		System.out.println("\n ________________________________________");
+		adresDaoImpl.deleteAdres(adres1);
+		
+		PreparedStatement preparedStatement;
 		
 		
 		

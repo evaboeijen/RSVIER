@@ -10,6 +10,8 @@ import java.util.*;
 
 import org.junit.Test;
 
+import business.Klant;
+
 
 public class KlantDaoImpl_jUnitTest {
 

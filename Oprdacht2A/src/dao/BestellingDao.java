@@ -1,6 +1,8 @@
 package dao;
 import java.util.List;
 
+import business.Bestelling;
+
 // comment field added for eGit test
 
 public interface BestellingDao {

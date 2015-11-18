@@ -1,6 +1,8 @@
 package dao;
 import java.util.*;
 
+import business.Klant;
+
 
 public interface KlantDao {
    

@@ -1,4 +1,7 @@
+package dao;
+
 import java.sql.DriverManager;
+import business.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -137,9 +140,13 @@ public class AdresDaoImpl implements AdresDao{
 	public void deleteAdres(Adres adres) {																/* nu nog in dezelfde tabel!!!*/
 		
 		try{ 
-			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE TABLE Klant straatnaam=null, postcode=null, toevoeging=null, huisnummer=null, woonplaats=null" + 
-			"WHERE klant_id=?");
-			preparedStatement.setInt(1, adres.getKlant_id());		
+			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE klant straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id=?");
+			preparedStatement.setString(1, "del");
+			preparedStatement.setString(2, "del");
+			preparedStatement.setString(3, "del");
+			preparedStatement.setInt(4, 0);
+			preparedStatement.setString(5, "del");
+			preparedStatement.setInt(6, adres.getKlant_id());		
 			
 			int rowsUpdated = preparedStatement.executeUpdate();
 			preparedStatement.close();	
@@ -147,6 +154,7 @@ public class AdresDaoImpl implements AdresDao{
 				if (rowsUpdated > 0) {
 					System.out.println("Het adres is succesvol verwijdert ");
 				}
+				
 		}catch (SQLException e){
 			e.printStackTrace();
 		}
@@ -155,53 +163,64 @@ public class AdresDaoImpl implements AdresDao{
 	@Override
 	public List<Adres> searchAdres(String straatnaam) {
 		List<Adres> adressenStraatnaam = new LinkedList<Adres>();
+		PreparedStatement preparedStatement;
+		ResultSet resultSet;
 		
 		try {
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM klant WHERE straatnaam= " + straatnaam); 	/* nu nog in dezelfde tabel!!! */
+			preparedStatement = connection.prepareStatement("SELCT * FROM klant WHERE straatnaam=?");
+			preparedStatement.setString(1, straatnaam);
+			resultSet = preparedStatement.executeQuery(); 
 
 				Adres adres;
 				while(resultSet.next()){
 					adres = new Adres();
+					
+					adres.setKlant_id(resultSet.getInt("klant_id"));
 					adres.setStraatnaam(resultSet.getString("straatnaam"));
 					adres.setPostcode(resultSet.getString("postcode"));
 					adres.setToevoeging(resultSet.getString("toevoeging"));
-					adres.setHuisnummer(Integer.parseInt(resultSet.getString("huisnummer")));
+					adres.setHuisnummer(resultSet.getInt("huisnummer"));
 					adres.setWoonplaats(resultSet.getString("woonplaats"));
 
 					adressenStraatnaam.add(adres);
 				}
 				resultSet.close();
-				statement.close();
+				preparedStatement.close();
                 
 		} catch (SQLException e) {
                 e.printStackTrace();
                 }
    
 		System.out.println(adressenStraatnaam);
-   return adressenStraatnaam;
+		return adressenStraatnaam;
 	}
 	
 	public List<Adres> searchAdres(String postcode, int huisnummer) {
 		List<Adres> adressenPostcodeAndHuisnummer = new LinkedList<Adres>();
+		ResultSet resultSet;
+		PreparedStatement preparedStatement;
 		
 		try {
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM klant WHERE postcode =" + postcode + "AND huisnummer = " + huisnummer); 	/* nu nog in dezelfde tabel!!! */
-
+			preparedStatement = connection.prepareStatement("SELECT * FROM klant WHERE postcode=? AND huisnummer=? ");
+			preparedStatement.setString(1, postcode);
+			preparedStatement.setInt(2,  huisnummer);
+			resultSet = preparedStatement.executeQuery(); 	
+				
 				Adres adres;
 				while(resultSet.next()){
 					adres = new Adres();
+					
+					adres.setKlant_id(resultSet.getInt("klant_id"));
 					adres.setStraatnaam(resultSet.getString("straatnaam"));
 					adres.setPostcode(resultSet.getString("postcode"));
 					adres.setToevoeging(resultSet.getString("toevoeging"));
-					adres.setHuisnummer(Integer.parseInt(resultSet.getString("huisnummer")));
+					adres.setHuisnummer(resultSet.getInt("huisnummer"));
 					adres.setWoonplaats(resultSet.getString("woonplaats"));
 
 					adressenPostcodeAndHuisnummer.add(adres);
 				}
 				resultSet.close();
-				statement.close();
+				preparedStatement.close();
 		
 		} catch (SQLException e) {
             e.printStackTrace();

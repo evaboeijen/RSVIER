@@ -2,6 +2,8 @@ package dao;
 
 import java.util.*;
 
+import business.Artikel;
+
 public interface ArtikelDao {
    
 public List<Artikel> read();   

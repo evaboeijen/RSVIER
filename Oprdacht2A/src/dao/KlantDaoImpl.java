@@ -3,6 +3,8 @@ package dao;
 import java.sql.*;
 import java.util.*;
 
+import business.Klant;
+
 
 
 public class KlantDaoImpl implements KlantDao {

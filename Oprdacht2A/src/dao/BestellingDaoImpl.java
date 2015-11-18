@@ -2,6 +2,8 @@ package dao;
 import java.sql.*;
 import java.util.*;
 
+import business.Bestelling;
+
 public class BestellingDaoImpl implements BestellingDao {
 	
 	

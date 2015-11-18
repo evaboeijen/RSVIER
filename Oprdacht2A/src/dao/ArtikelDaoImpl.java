@@ -3,6 +3,8 @@ package dao;
 import java.sql.*;
 import java.util.*;
 
+import business.Artikel;
+
 public class ArtikelDaoImpl implements ArtikelDao {
     
     public Connection connection = null;
