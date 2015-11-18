@@ -54,8 +54,6 @@ public class KlantDaoImpl_jUnitTest {
 		klantList.add(testKlant);
 		klantList.add(testKlant2);
 		
-		System.out.println(testKlantDaoImpl.read());
-		
 		assertEquals("ArrayLists must be the same", klantList.hashCode(),testKlantDaoImpl.read().hashCode());
 		
 	
