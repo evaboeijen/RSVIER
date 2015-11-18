@@ -5,9 +5,7 @@ import dao.*;
 
 import static org.junit.Assert.*;
 
-
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 
 import org.junit.Test;
@@ -50,11 +48,11 @@ public class KlantDaoImpl_jUnitTest {
 		testKlant2.setEmail("@email.com");
 		testKlantDaoImpl.create(testKlant2);
 		
-		List<Klant> klantList = new LinkedList<Klant>();
+		List<Klant> klantList = new ArrayList<Klant>();
 		klantList.add(testKlant);
 		klantList.add(testKlant2);
-		
-		assertEquals("ArrayLists must be the same", klantList.hashCode(),testKlantDaoImpl.read().hashCode());
+				
+		assertEquals("Lists must be the same", klantList.hashCode(),testKlantDaoImpl.read().hashCode());
 		
 	
 		// test delete and readKlant(int) method
