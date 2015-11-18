@@ -80,7 +80,7 @@ public boolean equals(Klant k){
   }
 
 public int hashCode(){
-     return (int) klant_id;
+     return (int) klant_id * voornaam.hashCode() * achternaam.hashCode();
 
 }
 }
