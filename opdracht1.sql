@@ -61,11 +61,11 @@ CREATE TABLE IF NOT EXISTS `klant` (
   `achternaam` varchar(51) NOT NULL,
   `tussenvoegsel` varchar(10) NOT NULL,
   `email` varchar(320) NOT NULL,
-  `straatnaam` varchar(26) NOT NULL,
-  `postcode` varchar(6) NOT NULL,
-  `toevoeging` varchar(6) NOT NULL,
-  `huisnummer` varchar(6) NOT NULL,
-  `woonplaats` varchar(26) NOT NULL,
+  `straatnaam` varchar(26),
+  `postcode` varchar(6),
+  `toevoeging` varchar(6),
+  `huisnummer` varchar(6),
+  `woonplaats` varchar(26),
   CONSTRAINT klant_constraint UNIQUE (voornaam,email,achternaam)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
