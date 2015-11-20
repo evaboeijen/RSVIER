@@ -8,8 +8,12 @@ import java.util.Scanner;
 import menu.crud.CrudMenu;
 import menu.klasseselectie.KlasseSelectieMenu;
 
+
+
 public class InEnUitLoggen {
 		
+		Connection connection = null;
+	
 		public void toonMenu() {
 		    System.out.println("\t---------");
 		    System.out.println("\tInloggen");
@@ -25,13 +29,15 @@ public class InEnUitLoggen {
 			       
 				switch (keuze) {
 	            	case 1:
-	            		InEnUitLoggen.connectToDBWithUserInput();	
+	            		connectToDBWithUserInput();	
+	            		System.out.println("Connection status: " + this.getConnectionStatus());
 	            		HoofdMenu hoofdmenu = new HoofdMenu();					
-	            		hoofdmenu.toonMenu(); 	            						
+	            		hoofdmenu.toonMenu(); 
 	            		break;
 	                
 	            	case 2:
-	            		InEnUitLoggen.connectToDBWithDefaultData();
+	            		connectToDBWithDefaultData();
+	            		System.out.println("Connection status: " + this.getConnectionStatus());
 	            		HoofdMenu hoofdmenu2 = new HoofdMenu();					
 	            		hoofdmenu2.toonMenu(); 	            						
 	            		break;
@@ -44,7 +50,11 @@ public class InEnUitLoggen {
 	            	default:
 	            		System.out.println("\n! Ongeldige optie, probeer het nogmaals !\n");
 	            		this.toonMenu();
+	            		
+	            		
 				} 
+			
+				
 	        
 			}
 			
@@ -53,8 +63,12 @@ public class InEnUitLoggen {
 			}
 		}
 		
-				
-public static Connection connectToDBWithUserInput() {	
+public Object getConnectionStatus() {
+	return this.connection;
+}
+		
+		
+public Connection connectToDBWithUserInput() {	
 		
 		Scanner input = new Scanner(System.in);
 		
@@ -68,8 +82,6 @@ public static Connection connectToDBWithUserInput() {
 		System.out.print("Wachtwoord: ");
 		String dbPassword = input.nextLine();
 										
-		Connection connection = null;
-		
 		try {
 			 Class.forName("com.mysql.jdbc.Driver");
 			System.out.println("Database driver is geladen	");
@@ -102,10 +114,8 @@ public static Connection connectToDBWithUserInput() {
     } 
 	
 
-public static Connection connectToDBWithDefaultData() {	
+public Connection connectToDBWithDefaultData() {	
 								
-	Connection connection = null;
-	
 	try {
 		 Class.forName("com.mysql.jdbc.Driver");
 		System.out.println("Database driver is geladen	");
