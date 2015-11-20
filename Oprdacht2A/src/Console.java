@@ -1,8 +1,5 @@
-import java.util.*;
 import java.io.*;
 import menu.*;
-import menu.crud.CrudMenu;
-import menu.klasseselectie.KlasseSelectieMenu;
 import dao.*;
 
 
@@ -10,11 +7,9 @@ public class Console {
 
 	public static void main(String[] args) throws IOException {
 							
-		Inloggen.connectToDB();
+		InEnUitLoggen inloggen = new InEnUitLoggen();
+		inloggen.toonMenu();
 		
-		HoofdMenu hoofdmenu = new HoofdMenu();					
-		hoofdmenu.toonMenu(); 
-						
 	} 
 	
 

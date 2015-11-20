@@ -24,12 +24,12 @@ public class HoofdMenu {
 			switch (keuze) {
             	case 1:
             		CrudMenu crudmenu = new CrudMenu();
-            		crudmenu.printMenu();
+            		crudmenu.toonMenu();
             		break;
                 
             	case 2:
             		KlasseSelectieMenu klasseselectiemenu = new KlasseSelectieMenu();
-            		klasseselectiemenu.printMenu();
+            		klasseselectiemenu.toonMenu();
             		break;
                 
             	case 3:
@@ -37,12 +37,13 @@ public class HoofdMenu {
             		break;
                 	
             	case 4:
-            		System.out.println("Tot de volgende keer...");
+            		System.out.println("\nTot de volgende keer...");
             		System.exit(1);
             		break;
             
             	default:
-            		System.out.println("Ongeldige optie");
+            		System.out.println("\n! Ongeldige optie, probeer het nogmaals !\n");
+            		this.toonMenu();
 			} 
         
 		}
