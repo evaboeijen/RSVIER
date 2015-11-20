@@ -168,9 +168,7 @@ public class KlantDaoImpl implements KlantDao {
         
 	@Override
 	public void update(Klant klant) {
-		
-                  List<Klant> klanten = new ArrayList<>();     
-                  klanten.add(klant); 
+		 
                                     
             try {
 
