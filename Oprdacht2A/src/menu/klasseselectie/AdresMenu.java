@@ -56,18 +56,18 @@ public class AdresMenu {
 	public void toonMenu() {
 		Adres adres = null;
 		
-	    System.out.print("\t----------");
-	    System.out.print("\tAdres Menu");
-	    System.out.print("\t----------");
+	    System.out.println("\t----------");
+	    System.out.println("\tAdres Menu");
+	    System.out.println("\t----------");
 	   
 	    System.out.println("");
 	    
-	    System.out.println("1. Create: Creëer een nieuw adres voor bestaande klant");
-	    System.out.println("2. Read:   Lees alle adressen uit de klant tabel");
-	    System.out.println("3. Read:   Zoek op straatnaam");
-	    System.out.println("4. Read:   Zoek op de combinatie van postcode & huisnummer");
-	    System.out.println("5. Update: Verander het adres van een bestaande klant");
-	    System.out.println("6. Delete: Verwijder het adres van een bestaande klant");    
+	    System.out.println("1. Create:      Creëer een nieuw adres voor bestaande klant");
+	    System.out.println("2. Read:        Lees alle adressen uit de klant tabel");
+	    System.out.println("3. Read:        Zoek op straatnaam");
+	    System.out.println("4. Read:        Zoek op de combinatie van postcode & huisnummer");
+	    System.out.println("5. Update:      Verander het adres van een bestaande klant");
+	    System.out.println("6. Delete:      Verwijder het adres van een bestaande klant");    
 
 	    System.out.println("");
 	    
@@ -139,6 +139,8 @@ public class AdresMenu {
             		toonMenu();
             		break;
             		
+            	
+            	
             	case 10:
             		KlasseSelectieMenu klasseSelectieMenu = new KlasseSelectieMenu();
             		klasseSelectieMenu.toonMenu();
