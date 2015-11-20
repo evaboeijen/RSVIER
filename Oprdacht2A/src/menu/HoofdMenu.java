@@ -1,5 +1,7 @@
 package menu;
 
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import menu.crud.*;
 import menu.klasseselectie.*;
@@ -33,7 +35,7 @@ public class HoofdMenu {
             		break;
                 
             	case 3:
-            		//Connection.logOut(connection);
+            		InEnUitLoggen.logOut(InEnUitLoggen.connection);
             		break;
                 	
             	case 4:
@@ -47,17 +49,17 @@ public class HoofdMenu {
 			} 
         
 		}
-		
-		finally {
-			// zinnige code			
-		}	
+	    
+	    
+		catch (NoSuchElementException e) {
+			System.out.println("\n! Ongeldige optie, het programma zal stoppen !\n");
+    		System.exit(0);
+            //e.printStackTrace();
+		} 
 	
 	
 	}
-	
-	
-	
-	
+		
 }
 
 

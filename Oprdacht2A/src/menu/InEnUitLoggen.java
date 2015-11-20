@@ -3,6 +3,7 @@ package menu;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import menu.crud.CrudMenu;
@@ -12,7 +13,7 @@ import menu.klasseselectie.KlasseSelectieMenu;
 
 public class InEnUitLoggen {
 		
-		Connection connection = null;
+		static Connection connection = null;
 	
 		public void toonMenu() {
 		    System.out.println("\t---------");
@@ -30,14 +31,14 @@ public class InEnUitLoggen {
 				switch (keuze) {
 	            	case 1:
 	            		connectToDBWithUserInput();	
-	            		System.out.println("Connection status: " + this.getConnectionStatus());
+	            		//System.out.println("Connection status: " + this.getConnectionStatus());
 	            		HoofdMenu hoofdmenu = new HoofdMenu();					
 	            		hoofdmenu.toonMenu(); 
 	            		break;
 	                
 	            	case 2:
 	            		connectToDBWithDefaultData();
-	            		System.out.println("Connection status: " + this.getConnectionStatus());
+	            		//System.out.println("Connection status: " + this.getConnectionStatus());
 	            		HoofdMenu hoofdmenu2 = new HoofdMenu();					
 	            		hoofdmenu2.toonMenu(); 	            						
 	            		break;
@@ -49,13 +50,8 @@ public class InEnUitLoggen {
 	            
 	            	default:
 	            		System.out.println("\n! Ongeldige optie, probeer het nogmaals !\n");
-	            		this.toonMenu();
-	            		
-	            		
-				} 
-			
-				
-	        
+	            		this.toonMenu();  			            		
+				}         
 			}
 			
 			finally {
@@ -63,107 +59,124 @@ public class InEnUitLoggen {
 			}
 		}
 		
-public Object getConnectionStatus() {
-	return this.connection;
-}
-		
-		
-public Connection connectToDBWithUserInput() {	
-		
-		Scanner input = new Scanner(System.in);
-		
-		System.out.print("Voer database hostname in: ");
-		String dbHostName = input.nextLine();
-		System.out.print("Database port: ");
-		int dbPort = input.nextInt();
-		input.nextLine();
-		System.out.print("Database gebruikersnaam: ");
-		String dbUsername = input.nextLine();
-		System.out.print("Wachtwoord: ");
-		String dbPassword = input.nextLine();
-										
-		try {
-			 Class.forName("com.mysql.jdbc.Driver");
-			System.out.println("Database driver is geladen	");
-
-			if (connection == null) {
-				String dbURL = ("jdbc:mysql://localhost:" + dbPort + "/" + dbHostName);
-				String username = dbUsername;
-				String password = dbPassword;
-				connection = DriverManager.getConnection(dbURL, username, password);	
-				System.out.println("Database verbinding is gemaakt");
-			}	 					
-		} 
-							
-		catch (ClassNotFoundException e) {
-			
-            e.printStackTrace();
-		} 
-	
-		catch (SQLException e) {
-             
-            e.printStackTrace();	             
+		public static Connection getConnectionStatus() {
+			return connection;
 		}
 		
-		finally {		
-		   // zinnige code
+		
+		public Connection connectToDBWithUserInput() {	
+		
+			try (Scanner input = new Scanner(System.in);) {
+		
+				System.out.print("Voer database hostname in: ");
+				String dbHostName = input.nextLine();
+				System.out.print("Database port: ");
+				int dbPort = input.nextInt();
+				input.nextLine();
+				System.out.print("Database gebruikersnaam: ");
+				String dbUsername = input.nextLine();
+				System.out.print("Wachtwoord: ");
+				String dbPassword = input.nextLine();
+												
+				Class.forName("com.mysql.jdbc.Driver");
+				System.out.println("Database driver is geladen	");
+
+				if (connection == null) {
+					String dbURL = ("jdbc:mysql://localhost:" + dbPort + "/" + dbHostName);
+					String username = dbUsername;
+					String password = dbPassword;
+					connection = DriverManager.getConnection(dbURL, username, password);	
+					System.out.println("Database verbinding is gemaakt");
+				}	 					
+			} 
+							
+			catch (InputMismatchException e) {
+				System.out.println("\nDatabase hostname, poort, gebruikersnaam en/of wachtwoord onjuist.");
+				System.out.println("Probeer het a.u.b. opnieuw.\n");
+				connectToDBWithUserInput();	
+				//e.printStackTrace();
+			}
+		
+		
+			catch (ClassNotFoundException e) {
+				System.out.println("\nDatabase hostname, poort, gebruikersnaam en/of wachtwoord onjuist.");
+				System.out.println("Probeer het a.u.b. opnieuw.\n");
+				connectToDBWithUserInput();	
+				//e.printStackTrace();
+			} 
+	
+			catch (SQLException e) {
+				System.out.println("\nDatabase hostname, poort, gebruikersnaam en/of wachtwoord onjuist.");
+				System.out.println("Probeer het a.u.b. opnieuw.\n");
+				connectToDBWithUserInput();	
+				//e.printStackTrace();	             
+			}
+		
+			catch (Exception e) {
+				System.out.println("\nDatabase hostname, poort, gebruikersnaam en/of wachtwoord onjuist.");
+				System.out.println("Probeer het a.u.b. opnieuw.\n");
+				connectToDBWithUserInput();	
+				//e.printStackTrace();
+			} 
+		
+			finally {		
+    		// zinnige code
+			} 
+		
+			return connection;		 																	
 		} 
-		
-		return connection;
-		 																	
-    } 
 	
 
-public Connection connectToDBWithDefaultData() {	
+		public Connection connectToDBWithDefaultData() {	
 								
-	try {
-		 Class.forName("com.mysql.jdbc.Driver");
-		System.out.println("Database driver is geladen	");
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				System.out.println("Database driver is geladen	");
 
-		if (connection == null) {
-			String dbURL = ("jdbc:mysql://localhost:3306/test");
-			String username = "root";
-			String password = "mysql";
-			connection = DriverManager.getConnection(dbURL, username, password);	
-			System.out.println("Database verbinding is gemaakt");
-		}	 					
-	} 
+				if (connection == null) {
+					String dbURL = ("jdbc:mysql://localhost:3306/test");
+					String username = "root";
+					String password = "mysql";
+					connection = DriverManager.getConnection(dbURL, username, password);	
+					System.out.println("Database verbinding is gemaakt");
+				}	 					
+			}	 	
 						
-	catch (ClassNotFoundException e) {
-		
-        e.printStackTrace();
-	} 
+			catch (ClassNotFoundException e) {		
+				e.printStackTrace();
+			} 
 
-	catch (SQLException e) {
-         
-        e.printStackTrace();	             
-	}
+			catch (SQLException e) {        
+				e.printStackTrace();	             
+			}
 	
-	finally {		
-	   // zinnige code
-	} 
+			finally {		
+				// zinnige code
+			} 
 	
-	return connection;
-	 																	
-} 
+			return connection;	 																	
+		} 
 
 	
-	public static Connection logOut(Connection connection) {
-		 try {
-              if (connection != null) {
-                  System.out.println("Logging out...");
-            	  connection.close();
-            	  
-              }
-		 }     
+		public static Connection logOut(Connection connection) {
+			try {
+				if (connection != null) {
+					System.out.println("\nLogging out...\n");
+					connection.close();
+					connection = null;
+          			InEnUitLoggen inloggen = new InEnUitLoggen();
+          			inloggen.toonMenu();
+				}
+				else {
+					System.out.println("\nYou are already logged out.\n");         	  
+				}
+			}     
               	              
-         catch (Exception e) { 
+			catch (Exception e) { 
             	e.printStackTrace();
-         }
+			}
 		 
-		 return connection;
+			return connection;
+		}  
 	
-	}  
-	
-
 }
