@@ -54,7 +54,9 @@ public class AdresDaoImpl implements AdresDao{
 
 	@Override
 	public void insert(Adres adres) {
+		int klant_id = adres.getKlant_id(); 
 		
+		if (checkKlant_id(klant_id)){
 			try {
 				PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO klant WHERE klant_id=? (straatnaam, postcode , toevoeging , huisnummer , woonplaats)VALUES(?,?,?,?,?)");
 
@@ -63,7 +65,7 @@ public class AdresDaoImpl implements AdresDao{
 					preparedStatement.setString(3, adres.getToevoeging());
 					preparedStatement.setInt(4, adres.getHuisnummer());
 					preparedStatement.setString(5, adres.getWoonplaats());
-					preparedStatement.setInt(6,  adres.getKlant_id());
+					preparedStatement.setInt(6, adres.getKlant_id());
 
 					int rowsUpdated = preparedStatement.executeUpdate();
 					preparedStatement.close();
@@ -74,9 +76,10 @@ public class AdresDaoImpl implements AdresDao{
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-
-        System.out.println(adres.toString());
+		System.out.println(adres.toString());
         System.out.println("Adres succesvol toegevoegd");
+		}
+     
     }
 
 	@Override
@@ -113,8 +116,10 @@ public class AdresDaoImpl implements AdresDao{
 
 	@Override
 	public void updateAdres(Adres adres) {																/* nu nog in dezelfde tabel!!! */
+		int klant_id = adres.getKlant_id();
 		
-		try {
+		if (checkKlant_id(klant_id)){
+			try {
 			
                PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Klant SET straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id =? ");
               
@@ -130,28 +135,33 @@ public class AdresDaoImpl implements AdresDao{
                
                
 
-       } catch (SQLException e){
-         e.printStackTrace();
-       }
-		System.out.println("Adres is succesvol veranderd");
-	}
+			} catch (SQLException e){
+				e.printStackTrace();
+			}
+			System.out.println("Adres is succesvol veranderd");
+	
+		}
+	}	
 
 	@Override
 	public void deleteAdres(Adres adres) {																/* nu nog in dezelfde tabel!!!*/
+		int klant_id = adres.getKlant_id(); 
 		
-		try{ 
-			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE klant SET straatnaam='-', postcode='-', toevoeging='-', huisnummer='-', woonplaats='-' WHERE klant_id=?");
-			preparedStatement.setInt(1, adres.getKlant_id());		
+		if (checkKlant_id(klant_id)){
+			try{ 
+				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE klant SET straatnaam='-', postcode='-', toevoeging='-', huisnummer='-', woonplaats='-' WHERE klant_id=?");
+				preparedStatement.setInt(1, adres.getKlant_id());		
 			
-			int rowsUpdated = preparedStatement.executeUpdate();
-			preparedStatement.close();	
+				int rowsUpdated = preparedStatement.executeUpdate();
+				preparedStatement.close();	
 				
-				if (rowsUpdated > 0) {
-					System.out.println("Het adres is succesvol verwijdert ");
-				}
+					if (rowsUpdated > 0) {
+						System.out.println("Het adres is succesvol verwijdert ");
+					}
 				
-		}catch (SQLException e){
+			}catch (SQLException e){
 			e.printStackTrace();
+			}
 		}
 	}
 
@@ -224,5 +234,31 @@ public class AdresDaoImpl implements AdresDao{
 		System.out.println(adressenPostcodeAndHuisnummer);
 		return adressenPostcodeAndHuisnummer;
 	}
+
+	@Override
+	public boolean checkKlant_id(int klant_id) {
+		PreparedStatement preparedStatement;
+		ResultSet resultSet;
+		boolean result = false;
+		
+		try {
+			preparedStatement = connection.prepareStatement("SELECT * FROM klant WHERE klant_id=?");
+			preparedStatement.setInt(1, klant_id);
+			resultSet = preparedStatement.executeQuery(); 
+	
+			preparedStatement.close();
+
+			if (resultSet.next()){
+				result = true;
+			} else {
+				System.out.println("Het opgegeven klant_id bevind zich niet in de database...");
+			}
+
+		} catch (SQLException e) {
+                e.printStackTrace();	
+		}
+		return result;
+	}
 }
+	
 

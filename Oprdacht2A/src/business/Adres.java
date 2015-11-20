@@ -79,5 +79,6 @@ public class Adres {
 				"\n\nKlant_id: " + getKlant_id();
 	}
 	
+	
 
 }

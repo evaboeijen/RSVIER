@@ -21,5 +21,6 @@ public interface AdresDao {
 
 		public void deleteAdres(Adres adres);
 		
+		public boolean checkKlant_id(int klant_id);		
 }
 
