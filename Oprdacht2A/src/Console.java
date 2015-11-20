@@ -10,46 +10,11 @@ public class Console {
 
 	public static void main(String[] args) throws IOException {
 							
-		DatabaseConnection.initializeDB();
+		Inloggen.connectToDB();
 		
-		HoofdMenu hoofdmenu = new HoofdMenu();
-		CrudMenu crudmenu = new CrudMenu();
-		KlasseSelectieMenu klasseselectiemenu = new KlasseSelectieMenu();
-		
-		hoofdmenu.printMenu(); 
-		try (Scanner input = new Scanner(System.in);) {		     
-               
-			int keuze = input.nextInt();
-		       
-			switch (keuze) {
-            	case 1:
-            		crudmenu.printMenu();
-            		break;
-                
-            	case 2:
-            		klasseselectiemenu.printMenu();
-            		break;
-                
-            	case 3:
-            		//Connection.logOut(connection);
-            		break;
-                	
-            	case 4:
-            		System.out.println("Tot de volgende keer...");
-            		System.exit(1);
-            		break;
-            
-            	default:
-            		System.out.println("Ongeldige optie");
-			} 
-        
-		}
-		
-		finally {
-			// zinnige code			
-		}
-		
-		
+		HoofdMenu hoofdmenu = new HoofdMenu();					
+		hoofdmenu.toonMenu(); 
+						
 	} 
 	
 

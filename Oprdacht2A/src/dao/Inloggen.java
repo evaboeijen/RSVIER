@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class DatabaseConnection {
+public class Inloggen {
 		
-	public static Connection initializeDB() {
+	public static Connection connectToDB() {
 		
 		Scanner input = new Scanner(System.in);
 		
