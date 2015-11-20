@@ -3,6 +3,7 @@ import java.sql.*;
 import java.util.*;
 
 import business.Bestelling;
+import menu.InEnUitLoggen;
 
 public class BestellingDaoImpl implements BestellingDao {
 	
@@ -43,13 +44,17 @@ public class BestellingDaoImpl implements BestellingDao {
 	@Override
 	public int create(Bestelling bestelling){
 	        
-	        PreparedStatement preparedStatement ;
+	        
+		
+		PreparedStatement preparedStatement ;
 	        int rowsCreated = 0;
             String sql = "insert into Bestelling (bestelling_id, klant_id, artikel1_id, artikel1_naam, artikel1_aantal, artikel1_prijs, artikel2_id, artikel2_naam, artikel2_aantal, artikel2_prijs, artikel3_id, artikel3_naam, artikel3_aantal, artikel3_prijs) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	        
 	        try {
-	                        
+	                 
+	        	Connection connection = InEnUitLoggen.getConnectionStatus();
+	        	
 	            preparedStatement = connection.prepareStatement(sql);
 	            preparedStatement.setInt(1, bestelling.getBestelling_id());
 	            preparedStatement.setInt(2, bestelling.getKlant_id());
@@ -78,6 +83,8 @@ public class BestellingDaoImpl implements BestellingDao {
 	        
 	        System.out.println("Aantal rijen toegevoegd : " + rowsCreated);
 	        
+	        System.out.println();
+	        
 	        return rowsCreated;
 	       
 		}
@@ -86,7 +93,10 @@ public class BestellingDaoImpl implements BestellingDao {
 	public List<Bestelling> read() {
 	        List<Bestelling> bestellingen = new LinkedList<Bestelling>();
 	         try {
-	                Statement statement = connection.createStatement();
+	                                
+	                Connection connection = InEnUitLoggen.getConnectionStatus();	           
+	                
+	        	 	Statement statement = connection.createStatement();	               
 	                ResultSet resultSet = statement.executeQuery("SELECT * FROM bestelling");
 	                 
 	                Bestelling bestelling;
@@ -133,7 +143,9 @@ public class BestellingDaoImpl implements BestellingDao {
 		PreparedStatement preparedStatement ;
 					String sql = "select * from Bestelling where bestelling_id = ?";
 	    	        
-	   	         try {	   	                                
+	   	         try {	  
+	   	        	 	Connection connection = InEnUitLoggen.getConnectionStatus();
+	   	        	 
 	   		            preparedStatement = connection.prepareStatement(sql);	   		            	   		            
 	   		            preparedStatement.setInt(1, bestelling_id);	   		                   	            
 	   		            ResultSet rset = preparedStatement.executeQuery();
@@ -231,6 +243,8 @@ public class BestellingDaoImpl implements BestellingDao {
 			
 			try {
 
+				Connection connection = InEnUitLoggen.getConnectionStatus();
+					
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM Bestelling WHERE bestelling_id=?");
 				statement.setInt(1, bestelling_id);
 
@@ -260,6 +274,8 @@ public class BestellingDaoImpl implements BestellingDao {
 	     
 	 public void closeDBConnection(){
 	        try {
+	        		Connection connection = InEnUitLoggen.getConnectionStatus();
+	        	
 	              if (connection != null) {
 	                  connection.close();
 	              }

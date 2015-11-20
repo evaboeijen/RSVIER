@@ -7,7 +7,7 @@ import menu.HoofdMenu;
 import menu.InEnUitLoggen;
 import business.*;
 
-public class BestellingMenu extends InEnUitLoggen {
+public class BestellingMenu  {
 	
 	public void toonMenu() {
 	    System.out.println("\t----------");
@@ -32,38 +32,47 @@ public class BestellingMenu extends InEnUitLoggen {
 		       
 			switch (keuze) {
             	case 1:
+            		System.out.println();
+            		KlantDaoImpl lijst = new KlantDaoImpl();
+            		List <Klant> alleKlanten = lijst.read();
+            		System.out.println(alleKlanten);
+            		
+            		
             		/* Bestelling bestelling = new Bestelling(1000, 1000, 1000, "test artikel", 1000, 1000.50, 2000, "test artikel2", 2000, 2000.50, 3000, "test artikel3", 3000, 3000.50);	
-            		BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
-            		bestellingDaoImpl.create(bestelling);         	*/ 	
-            		System.out.println(this.getConnectionStatus());
+            		BestellingDaoImpl bestellingDaoImpl1 = new BestellingDaoImpl();
+            		bestellingDaoImpl1.create(bestelling);  */
+            		
+            		BestellingMenu bestellingmenu1 = new BestellingMenu();
+            		bestellingmenu1.toonMenu();
+            		
             		break;
                 
-            	case 2:
-            		InEnUitLoggen inloggen = new InEnUitLoggen();
-            		inloggen.connectToDBWithDefaultData();            		
-            		System.out.println(inloggen.getConnectionStatus());
-            		if (inloggen.getConnectionStatus() != null) {           			
-            			BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
-            			System.out.println("nieuwe BestellingDaoImpl object geinstantieerd");
-            			List<Bestelling> lijst = bestellingDaoImpl.read();	// lees en toon alle bestellingen uit de Bestelling tabel
+            	case 2:          		
+            		// System.out.println(InEnUitLoggen.getConnectionStatus());
+            	          			
+            		BestellingDaoImpl bestellingDaoImpl2 = new BestellingDaoImpl();
+            			
+            		List<Bestelling> lijst2 = bestellingDaoImpl2.read();	// lees en toon alle bestellingen uit de Bestelling tabel
             		
+            		System.out.println();
+            		System.out.println();	
+            		
+            		System.out.println("Overzicht van alle bestellingen: ");
+            		System.out.println("=================================");
+            		
+            		for (Bestelling overzicht : lijst2) {
+            			System.out.println("Klantnummer : " + overzicht.getKlant_id() + ". Ordernummer : " + overzicht.getBestelling_id());
+            			System.out.println("---------------------------------------------");
+            			System.out.println("Artikelnummer: " + overzicht.getArtikel1_id() + ". Artikelnaam: " + overzicht.getArtikel1_naam() + ". Aantal: "+ overzicht.getArtikel1_aantal() + ". Prijs: " + overzicht.getArtikel1_prijs());
+            			System.out.println("Artikelnummer: " + overzicht.getArtikel2_id() + ". Artikelnaam: " + overzicht.getArtikel2_naam() + ". Aantal: "+ overzicht.getArtikel2_aantal() + ". Prijs: " + overzicht.getArtikel2_prijs());
+            			System.out.println("Artikelnummer: " + overzicht.getArtikel3_id() + ". Artikelnaam: " + overzicht.getArtikel3_naam() + ". Aantal: "+ overzicht.getArtikel3_aantal() + ". Prijs: " + overzicht.getArtikel3_prijs());
             			System.out.println();
             			System.out.println();	
-            		
-            			System.out.println("Overzicht van alle bestellingen: ");
-            			System.out.println("=================================");
-            		
-            			for (Bestelling overzicht : lijst) {
-            				System.out.println("Klantnummer : " + overzicht.getKlant_id() + ". Ordernummer : " + overzicht.getBestelling_id());
-            				System.out.println("---------------------------------------------");
-            				System.out.println("Artikelnummer: " + overzicht.getArtikel1_id() + ". Artikelnaam: " + overzicht.getArtikel1_naam() + ". Aantal: "+ overzicht.getArtikel1_aantal() + ". Prijs: " + overzicht.getArtikel1_prijs());
-            				System.out.println("Artikelnummer: " + overzicht.getArtikel2_id() + ". Artikelnaam: " + overzicht.getArtikel2_naam() + ". Aantal: "+ overzicht.getArtikel2_aantal() + ". Prijs: " + overzicht.getArtikel2_prijs());
-            				System.out.println("Artikelnummer: " + overzicht.getArtikel3_id() + ". Artikelnaam: " + overzicht.getArtikel3_naam() + ". Aantal: "+ overzicht.getArtikel3_aantal() + ". Prijs: " + overzicht.getArtikel3_prijs());
-            				System.out.println();
-            				System.out.println();	
-            			}
-            			
             		}
+            			         		
+            		BestellingMenu bestellingmenu2 = new BestellingMenu();
+            		bestellingmenu2.toonMenu();
+            		
             		break;
                 
             	case 3:

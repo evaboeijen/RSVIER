@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.*;
 
 import business.Klant;
+import menu.InEnUitLoggen;
 
 
 
@@ -75,7 +76,9 @@ public class KlantDaoImpl implements KlantDao {
         List<Klant> klanten = new ArrayList<Klant>();
          
         try {
-                Statement statement = connection.createStatement();
+                Connection connection = InEnUitLoggen.getConnectionStatus();
+        		
+        		Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM klant");
                  
                 Klant klant;

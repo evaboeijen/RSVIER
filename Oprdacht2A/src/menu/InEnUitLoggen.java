@@ -3,6 +3,7 @@ package menu;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import menu.crud.CrudMenu;
@@ -12,7 +13,7 @@ import menu.klasseselectie.KlasseSelectieMenu;
 
 public class InEnUitLoggen {
 		
-		Connection connection = null;
+		static Connection connection = null;
 	
 		public void toonMenu() {
 		    System.out.println("\t---------");
@@ -30,14 +31,14 @@ public class InEnUitLoggen {
 				switch (keuze) {
 	            	case 1:
 	            		connectToDBWithUserInput();	
-	            		System.out.println("Connection status: " + this.getConnectionStatus());
+	            		//System.out.println("Connection status: " + this.getConnectionStatus());
 	            		HoofdMenu hoofdmenu = new HoofdMenu();					
 	            		hoofdmenu.toonMenu(); 
 	            		break;
 	                
 	            	case 2:
 	            		connectToDBWithDefaultData();
-	            		System.out.println("Connection status: " + this.getConnectionStatus());
+	            		//System.out.println("Connection status: " + this.getConnectionStatus());
 	            		HoofdMenu hoofdmenu2 = new HoofdMenu();					
 	            		hoofdmenu2.toonMenu(); 	            						
 	            		break;
@@ -63,8 +64,8 @@ public class InEnUitLoggen {
 			}
 		}
 		
-public Object getConnectionStatus() {
-	return this.connection;
+public static Connection getConnectionStatus() {
+	return connection;
 }
 		
 		
@@ -95,18 +96,37 @@ public Connection connectToDBWithUserInput() {
 			}	 					
 		} 
 							
+		catch (InputMismatchException e) {
+			System.out.println("\nDatabase hostname, poort, gebruikersnaam en/of wachtwoord onjuist.");
+			System.out.println("Probeer het a.u.b. opnieuw.\n");
+			connectToDBWithUserInput();	
+            //e.printStackTrace();
+		}
+		
+		
 		catch (ClassNotFoundException e) {
-			
-            e.printStackTrace();
+			System.out.println("\nDatabase hostname, poort, gebruikersnaam en/of wachtwoord onjuist.");
+			System.out.println("Probeer het a.u.b. opnieuw.\n");
+			connectToDBWithUserInput();	
+            //e.printStackTrace();
 		} 
 	
 		catch (SQLException e) {
-             
-            e.printStackTrace();	             
+			System.out.println("\nDatabase hostname, poort, gebruikersnaam en/of wachtwoord onjuist.");
+			System.out.println("Probeer het a.u.b. opnieuw.\n");
+			connectToDBWithUserInput();	
+            //e.printStackTrace();	             
 		}
 		
+		catch (Exception e) {
+			System.out.println("\nDatabase hostname, poort, gebruikersnaam en/of wachtwoord onjuist.");
+			System.out.println("Probeer het a.u.b. opnieuw.\n");
+			connectToDBWithUserInput();	
+            //e.printStackTrace();
+		} 
+		
 		finally {		
-		   // zinnige code
+    		
 		} 
 		
 		return connection;
@@ -151,9 +171,15 @@ public Connection connectToDBWithDefaultData() {
 	public static Connection logOut(Connection connection) {
 		 try {
               if (connection != null) {
-                  System.out.println("Logging out...");
+            	  System.out.println("\nLogging out...\n");
             	  connection.close();
+            	  connection = null;
+          			InEnUitLoggen inloggen = new InEnUitLoggen();
+          			inloggen.toonMenu();
             	  
+              }
+              else {
+            	  System.out.println("\nYou are already logged out.\n");         	  
               }
 		 }     
               	              
