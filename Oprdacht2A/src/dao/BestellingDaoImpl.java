@@ -79,13 +79,15 @@ public class BestellingDaoImpl implements BestellingDao {
 	            e.printStackTrace();
 	        }
 	        System.out.println();
-	        System.out.println("Bestelling met ordernummer " + bestelling.getBestelling_id() + " succesvol toegevoegd");
-	        
-	        System.out.println("Aantal rijen toegevoegd : " + rowsCreated);
-	        
+	        System.out.println("Bestelling met ordernummer " + bestelling.getBestelling_id() + " voor klantnummer " + bestelling.getKlant_id() + " succesvol toegevoegd");
+	        System.out.println("Inhoud van de bestelling: " + bestelling.getArtikel1_aantal() + " stuks " + bestelling.getArtikel1_naam() + " (" + (bestelling.getArtikel1_prijs()*100)/100.00 + " euro per stuk) en met totaalprijs van " + ((bestelling.getArtikel1_aantal() * bestelling.getArtikel1_prijs())*100)/100.00 + " euro.");
+	         
+	        System.out.println("Aantal rijen in tabel Bestelling toegevoegd : " + rowsCreated);
 	        System.out.println();
 	        
 	        return rowsCreated;
+	        
+	        
 	       
 		}
 	 
@@ -279,11 +281,97 @@ public class BestellingDaoImpl implements BestellingDao {
 	              if (connection != null) {
 	                  connection.close();
 	              }
-	            } catch (Exception e) { 
+	        } 
+	        catch (Exception e) { 
 	            	e.printStackTrace();
-	            }
-	    }
+	        }
+	        
+	        
+	 }
+	 
+	@Override
+	public boolean checkBestelling_id(int bestelling_id) {	// toegevoegd 21/11/15 AU
+			PreparedStatement preparedStatement;
+			ResultSet resultSet;
+			boolean result = false;
+			
+			try {
+				
+				Connection connection = InEnUitLoggen.getConnectionStatus(); 
+				
+				preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE bestelling_id=?");
+				preparedStatement.setInt(1, bestelling_id);
+				resultSet = preparedStatement.executeQuery(); 
+				
+				if (resultSet.next()){
+					result = true;
+				} else {
+					System.out.println("Het opgegeven bestelling_id bevindt zich niet in de database...");
+				}
+
+			} catch (SQLException e) {
+	                e.printStackTrace();	
+			}
+			return result;
+		}
+	
+	@Override
+	public boolean checkArtikel_id(int artikel_id) {		// toegevoegd 21/11/15 AU
+			PreparedStatement preparedStatement;
+			ResultSet resultSet;
+			boolean result = false;
+			
+			try {
+				
+				Connection connection = InEnUitLoggen.getConnectionStatus(); 
+				
+				preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE (artikel1_id=? OR artikel2_id=? OR artikel3_id=?)");
+				preparedStatement.setInt(1, artikel_id);
+				preparedStatement.setInt(2, artikel_id);
+				preparedStatement.setInt(3, artikel_id);
+				resultSet = preparedStatement.executeQuery(); 
+				
+				if (resultSet.next()){
+					result = true;
+				} else {
+					System.out.println("Het opgegeven artikelnummer bevindt zich niet in de database...");
+				}
+
+			} catch (SQLException e) {
+	                e.printStackTrace();	
+			}
+			return result;
+		}
+	
+	@Override
+	public int checkHoogste_Bestelling_id() {	// toegevoegd 21/11/15 AU
+        
+		int maxBestellingId = 0;
+		
+		try {
+            
+            Connection connection = InEnUitLoggen.getConnectionStatus();	           
+            
+    	 	Statement statement = connection.createStatement();	               
+            ResultSet resultSet = statement.executeQuery("SELECT MAX(Bestelling_id) FROM bestelling");
+                  
+            while(resultSet.next()){
+                maxBestellingId = resultSet.getInt("max(bestelling_id)");
+               
+            }
+            
+            resultSet.close();
+            statement.close();
+             
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return maxBestellingId;
+        
+			
 	}
+	 
+}
 	
 	
 	
