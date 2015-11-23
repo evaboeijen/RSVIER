@@ -45,9 +45,10 @@ public class KlantDaoImpl implements KlantDao {
    @Override
     public void create(Klant klant){
         
-        
+	
                    
         try {
+        	   Connection connection = InEnUitLoggen.getConnectionStatus();
                         
             	PreparedStatement preparedStatement = connection.prepareStatement("insert into klant(klant_id, voornaam, achternaam, tussenvoegsel, email) values (?, ?, ?, ? , ?)");
 			preparedStatement.setInt(1, klant.getKlant_id());
@@ -113,6 +114,8 @@ public class KlantDaoImpl implements KlantDao {
         String sql = "SELECT * FROM klant WHERE Klant_id= " + klant_id;
         
         try {
+        	Connection connection = InEnUitLoggen.getConnectionStatus();
+        	
             Statement statement = connection.createStatement();
             result = statement.executeQuery(sql);
             
@@ -144,6 +147,8 @@ public class KlantDaoImpl implements KlantDao {
         ResultSet result;
                 
         try {
+        	   Connection connection = InEnUitLoggen.getConnectionStatus();
+        	   
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM klant WHERE voornaam=?");
             statement.setString(1, voornaam);
             result = statement.executeQuery();
@@ -174,6 +179,7 @@ public class KlantDaoImpl implements KlantDao {
 		 
                                     
             try {
+            	Connection connection = InEnUitLoggen.getConnectionStatus();
 
                 PreparedStatement statement = connection.prepareStatement("UPDATE Klant SET voornaam=?, tussenvoegsel=?, achternaam=?, email=? WHERE Klant_id=?");
                 statement.setString(1, klant.getVoornaam());
@@ -199,6 +205,7 @@ public class KlantDaoImpl implements KlantDao {
 	public void delete(Klant klant) {
 		// TODO Auto-generated method stub
             try{ 
+            	   Connection connection = InEnUitLoggen.getConnectionStatus();
                           
                 PreparedStatement statement = connection.prepareStatement("DELETE FROM Klant WHERE Klant_id=?");
                 statement.setInt(1, klant.getKlant_id());
@@ -214,7 +221,32 @@ public class KlantDaoImpl implements KlantDao {
         }
         }
 
+    
+    	public boolean checkKlant_id(int klant_id) {	
+			PreparedStatement preparedStatement;
+			ResultSet resultSet;
+			boolean result = false;
+			
+			try {
+				
+				Connection connection = InEnUitLoggen.getConnectionStatus(); 
+				
+				preparedStatement = connection.prepareStatement("SELECT * FROM Klant WHERE klant_id=?");
+				preparedStatement.setInt(1, klant_id);
+				resultSet = preparedStatement.executeQuery(); 
+				
+				if (resultSet.next()){
+					result = true;
+				} else {
+					System.out.println("Het opgegeven klant_id bevindt zich niet in de database...");
+				}
 
+			} catch (SQLException e) {
+	                e.printStackTrace();	
+			}
+			return result;
+		}
+    	
      
     public void closeDBConnection(){
         try {
