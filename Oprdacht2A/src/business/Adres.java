@@ -71,12 +71,13 @@ public class Adres {
 
 	@Override
 	public String toString() {
-		return"Straatnaam: " +  getStraatnaam() + 
-				"\nPostcode: " + getPostcode() + 
-				"\nToevoeging: " + 	getToevoeging() + 
-				"\nHuisnummer: " + getHuisnummer() + 
-				"\nWoonplaats: " + getWoonplaats() + 
-				"\n\nKlant_id: " + getKlant_id();
+		return  "\n\tKlant_id: " 		+ getKlant_id()+
+				"\nStraatnaam: " 	+  getStraatnaam() + 
+				"\nPostcode: " 		+ getPostcode() + 
+				"\nToevoeging: " 	+ 	getToevoeging() + 
+				"\nHuisnummer: " 	+ getHuisnummer() + 
+				"\nWoonplaats: " 	+ getWoonplaats() + 
+				"\n";
 	}
 	
 	

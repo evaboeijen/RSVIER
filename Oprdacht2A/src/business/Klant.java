@@ -57,9 +57,14 @@ public String getEmail() {
 public void setEmail(String email) {
 	this.email = email;
 }
-
+@Override 
 public String toString(){
-	return "Klant Id: " + klant_id + ". Klant gegevens: " + voornaam + " " + tussenvoegsel + " " + achternaam + " " + email; 
+	return  "\n\tKlant_id: " 	+ klant_id +
+			"\nVoornaam: "		+ voornaam + 
+			"\nTussenvoegsel: "	+ tussenvoegsel + 
+			"\nAchternaam: " 	+ achternaam + 
+			"\nEmail: " 		+ email + 
+			"\n";
 }
 
 public boolean equals(Klant k){

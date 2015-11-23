@@ -134,9 +134,9 @@ public class InEnUitLoggen {
 				System.out.println("Database driver is geladen	");
 
 				if (connection == null) {
-					String dbURL = ("jdbc:mysql://localhost:3306/test");
+					String dbURL = ("jdbc:mysql://localhost:3306/opdracht1");
 					String username = "root";
-					String password = "mysql";
+					String password = "";
 					connection = DriverManager.getConnection(dbURL, username, password);	
 					System.out.println("Database verbinding is gemaakt");
 				}	 					

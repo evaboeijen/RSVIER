@@ -17,13 +17,9 @@ public class TestAdres {
 		
 		System.out.println("\n1 ________________________________________");
 		
-		adresDaoImpl.updateAdres(adres1);
+		adresDaoImpl.readAllAdresses();
 		
-		System.out.println("\n2 ________________________________________");
 		
-		adresDaoImpl.deleteAdres(adres1);
-		
-		PreparedStatement preparedStatement;
 		
 		
 		

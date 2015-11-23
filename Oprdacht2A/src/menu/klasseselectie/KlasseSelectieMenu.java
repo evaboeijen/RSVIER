@@ -6,9 +6,9 @@ import menu.*;
 public class KlasseSelectieMenu {
 		
 		public void toonMenu() {
-		    System.out.println("\t----------");
+		    System.out.println("\t-------------------");
 		    System.out.println("\tKlasseselectie Menu");
-		    System.out.println("\t----------");
+		    System.out.println("\t-------------------");
 		    System.out.println("1. Klant");
 		    System.out.println("2. Adres");
 		    System.out.println("3. Bestelling");

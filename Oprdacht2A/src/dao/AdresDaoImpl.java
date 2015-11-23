@@ -60,6 +60,7 @@ public class AdresDaoImpl implements AdresDao{
 		
 		if (checkKlant_id(klant_id)){
 			try {
+				Connection connection = InEnUitLoggen.getConnectionStatus();
 				PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO klant WHERE klant_id=? (straatnaam, postcode , toevoeging , huisnummer , woonplaats)VALUES(?,?,?,?,?)");
 
 					preparedStatement.setString(1, adres.getStraatnaam());
@@ -89,6 +90,7 @@ public class AdresDaoImpl implements AdresDao{
 		List<Adres> adressen = new ArrayList<Adres>();
 
 			try {
+				Connection connection = InEnUitLoggen.getConnectionStatus();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM klant"); 
 
@@ -122,18 +124,18 @@ public class AdresDaoImpl implements AdresDao{
 		
 		if (checkKlant_id(klant_id)){
 			try {
-			
-               PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Klant SET straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id =? ");
+				Connection connection = InEnUitLoggen.getConnectionStatus();
+				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Klant SET straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id =? ");
               
-               preparedStatement.setString(1, adres.getStraatnaam());
-               preparedStatement.setString(2, adres.getPostcode());
-               preparedStatement.setString(3, adres.getToevoeging());
-               preparedStatement.setInt(4, adres.getHuisnummer());
-               preparedStatement.setString(5, adres.getWoonplaats());
-               preparedStatement.setInt(6, adres.getKlant_id());
+				preparedStatement.setString(1, adres.getStraatnaam());
+				preparedStatement.setString(2, adres.getPostcode());
+				preparedStatement.setString(3, adres.getToevoeging());
+				preparedStatement.setInt(4, adres.getHuisnummer());
+				preparedStatement.setString(5, adres.getWoonplaats());
+				preparedStatement.setInt(6, adres.getKlant_id());
 
-               preparedStatement.executeUpdate();
-               preparedStatement.close();
+				preparedStatement.executeUpdate();
+				preparedStatement.close();
                
                
 
@@ -151,6 +153,7 @@ public class AdresDaoImpl implements AdresDao{
 		
 		if (checkKlant_id(klant_id)){
 			try{ 
+				Connection connection = InEnUitLoggen.getConnectionStatus();
 				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE klant SET straatnaam='-', postcode='-', toevoeging='-', huisnummer='-', woonplaats='-' WHERE klant_id=?");
 				preparedStatement.setInt(1, adres.getKlant_id());		
 			
@@ -174,6 +177,7 @@ public class AdresDaoImpl implements AdresDao{
 		ResultSet resultSet;
 		
 		try {
+			Connection connection = InEnUitLoggen.getConnectionStatus();
 			preparedStatement = connection.prepareStatement("SELCT * FROM klant WHERE straatnaam=?");
 			preparedStatement.setString(1, straatnaam);
 			resultSet = preparedStatement.executeQuery(); 
@@ -208,6 +212,7 @@ public class AdresDaoImpl implements AdresDao{
 		PreparedStatement preparedStatement;
 		
 		try {
+			Connection connection = InEnUitLoggen.getConnectionStatus();
 			preparedStatement = connection.prepareStatement("SELECT * FROM klant WHERE postcode=? AND huisnummer=? ");
 			preparedStatement.setString(1, postcode);
 			preparedStatement.setInt(2,  huisnummer);
@@ -244,24 +249,25 @@ public class AdresDaoImpl implements AdresDao{
 		boolean result = false;
 		
 		try {
-			
-			Connection connection = InEnUitLoggen.getConnectionStatus(); // toegevoegd op 21/11/15 AU
-			
+			Connection connection = InEnUitLoggen.getConnectionStatus();
 			preparedStatement = connection.prepareStatement("SELECT * FROM klant WHERE klant_id=?");
 			preparedStatement.setInt(1, klant_id);
 			resultSet = preparedStatement.executeQuery(); 
-	
-			// preparedStatement.close(); uitgecomment op 21/11/15 AU
+			
+			// preparedStatement.close(); uitgecomment op 21/11/15 AU 	-->		Staat nu zowel bij if als else 23-11-2015 EB
 
 			if (resultSet.next()){
 				result = true;
+				preparedStatement.close();
 			} else {
 				System.out.println("Het opgegeven klant_id bevindt zich niet in de database...");
+				preparedStatement.close();
 			}
 
 		} catch (SQLException e) {
                 e.printStackTrace();	
 		}
+		
 		return result;
 	}
 }

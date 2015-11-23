@@ -187,7 +187,26 @@ public class Bestelling {
     public void setArtikel3_prijs(double artikel3_prijs) {
     	this.artikel3_prijs = artikel3_prijs;
     }
-
+    @Override
+    public String toString(){
+    	return 	"\nBestelling Id: " + bestelling_id +
+    			"\tKlant Id: " + klant_id +
+    			"\nArtikel 1 Id: " + artikel1_id + 
+    			"\tArtikel 1 aantal: " + artikel1_aantal + 
+    			"\tArtikel 1 naam: " + artikel1_naam + 
+    			"\tArtikel 1 prijs: " + artikel1_prijs + 
+    			"\n" +
+    			"Artikel 2 Id: " + artikel2_id + 
+    			"\tArtikel 2 aantal: " + artikel2_aantal + 
+    			"\tArtikel 2 naam: " + artikel2_naam + 
+    			"\tArtikel 2 prijs: " + artikel2_prijs + 
+    			"\n" +
+    			"Artikel 3 Id: " + artikel3_id + 
+    			"\tArtikel 3 aantal: " + artikel3_aantal + 
+    			"\tArtikel 3 naam: " + artikel3_naam + 
+    			"\tArtikel 3 prijs: " + artikel3_prijs + 
+    			"\n";
+    }
 
     
     

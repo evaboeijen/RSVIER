@@ -130,9 +130,21 @@ public void setArtikel3_prijs(double artikel3_prijs) {
 
 
 public String toString(){
-	return "Artikel 1 Id: " + artikel1_id + ". Artikel 1 aantal: " + artikel1_aantal + ". Artikel 1 naam " + artikel1_naam + ". Artikel 1 prijs " + artikel1_prijs + "\n" +
-        "Artikel 2 Id: " + artikel2_id + ". Artikel 2 aantal: " + artikel2_aantal + ". Artikel 2 naam " + artikel2_naam + ". Artikel 2 prijs " + artikel2_prijs + "\n" +
-        "Artikel 3 Id: " + artikel3_id + ". Artikel 3 aantal: " + artikel3_aantal + ". Artikel 3 naam " + artikel3_naam + ". Artikel 3 prijs " + artikel3_prijs + "\n";
+	return 	"\n\tArtikel 1 Id: " + artikel1_id + 
+			"\tArtikel 1 aantal: " + artikel1_aantal + 
+			"\tArtikel 1 naam: " + artikel1_naam + 
+			"\tArtikel 1 prijs: " + artikel1_prijs + 
+			"\n" +
+			"Artikel 2 Id: " + artikel2_id + 
+			"\tArtikel 2 aantal: " + artikel2_aantal + 
+			"\tArtikel 2 naam: " + artikel2_naam + 
+			"\tArtikel 2 prijs: " + artikel2_prijs + 
+			"\n" +
+			"Artikel 3 Id: " + artikel3_id + 
+			"\tArtikel 3 aantal: " + artikel3_aantal + 
+			"\tArtikel 3 naam: " + artikel3_naam + 
+			"\tArtikel 3 prijs: " + artikel3_prijs + 
+			"\n";
 }
 
 public int hashCode(){

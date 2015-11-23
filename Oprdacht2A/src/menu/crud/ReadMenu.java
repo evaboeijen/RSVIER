@@ -11,9 +11,9 @@ public class ReadMenu {
 	
 
 	public void toonMenu() {
-	    System.out.println("\t----------");
+	    System.out.println("\t---------");
 	    System.out.println("\tRead Menu");
-	    System.out.println("\t----------");
+	    System.out.println("\t---------");
 	    
 	    System.out.println("");
 	    
@@ -44,7 +44,8 @@ public class ReadMenu {
 	    	BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
 	    	
 			int keuze = input.nextInt();
-		       
+		    int klant_id;
+			
 			switch (keuze) {
             	case 1:
             		klantDaoImpl.read();
@@ -53,7 +54,7 @@ public class ReadMenu {
                 
             	case 2:
             		System.out.println("Voer het klant nummer in waarop u de tabel klant wilt doorzoeken: ");
-            		int klant_id = input.nextInt();
+            		klant_id = input.nextInt();
             			while (adresDaoImpl.checkKlant_id(klant_id)!= true){ 
             				System.out.println("Het desbetreffende klant nummer bevind zich niet in de database! \nKlant nummer: ");
         					klant_id = input.nextInt();
@@ -112,9 +113,14 @@ public class ReadMenu {
             		break;
             		
             	case 8:
-            		System.out.println("Voer het artikel nummer in waarop du de tabel wilt doorzoeken ");
+            		System.out.println("Voer het artikel nummer in: ");
             		int artikel_id = input.nextInt();								// controle geldig artikel id dmv methode
-            		artikelDaoImpl.readArtikel(artikel_id);
+            		System.out.println("Voer het klant nummer in: ");
+            		klant_id = input.nextInt();
+            		while (adresDaoImpl.checkKlant_id(klant_id)!=true){
+            				System.out.println("Het desbetreffende klant nummer bevind zich niet in de database! \nKlant nummer: ");
+        					klant_id = input.nextInt();
+            		}
             		toonMenu();
             		break;
             		
