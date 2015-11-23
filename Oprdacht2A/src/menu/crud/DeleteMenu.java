@@ -50,12 +50,12 @@ public class DeleteMenu  {
             		System.out.println(); 
             			                      		
             			try (Scanner input2 = new Scanner(System.in);) {
-            				int gewensteKlant_id = input.nextInt();
+            				int gewensteKlant_id = input2.nextInt();
             				
             				AdresDaoImpl adresDaoImpl = new AdresDaoImpl();
                 			while (adresDaoImpl.checkKlant_id(gewensteKlant_id)!= true) { 
                 				System.out.print("\nVoer een ander klantnummer in: ");
-                				gewensteKlant_id = input.nextInt();
+                				gewensteKlant_id = input2.nextInt();
                 				System.out.println();
                 			}    
                 			
@@ -69,13 +69,15 @@ public class DeleteMenu  {
                 			teWissenAdres.setWoonplaats("-");
                 	               			
                 			adresDaoImpl.deleteAdres(teWissenAdres);
-         			}
+            			}
             		    
             			
                 		catch (Exception ex)	 {
                 			ex.printStackTrace();                			
                 		}
             		
+            		toonMenu();
+            		break;
             			           		          		
                 
             	case 2:          		
@@ -104,13 +106,13 @@ public class DeleteMenu  {
             		System.out.println();          		
 
             		
-            		try (Scanner input2 = new Scanner(System.in);) {
-        				int gewensteBestelling_id = input.nextInt();
+            		try (Scanner input3 = new Scanner(System.in);) {
+        				int gewensteBestelling_id = input3.nextInt();
         				
         				BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
             			while (bestellingDaoImpl.checkBestelling_id(gewensteBestelling_id)!= true) { 
             				System.out.print("\nVoer een ander bestellingnummer in: ");
-            				gewensteBestelling_id = input.nextInt();
+            				gewensteBestelling_id = input3.nextInt();
             				System.out.println();
             			}      
             		
@@ -120,13 +122,13 @@ public class DeleteMenu  {
                 		System.out.print("Voer het artikel ID in: ");
                 		System.out.println();  
                 	
-            			try (Scanner input3 = new Scanner(System.in);) {
-        					int gewensteArtikel_id = input.nextInt();
+            			try (Scanner input4 = new Scanner(System.in);) {
+        					int gewensteArtikel_id = input4.nextInt();
         				
         					BestellingDaoImpl bestellingDaoImpl3 = new BestellingDaoImpl();
     						while (bestellingDaoImpl3.checkArtikel_id(gewensteArtikel_id)!= true) { 
     							System.out.print("\nVoer een ander artikelummer in: ");
-    							gewensteArtikel_id = input.nextInt();
+    							gewensteArtikel_id = input4.nextInt();
     							System.out.println();
     						}     
     					
@@ -139,6 +141,7 @@ public class DeleteMenu  {
             		
             		}
         
+            		toonMenu();
             		break;
             		
          
@@ -173,13 +176,13 @@ public class DeleteMenu  {
             		
             		
             		
-            		try (Scanner input2 = new Scanner(System.in);) {
-        				int gewensteBestelling_id = input.nextInt();
+            		try (Scanner input5 = new Scanner(System.in);) {
+        				int gewensteBestelling_id = input5.nextInt();
         				
         				BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
             			while (bestellingDaoImpl.checkBestelling_id(gewensteBestelling_id)!= true) { 
             				System.out.print("\nVoer een ander bestellingnummer in: ");
-            				gewensteBestelling_id = input.nextInt();
+            				gewensteBestelling_id = input5.nextInt();
             				System.out.println();
             			}            		        
             			          			
@@ -188,7 +191,9 @@ public class DeleteMenu  {
             		
             			bestellingDaoImpl.delete(teverwijderenBestelling);
             		}
-               		break; 
+            		
+            		toonMenu();
+            		break; 
                 	
             	case 4:           		
             	    System.out.println();
@@ -202,13 +207,13 @@ public class DeleteMenu  {
             		System.out.print("Voer het klant ID van de klant die je wil wissen: ");
             		System.out.println(); 
             			                      		
-            			try (Scanner input2 = new Scanner(System.in);) {
-            				int gewensteKlant_id = input.nextInt();
+            			try (Scanner input6 = new Scanner(System.in);) {
+            				int gewensteKlant_id = input6.nextInt();
             				
             				AdresDaoImpl adresDaoImpl = new AdresDaoImpl();
                 			while (adresDaoImpl.checkKlant_id(gewensteKlant_id)!= true) { 
                 				System.out.print("\nVoer een ander klantnummer in: ");
-                				gewensteKlant_id = input.nextInt();
+                				gewensteKlant_id = input6.nextInt();
                 				System.out.println();
                 			}    
                 			
@@ -226,17 +231,8 @@ public class DeleteMenu  {
                 			ex.printStackTrace();                			
                 		}
             		
-            		
-            		
-            		
-            		
-            		
-            		
-            		
-            		
-            		
-            		
-            		break;
+                	toonMenu();
+                	break;
             		
             
             		
@@ -261,10 +257,7 @@ public class DeleteMenu  {
         			DeleteMenu deletemenu = new DeleteMenu();
             		deletemenu.toonMenu();
 			} 
-			
-    		input.close();
-			DeleteMenu deletemenu = new DeleteMenu();
-    		deletemenu.toonMenu();
+		
         
 		}
 		
