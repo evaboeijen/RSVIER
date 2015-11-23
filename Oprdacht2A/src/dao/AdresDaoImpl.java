@@ -178,7 +178,7 @@ public class AdresDaoImpl implements AdresDao{
 		
 		try {
 			Connection connection = InEnUitLoggen.getConnectionStatus();
-			preparedStatement = connection.prepareStatement("SELCT * FROM klant WHERE straatnaam=?");
+			preparedStatement = connection.prepareStatement("SELECT * FROM klant WHERE straatnaam=?");
 			preparedStatement.setString(1, straatnaam);
 			resultSet = preparedStatement.executeQuery(); 
 

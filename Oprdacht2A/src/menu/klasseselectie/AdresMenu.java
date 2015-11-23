@@ -13,10 +13,10 @@ public class AdresMenu {
 	    
 		Scanner input = new Scanner(System.in);					// NULPOINTER???
 		
-	    System.out.println("Klant nummer: ");
+	    System.out.println("Klantnummer: ");
 			int klant_id = input.nextInt();
 				while (adresDaoImpl.checkKlant_id(klant_id)!= true){
-					System.out.println("Het desbetreffende klant nummer bevind zich niet in de database! \nKlant nummer: ");
+					System.out.println("Het desbetreffende klant nummer bevind zich niet in de database! \nKlantnummer: ");
 					klant_id = input.nextInt();
 				}
 		System.out.println("Straatnaam: ");

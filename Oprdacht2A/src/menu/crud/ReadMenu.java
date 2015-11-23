@@ -18,13 +18,13 @@ public class ReadMenu {
 	    System.out.println("");
 	    
 	    System.out.println("1. Read:   Klant        Volledige tabel");
-	    System.out.println("2. Read:   Klant            Zoeken op klant nummer");
+	    System.out.println("2. Read:   Klant            Zoeken op klantnummer");
 	    System.out.println("3. Read:   Klant            Zoeken op voornaam");
 	    System.out.println("4. Read:   Adres        Volledige tabel");
 	    System.out.println("5. Read:   Adres            Zoeken op straatnaam");
 	    System.out.println("6. Read:   Adres            Zoeken op de combinatie van postcode & huisnummer");
 	    System.out.println("7. Read:   Artikel      Volledige tabel");
-	    System.out.println("8. Read:   Artikel          Zoeken op artikel nummer");
+	    System.out.println("8. Read:   Artikel          Zoeken op de combinatie van bestellingnummer & artikelnummer");
 	    System.out.println("9. Read:   Bestelling   Volledige tabel");
 	    
 	    System.out.println("");
@@ -56,7 +56,7 @@ public class ReadMenu {
             		System.out.println("Voer het klant nummer in waarop u de tabel klant wilt doorzoeken: ");
             		klant_id = input.nextInt();
             			while (adresDaoImpl.checkKlant_id(klant_id)!= true){ 
-            				System.out.println("Het desbetreffende klant nummer bevind zich niet in de database! \nKlant nummer: ");
+            				System.out.println("Het desbetreffende klant nummer bevind zich niet in de database! \nKlantnummer: ");
         					klant_id = input.nextInt();
             			}            				
             		klantDaoImpl.readKlant(klant_id);
@@ -113,14 +113,11 @@ public class ReadMenu {
             		break;
             		
             	case 8:
-            		System.out.println("Voer het artikel nummer in: ");
+            		System.out.println("Voer het artikelnummer in: ");
             		int artikel_id = input.nextInt();								// controle geldig artikel id dmv methode
-            		System.out.println("Voer het klant nummer in: ");
-            		klant_id = input.nextInt();
-            		while (adresDaoImpl.checkKlant_id(klant_id)!=true){
-            				System.out.println("Het desbetreffende klant nummer bevind zich niet in de database! \nKlant nummer: ");
-        					klant_id = input.nextInt();
-            		}
+            		System.out.println("Voer het bestellingnummer in ");
+            		int bestelling_id = input.nextInt();
+            		artikelDaoImpl.readArtikel(bestelling_id, artikel_id);
             		toonMenu();
             		break;
             		
