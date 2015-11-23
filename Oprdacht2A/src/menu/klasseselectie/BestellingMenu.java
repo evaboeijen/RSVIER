@@ -30,9 +30,13 @@ public class BestellingMenu  {
 	    System.out.println();
 	    System.out.print("Voer optie in en druk op Enter:");
 	    
+	    
+	    
 	    try (Scanner input = new Scanner(System.in);) {		     
             
-			int keuze = input.nextInt();
+	    	int keuze = 0;
+	    	
+			keuze = input.nextInt();
 		       
 			switch (keuze) {
             	case 1:
@@ -148,7 +152,8 @@ public class BestellingMenu  {
                 			
                 					}
             				}
-            			   			  		          		
+            			
+            		toonMenu();          			   			  		          		
             		break; 
             		
             			           		          		
@@ -175,8 +180,9 @@ public class BestellingMenu  {
             			System.out.println();
             			System.out.println();	
             		}
-            			         		         		
-            		break;
+            		
+            		toonMenu(); 	   			  		          		
+            		break; 
             		
                 
             	case 3:
@@ -309,9 +315,17 @@ public class BestellingMenu  {
             			
             					}
         				}
-        			 
-         		          		
-        		break; 
+            		
+            		
+            			catch (Exception e) {
+						e.printStackTrace();
+            			}
+            		
+            			finally {
+
+            			}        			 
+ 				    			   			  		          		
+            		break; 
                 	
             	case 4:
             		System.out.println();           		
@@ -359,7 +373,8 @@ public class BestellingMenu  {
             		
             			bestellingDaoImpl.delete(teverwijderenBestelling);
             		}
-               		break;
+            					   			  		          		
+            		break; 
             
             		
             	case 10:
@@ -380,17 +395,19 @@ public class BestellingMenu  {
             		
             	default:
             		System.out.println("\n! Ongeldige optie, probeer het nogmaals !\n");
-            		this.toonMenu();
+            		
 			} 
 			
-    		BestellingMenu bestellingmenu = new BestellingMenu();
-    		bestellingmenu.toonMenu();    
+  
         
 		}
 		
 		finally {
-			// zinnige code			
+         			   			  		          		   		
 		}	
+	
+	 
+	this.toonMenu();	
 
 	}	
 }
