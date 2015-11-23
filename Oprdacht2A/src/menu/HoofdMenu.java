@@ -54,7 +54,7 @@ public class HoofdMenu {
 		catch (NoSuchElementException e) {
 			System.out.println("\n! Ongeldige optie, het programma zal stoppen !\n");
     		System.exit(0);
-            //e.printStackTrace();
+            e.printStackTrace();
 		} 
 	
 	

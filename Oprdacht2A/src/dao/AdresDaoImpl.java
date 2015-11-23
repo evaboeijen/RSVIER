@@ -2,6 +2,8 @@ package dao;
 
 import java.sql.DriverManager;
 import business.*;
+import menu.InEnUitLoggen;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -242,16 +244,19 @@ public class AdresDaoImpl implements AdresDao{
 		boolean result = false;
 		
 		try {
+			
+			Connection connection = InEnUitLoggen.getConnectionStatus(); // toegevoegd op 21/11/15 AU
+			
 			preparedStatement = connection.prepareStatement("SELECT * FROM klant WHERE klant_id=?");
 			preparedStatement.setInt(1, klant_id);
 			resultSet = preparedStatement.executeQuery(); 
 	
-			preparedStatement.close();
+			// preparedStatement.close(); uitgecomment op 21/11/15 AU
 
 			if (resultSet.next()){
 				result = true;
 			} else {
-				System.out.println("Het opgegeven klant_id bevind zich niet in de database...");
+				System.out.println("Het opgegeven klant_id bevindt zich niet in de database...");
 			}
 
 		} catch (SQLException e) {
