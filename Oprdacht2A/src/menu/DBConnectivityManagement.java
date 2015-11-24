@@ -13,10 +13,11 @@ import menu.klasseselectie.KlasseSelectieMenu;
 
 
 
-public class InEnUitLoggen {
+public class DBConnectivityManagement {
 		
 		static Connection connection = null;
-	
+	    Scanner input = new Scanner(System.in);
+	    
 		public void toonMenu() {
 		    System.out.println("\t---------");
 		    System.out.println("\tInloggen");
@@ -29,7 +30,7 @@ public class InEnUitLoggen {
 		    System.out.println("10. Stoppen");
 		    System.out.print("Voer optie in en druk op Enter:");
 
-		    try (Scanner input = new Scanner(System.in);) {		     
+		     
 	            
 				int keuze = input.nextInt();
 			       
@@ -71,11 +72,7 @@ public class InEnUitLoggen {
 	            		System.out.println("\n! Ongeldige optie, probeer het nogmaals !\n");
 	            		this.toonMenu();  			            		
 				}         
-			}
-			
-			finally {
-				// zinnige code			
-			}
+							
 		}
 		
 		public static Connection getConnectionStatus() {
@@ -84,11 +81,10 @@ public class InEnUitLoggen {
 		
 		
 		public Connection connectToDBWithUserInput() {	
-		
-			try (Scanner input = new Scanner(System.in);) {
-		
+				
+			try {
 				System.out.print("Voer database hostname in: ");
-				String dbHostName = input.nextLine();
+				String dbHostName = input.next();
 				System.out.print("Database port: ");
 				int dbPort = input.nextInt();
 				input.nextLine();
@@ -97,53 +93,32 @@ public class InEnUitLoggen {
 				System.out.print("Wachtwoord: ");
 				String dbPassword = input.nextLine();
 				
-												
+		
 				Class.forName("com.mysql.jdbc.Driver");
 				System.out.println("Database driver is geladen	");
 
 				if (connection == null) {
 					String dbURL = ("jdbc:mysql://localhost:" + dbPort + "/" + dbHostName);
 					String username = dbUsername;
-					String password = dbPassword;
-					connection = DriverManager.getConnection(dbURL, username, password);	
+					String password = dbPassword;				
+					connection = DriverManager.getConnection(dbURL, username, password);				
 					System.out.println("Database verbinding is gemaakt");
-				}	 					
+				}
+			}	 	
+			
+			catch (ClassNotFoundException e) {		
+				e.printStackTrace();
 			} 
-							
-			catch (InputMismatchException e) {
-				System.out.println("\nDatabase hostname, poort, gebruikersnaam en/of wachtwoord onjuist.");
-				System.out.println("Probeer het a.u.b. opnieuw.\n");
-				connectToDBWithUserInput();	
-				//e.printStackTrace();
-			} 
-		
-		
-			catch (ClassNotFoundException e) {
-				System.out.println("\nDatabase hostname, poort, gebruikersnaam en/of wachtwoord onjuist.");
-				System.out.println("Probeer het a.u.b. opnieuw.\n");
-				connectToDBWithUserInput();	
-				//e.printStackTrace();
+
+			catch (SQLException e) {        
+				e.printStackTrace();	             
+			}
+	
+			finally {		
+				// zinnige code
 			} 
 	
-			catch (SQLException e) {
-				System.out.println("\nDatabase hostname, poort, gebruikersnaam en/of wachtwoord onjuist.");
-				System.out.println("Probeer het a.u.b. opnieuw.\n");
-				connectToDBWithUserInput();	
-				//e.printStackTrace();	             
-			}
-		
-			/* catch (Exception e) {
-				System.out.println("\nDatabase hostname, poort, gebruikersnaam en/of wachtwoord onjuist.");
-				System.out.println("Probeer het a.u.b. opnieuw.\n");
-				connectToDBWithUserInput();	
-				//e.printStackTrace();
-			} */
-		
-			finally {		
-    		// zinnige code
-			} 
-		
-			return connection;		 																	
+				return connection;		 																	
 		} 
 	
 
@@ -244,7 +219,7 @@ public class InEnUitLoggen {
 					System.out.println("\nLogging out...\n");
 					connection.close();
 					connection = null;
-          			InEnUitLoggen inloggen = new InEnUitLoggen();
+          			DBConnectivityManagement inloggen = new DBConnectivityManagement();
           			inloggen.toonMenu();
 				}
 				else {

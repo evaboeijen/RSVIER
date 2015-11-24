@@ -7,7 +7,7 @@ public class Console {
 
 	public static void main(String[] args) throws IOException {
 							
-		InEnUitLoggen inloggen = new InEnUitLoggen();
+		DBConnectivityManagement inloggen = new DBConnectivityManagement();
 		inloggen.toonMenu();
 		
 	} 

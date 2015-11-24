@@ -35,7 +35,7 @@ public class HoofdMenu {
             		break;
                 
             	case 3:
-            		InEnUitLoggen.logOut(InEnUitLoggen.connection);
+            		DBConnectivityManagement.logOut(DBConnectivityManagement.connection);
             		break;
                 	
             	case 4:

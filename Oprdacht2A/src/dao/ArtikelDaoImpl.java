@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.*;
 
 import business.Artikel;
-import menu.InEnUitLoggen;
+import menu.DBConnectivityManagement;
 
 public class ArtikelDaoImpl implements ArtikelDao {
     
@@ -46,7 +46,7 @@ public class ArtikelDaoImpl implements ArtikelDao {
         List<Artikel> artikellen = new ArrayList<>();
          
         try {
-        	Connection connection = InEnUitLoggen.getConnectionStatus(); 
+        	Connection connection = DBConnectivityManagement.getConnectionStatus(); 
         	
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM Bestelling WHERE bestelling_id");
@@ -91,7 +91,7 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
              
         
         try {	  
-        	Connection connection = InEnUitLoggen.getConnectionStatus(); 
+        	Connection connection = DBConnectivityManagement.getConnectionStatus(); 
         	
 	            PreparedStatement preparedStatement = connection.prepareStatement("select * from Bestelling where bestelling_id=?");	   		            	   		            
 	            preparedStatement.setInt(1, bestelling_id);	   		                   	            
@@ -167,7 +167,7 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
         PreparedStatement preparedStatement ;
         
         try {
-        	Connection connection = InEnUitLoggen.getConnectionStatus(); 
+        	Connection connection = DBConnectivityManagement.getConnectionStatus(); 
         	
 	            preparedStatement = connection.prepareStatement("insert into Bestelling (bestelling_id, klant_id, artikel1_id, artikel1_naam, artikel1_aantal, artikel1_prijs, artikel2_id, artikel2_naam, artikel2_aantal, artikel2_prijs, artikel3_id, artikel3_naam, artikel3_aantal, artikel3_prijs) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 	            preparedStatement.setInt(1, artikel.getBestelling_id());
@@ -209,7 +209,7 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 					
 	    	        
 	   	         try {	
-	   	        	Connection connection = InEnUitLoggen.getConnectionStatus(); 
+	   	        	Connection connection = DBConnectivityManagement.getConnectionStatus(); 
 	   	        	
 	   		            preparedStatement = connection.prepareStatement("select * from Bestelling where bestelling_id=?");	   		            	   		            
 	   		            preparedStatement.setInt(1, artikel.getBestelling_id());	   		                   	            
@@ -290,7 +290,7 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
     	    	        
     	   	         try {	 
     	   	        	
-    	   	        	Connection connection = InEnUitLoggen.getConnectionStatus(); 
+    	   	        	Connection connection = DBConnectivityManagement.getConnectionStatus(); 
     	   	        	
     	   	        	PreparedStatement preparedStatement = connection.prepareStatement("select * from Bestelling where bestelling_id=?");	   		            	   		            
 	   		            preparedStatement.setInt(1, bestelling_id);	   		                   	            

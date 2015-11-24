@@ -3,7 +3,7 @@ import java.sql.*;
 import java.util.*;
 
 import business.Bestelling;
-import menu.InEnUitLoggen;
+import menu.DBConnectivityManagement;
 
 public class BestellingDaoImpl implements BestellingDao {
 	
@@ -53,7 +53,7 @@ public class BestellingDaoImpl implements BestellingDao {
 	        
 	        try {
 	                 
-	        	Connection connection = InEnUitLoggen.getConnectionStatus();
+	        	Connection connection = DBConnectivityManagement.getConnectionStatus();
 	        	
 	            preparedStatement = connection.prepareStatement(sql);
 	            preparedStatement.setInt(1, bestelling.getBestelling_id());
@@ -96,7 +96,7 @@ public class BestellingDaoImpl implements BestellingDao {
 	        List<Bestelling> bestellingen = new LinkedList<Bestelling>();
 	         try {
 	                                
-	                Connection connection = InEnUitLoggen.getConnectionStatus();	           
+	                Connection connection = DBConnectivityManagement.getConnectionStatus();	           
 	                
 	        	 	Statement statement = connection.createStatement();	               
 	                ResultSet resultSet = statement.executeQuery("SELECT * FROM bestelling");
@@ -146,7 +146,7 @@ public class BestellingDaoImpl implements BestellingDao {
 					String sql = "select * from Bestelling where bestelling_id = ?";
 	    	        
 	   	         try {	  
-	   	        	 	Connection connection = InEnUitLoggen.getConnectionStatus();
+	   	        	 	Connection connection = DBConnectivityManagement.getConnectionStatus();
 	   	        	 
 	   		            preparedStatement = connection.prepareStatement(sql);	   		            	   		            
 	   		            preparedStatement.setInt(1, bestelling_id);	   		                   	            
@@ -245,7 +245,7 @@ public class BestellingDaoImpl implements BestellingDao {
 			
 			try {
 
-				Connection connection = InEnUitLoggen.getConnectionStatus();
+				Connection connection = DBConnectivityManagement.getConnectionStatus();
 					
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM Bestelling WHERE bestelling_id=?");
 				statement.setInt(1, bestelling_id);
@@ -276,7 +276,7 @@ public class BestellingDaoImpl implements BestellingDao {
 	     
 	 public void closeDBConnection(){
 	        try {
-	        		Connection connection = InEnUitLoggen.getConnectionStatus();
+	        		Connection connection = DBConnectivityManagement.getConnectionStatus();
 	        	
 	              if (connection != null) {
 	                  connection.close();
@@ -297,7 +297,7 @@ public class BestellingDaoImpl implements BestellingDao {
 			
 			try {
 				
-				Connection connection = InEnUitLoggen.getConnectionStatus(); 
+				Connection connection = DBConnectivityManagement.getConnectionStatus(); 
 				
 				preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE bestelling_id=?");
 				preparedStatement.setInt(1, bestelling_id);
@@ -323,7 +323,7 @@ public class BestellingDaoImpl implements BestellingDao {
 			
 			try {
 				
-				Connection connection = InEnUitLoggen.getConnectionStatus(); 
+				Connection connection = DBConnectivityManagement.getConnectionStatus(); 
 				
 				preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE (artikel1_id=? OR artikel2_id=? OR artikel3_id=?)");
 				preparedStatement.setInt(1, artikel_id);
@@ -350,7 +350,7 @@ public class BestellingDaoImpl implements BestellingDao {
 		
 		try {
             
-            Connection connection = InEnUitLoggen.getConnectionStatus();	           
+            Connection connection = DBConnectivityManagement.getConnectionStatus();	           
             
     	 	Statement statement = connection.createStatement();	               
             ResultSet resultSet = statement.executeQuery("SELECT MAX(Bestelling_id) FROM bestelling");

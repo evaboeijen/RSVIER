@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.*;
 
 import business.Klant;
-import menu.InEnUitLoggen;
+import menu.DBConnectivityManagement;
 
 
 
@@ -48,7 +48,7 @@ public class KlantDaoImpl implements KlantDao {
 	
                    
         try {
-        	   Connection connection = InEnUitLoggen.getConnectionStatus();
+        	   Connection connection = DBConnectivityManagement.getConnectionStatus();
                         
             	PreparedStatement preparedStatement = connection.prepareStatement("insert into klant(klant_id, voornaam, achternaam, tussenvoegsel, email) values (?, ?, ?, ? , ?)");
 			preparedStatement.setInt(1, klant.getKlant_id());
@@ -77,7 +77,7 @@ public class KlantDaoImpl implements KlantDao {
         List<Klant> klanten = new ArrayList<Klant>();
          
         try {
-                Connection connection = InEnUitLoggen.getConnectionStatus();
+                Connection connection = DBConnectivityManagement.getConnectionStatus();
         		
         		Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM klant");
@@ -114,7 +114,7 @@ public class KlantDaoImpl implements KlantDao {
         String sql = "SELECT * FROM klant WHERE Klant_id= " + klant_id;
         
         try {
-        	Connection connection = InEnUitLoggen.getConnectionStatus();
+        	Connection connection = DBConnectivityManagement.getConnectionStatus();
         	
             Statement statement = connection.createStatement();
             result = statement.executeQuery(sql);
@@ -147,7 +147,7 @@ public class KlantDaoImpl implements KlantDao {
         ResultSet result;
                 
         try {
-        	   Connection connection = InEnUitLoggen.getConnectionStatus();
+        	   Connection connection = DBConnectivityManagement.getConnectionStatus();
         	   
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM klant WHERE voornaam=?");
             statement.setString(1, voornaam);
@@ -179,7 +179,7 @@ public class KlantDaoImpl implements KlantDao {
 		 
                                     
             try {
-            	Connection connection = InEnUitLoggen.getConnectionStatus();
+            	Connection connection = DBConnectivityManagement.getConnectionStatus();
 
                 PreparedStatement statement = connection.prepareStatement("UPDATE Klant SET voornaam=?, tussenvoegsel=?, achternaam=?, email=? WHERE Klant_id=?");
                 statement.setString(1, klant.getVoornaam());
@@ -205,7 +205,7 @@ public class KlantDaoImpl implements KlantDao {
 	public void delete(Klant klant) {
 		// TODO Auto-generated method stub
             try{ 
-            	   Connection connection = InEnUitLoggen.getConnectionStatus();
+            	   Connection connection = DBConnectivityManagement.getConnectionStatus();
                           
                 PreparedStatement statement = connection.prepareStatement("DELETE FROM Klant WHERE Klant_id=?");
                 statement.setInt(1, klant.getKlant_id());
@@ -229,7 +229,7 @@ public class KlantDaoImpl implements KlantDao {
 			
 			try {
 				
-				Connection connection = InEnUitLoggen.getConnectionStatus(); 
+				Connection connection = DBConnectivityManagement.getConnectionStatus(); 
 				
 				preparedStatement = connection.prepareStatement("SELECT * FROM Klant WHERE klant_id=?");
 				preparedStatement.setInt(1, klant_id);
