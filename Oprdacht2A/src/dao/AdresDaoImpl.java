@@ -61,7 +61,7 @@ public class AdresDaoImpl implements AdresDao{
 		if (checkKlant_id(klant_id)){
 			try {
 				Connection connection = DBConnectivityManagement.getConnectionStatus();
-				PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO klant WHERE klant_id=? (straatnaam, postcode , toevoeging , huisnummer , woonplaats)VALUES(?,?,?,?,?)");
+				PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO áders WHERE klant_id=? (straatnaam, postcode , toevoeging , huisnummer , woonplaats)VALUES(?,?,?,?,?)");
 
 					preparedStatement.setString(1, adres.getStraatnaam());
 					preparedStatement.setString(2, adres.getPostcode());
@@ -92,7 +92,7 @@ public class AdresDaoImpl implements AdresDao{
 			try {
 				Connection connection = DBConnectivityManagement.getConnectionStatus();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM klant"); 
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM adres"); 
 
 					Adres adres;
 					while(resultSet.next()){
@@ -125,7 +125,7 @@ public class AdresDaoImpl implements AdresDao{
 		if (checkKlant_id(klant_id)){
 			try {
 				Connection connection = DBConnectivityManagement.getConnectionStatus();
-				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE klant SET straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id =? ");
+				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE adres SET straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id =? ");
               
 				preparedStatement.setString(1, adres.getStraatnaam());
 				preparedStatement.setString(2, adres.getPostcode());
@@ -154,7 +154,7 @@ public class AdresDaoImpl implements AdresDao{
 		if (checkKlant_id(klant_id)){
 			try{ 
 				Connection connection = DBConnectivityManagement.getConnectionStatus();
-				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE klant SET straatnaam='-', postcode='-', toevoeging='-', huisnummer='-', woonplaats='-' WHERE klant_id=?");
+				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE adres SET straatnaam='-', postcode='-', toevoeging='-', huisnummer='0', woonplaats='-' WHERE klant_id=?");
 				preparedStatement.setInt(1, adres.getKlant_id());		
 			
 				int rowsUpdated = preparedStatement.executeUpdate();
@@ -178,7 +178,7 @@ public class AdresDaoImpl implements AdresDao{
 		
 		try {
 			Connection connection = DBConnectivityManagement.getConnectionStatus();
-			preparedStatement = connection.prepareStatement("SELECT * FROM klant WHERE straatnaam=?");
+			preparedStatement = connection.prepareStatement("SELECT * FROM adres WHERE straatnaam=?");
 			preparedStatement.setString(1, straatnaam);
 			resultSet = preparedStatement.executeQuery(); 
 
@@ -213,7 +213,7 @@ public class AdresDaoImpl implements AdresDao{
 		
 		try {
 			Connection connection = DBConnectivityManagement.getConnectionStatus();
-			preparedStatement = connection.prepareStatement("SELECT * FROM klant WHERE postcode=? AND huisnummer=? ");
+			preparedStatement = connection.prepareStatement("SELECT * FROM adres WHERE postcode=? AND huisnummer=? ");
 			preparedStatement.setString(1, postcode);
 			preparedStatement.setInt(2,  huisnummer);
 			resultSet = preparedStatement.executeQuery(); 	
@@ -250,7 +250,7 @@ public class AdresDaoImpl implements AdresDao{
 		
 		try {
 			Connection connection = DBConnectivityManagement.getConnectionStatus();
-			preparedStatement = connection.prepareStatement("SELECT * FROM klant WHERE klant_id=?");
+			preparedStatement = connection.prepareStatement("SELECT * FROM adres WHERE klant_id=?");
 			preparedStatement.setInt(1, klant_id);
 			resultSet = preparedStatement.executeQuery(); 
 			
