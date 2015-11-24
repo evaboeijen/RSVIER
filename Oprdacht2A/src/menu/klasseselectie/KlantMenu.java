@@ -1,20 +1,59 @@
 
 	package menu.klasseselectie;
 
-	import java.sql.Connection;
-	import java.sql.PreparedStatement;
-	import java.sql.ResultSet;
-	import java.sql.SQLException;
-	import java.sql.Statement;
-	import java.util.ArrayList;
-	import java.util.List;
-	import java.util.Scanner;
+	
+	import java.sql.*;
+	import java.util.*;
 	import dao.*;
-	import menu.HoofdMenu;
-	import menu.InEnUitLoggen;
+	import menu.*;
 	import business.*;
 
 	public class KlantMenu  {
+		
+		
+		
+		public Klant createKlantObject() {
+			
+			Scanner input = new Scanner(System.in);					
+			
+		    System.out.println("Vul uw gegevens in. Voer in uw voornaam, en druk op enter: ");
+			String voornaam = input.nextLine();
+			
+					while (voornaam.length() > 50){
+						System.out.println("Een voornaam mag niet meer dan 50 karakters bevatten! \n Voornaam: ");
+						voornaam = input.nextLine();
+					}
+					
+			System.out.println("Tussenvoegsel: ");
+				String tussenvoegsel = input.nextLine();
+					while (tussenvoegsel.length() > 12){
+					System.out.println("Een tussenvoegsel niet meer dan 12 karakters bevatten! \n Tussenvoegsel: ");
+						tussenvoegsel = input.nextLine();
+					}			
+			System.out.println("Achternaam: ");
+				String achternaam = input.nextLine();
+					while (achternaam.length() > 6){
+					System.out.println("Een achternaam mag niet meer dan 51 karakters bevatten! \n Achternaam: ");
+						achternaam = input.nextLine();
+					}
+			System.out.println("Emailadres: ");
+				String email =  input.nextLine();
+					while (email.length() > 80){
+					System.out.println("Een email mag niet meer dan 80 karakters bevatten! \n Emailadres: ");
+						email = input.nextLine();
+					}
+			
+					Klant klant = new Klant();
+					klant.setKlant_id(klant.getKlant_id());
+					klant.setVoornaam(voornaam);
+					klant.setTussenvoegsel(tussenvoegsel);
+					klant.setAchternaam(achternaam);
+					klant.setEmail(email);
+					
+					return klant;
+					}		
+		
+				
 		
 		public void toonMenu() {
 		    System.out.println("\t-----------");
@@ -31,47 +70,24 @@
 		    System.out.println();
 		    System.out.print("Voer optie in en druk op Enter:");
 		    
-		    try (Scanner input = new Scanner(System.in);) {		     
+		   Scanner input = new Scanner(System.in);		     
 	            
 				int keuze = input.nextInt();
 			       
 				switch (keuze) {
 	            	case 1:	
-	            		
-	            				System.out.println();
-	            				System.out.println("Voer uw gegevens in, en druk op enter." + '\n' + "Voornaam: ");
-	            				String voornaam = input.nextLine();
-	            				
-	            				System.out.println("Tussenvoegsel (druk enter bij geen tussenvoegsel): ");
-	            				String tussenvoegsel = input.nextLine();
-	            				
-	            				System.out.println("Achternaam: ");
-	            				String achternaam = input.nextLine();
-	            				
-	            				System.out.println("emailadres: ");
-	            				String email = input.nextLine();
-	            				
 	            				KlantDaoImpl nieuweKlantDaoImpl = new KlantDaoImpl();
-	            				Klant nieuweKlant = new Klant();
-	            				nieuweKlant.setKlant_id(nieuweKlant.getKlant_id());
-	            				nieuweKlant.setVoornaam(voornaam);
-	            				nieuweKlant.setTussenvoegsel(tussenvoegsel);
-	            				nieuweKlant.setAchternaam(achternaam);
-	            				nieuweKlant.setEmail(email);
-	            				
+	            				Klant nieuweKlant = createKlantObject();
 	            				nieuweKlantDaoImpl.create(nieuweKlant);
 	            				System.out.println();
-	            				System.out.println("Een nieuwe klant is aangemaakt met de volgende gegevens: ");
-	            				System.out.println("Klant id: " + nieuweKlant.getKlant_id() + ". Naam " + voornaam + " " + tussenvoegsel + " " + achternaam + ". Email: " + email);
+	            				System.out.println("Een nieuwe klant is aangemaakt");
 	            			 
-	            			 
-	            		}
+	            				toonMenu();
 	            		break; 
 	            			           		          		
 	                
 	            	case 2:          		
-	            		// System.out.println(InEnUitLoggen.getConnectionStatus());
-	            	          			
+	            			            	          			
 	            				KlantDaoImpl leesKlantDaoImpl = new KlantDaoImpl();
 	            				
 	            				System.out.println();
@@ -89,7 +105,7 @@
 	            				
 	            				System.out.println("Uw huidige gegevens zijn: ");
 	            				leesKlantDaoImpl.readKlant(huidige_klant_id);
-	            				
+	            				toonMenu();
 	            		break;
 	            		
 	                
@@ -110,32 +126,15 @@
 	            					System.out.println();
 		            			}            		
 	        				
-	            				System.out.println("Uw gegevens zijn bekend, voer uw nieuwe gegevens in: ");
 	            				            				
-	            				System.out.println("Voornaam: ");               		
-	            				voornaam = input.nextLine();
-	            		
-	            				System.out.println("Tussenvoegsel (druk enter bij geen tussenvoegsel): ");
-	            				tussenvoegsel = input.nextLine();
-	            				
-	            				System.out.println("Achternaam: ");
-	            				achternaam = input.nextLine();
-	            				
-	            				System.out.println("emailadres: ");
-	            				email = input.nextLine();
-	            				
-	            			    Klant updateKlant = new Klant();
-	            				updateKlant.setKlant_id(huidige_klant_id);
-	            				updateKlant.setVoornaam(voornaam);
-	            				updateKlant.setTussenvoegsel(tussenvoegsel);
-	            				updateKlant.setAchternaam(achternaam);
-	            				updateKlant.setEmail(email);
+	            			    Klant updateKlant = createKlantObject();
+	            			    updateKlant.setKlant_id(huidige_klant_id);
 	            				
 	            				updateKlantDaoImpl.update(updateKlant);
 	            				
-	            				System.out.println();
+	            				System.out.println("Uw gegevens zijn aanpast");
 	            				
-	            				
+	            				toonMenu();
 	            		break;
 	            				
 	            		
@@ -162,7 +161,7 @@
 	            		
 	            			verwijderKlantDaoImpl.delete(verwijderKlant);
 	            			
-				
+	            			toonMenu();
 	            			break;
 	            
 	            		
@@ -187,15 +186,6 @@
 	            		this.toonMenu();
 				} 
 				
-	    		KlantMenu klantmenu = new KlantMenu();
-	    		klantmenu.toonMenu();    
-	        
-			}
-			
-			finally {
-				// zinnige code			
-			}	
-
-		}	
+		}
 	}
-
+	
