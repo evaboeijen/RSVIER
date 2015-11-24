@@ -55,7 +55,7 @@ public class AdresDaoImpl implements AdresDao{
 	}
 
 	@Override
-	public void insert(Adres adres) {
+	public void insert(Adres adres) {			// Kan niet op huidige manier/ in huidige tabel structuur!! 
 		int klant_id = adres.getKlant_id(); 
 		
 		if (checkKlant_id(klant_id)){
@@ -99,13 +99,13 @@ public class AdresDaoImpl implements AdresDao{
 						
 						adres = new Adres();
 						
+						adres.setKlant_id(resultSet.getInt("klant_id"));
 						adres.setStraatnaam(resultSet.getString("straatnaam"));
 						adres.setPostcode(resultSet.getString("postcode"));
 						adres.setToevoeging(resultSet.getString("toevoeging"));
 						adres.setHuisnummer(resultSet.getInt("huisnummer"));
 						adres.setWoonplaats(resultSet.getString("woonplaats"));
-						adres.setKlant_id(resultSet.getInt("klant_id"));
-
+						
 						adressen.add(adres);
 					}
 					resultSet.close();
@@ -113,7 +113,7 @@ public class AdresDaoImpl implements AdresDao{
 	                
 			} catch (SQLException e) {
 	                e.printStackTrace();
-	                }
+	        }
 	   System.out.println(adressen);
 	   return adressen;
 	}
@@ -125,7 +125,7 @@ public class AdresDaoImpl implements AdresDao{
 		if (checkKlant_id(klant_id)){
 			try {
 				Connection connection = InEnUitLoggen.getConnectionStatus();
-				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Klant SET straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id =? ");
+				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE klant SET straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id =? ");
               
 				preparedStatement.setString(1, adres.getStraatnaam());
 				preparedStatement.setString(2, adres.getPostcode());

@@ -130,7 +130,7 @@ public void setArtikel3_prijs(double artikel3_prijs) {
 
 
 public String toString(){
-	return 	"\n\tArtikel 1 Id: " + artikel1_id + 
+	return 	"\nArtikel 1 Id: " + artikel1_id + 
 			"\tArtikel 1 aantal: " + artikel1_aantal + 
 			"\tArtikel 1 naam: " + artikel1_naam + 
 			"\tArtikel 1 prijs: " + artikel1_prijs + 

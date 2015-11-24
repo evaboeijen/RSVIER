@@ -1,22 +1,17 @@
 package menu.crud;
 
 import dao.*;
-import dao.AdresDaoImpl;
 import java.util.Scanner;
 import menu.*;
 import menu.klasseselectie.KlasseSelectieMenu;
 
-
 public class ReadMenu {
-	
 
 	public void toonMenu() {
-	    System.out.println("\t---------");
+	    System.out.println("\n\t---------");
 	    System.out.println("\tRead Menu");
-	    System.out.println("\t---------");
-	    
-	    System.out.println("");
-	    
+	    System.out.println("\t---------\n");
+
 	    System.out.println("1. Read:   Klant        Volledige tabel");
 	    System.out.println("2. Read:   Klant            Zoeken op klantnummer");
 	    System.out.println("3. Read:   Klant            Zoeken op voornaam");
@@ -25,19 +20,17 @@ public class ReadMenu {
 	    System.out.println("6. Read:   Adres            Zoeken op de combinatie van postcode & huisnummer");
 	    System.out.println("7. Read:   Artikel      Volledige tabel");
 	    System.out.println("8. Read:   Artikel          Zoeken op de combinatie van bestellingnummer & artikelnummer");
-	    System.out.println("9. Read:   Bestelling   Volledige tabel");
-	    
-	    System.out.println("");
+	    System.out.println("9. Read:   Bestelling   Volledige tabel\n");
 	    
 	    System.out.println("10. Terug naar het vorige menu"); 
 	    System.out.println("11. Terug naar het hoofdmenu"); 
-	    System.out.println("12. Stoppen"); 
-	    
-	    System.out.println("");
-	    
+	    System.out.println("12. Stoppen\n"); 
+
 	    System.out.print("Voer optie in en druk op Enter:");
 	    
-	    try (Scanner input = new Scanner(System.in);) {		     
+	    Scanner input = new Scanner(System.in);
+	    
+	    try {		     
             KlantDaoImpl klantDaoImpl = new KlantDaoImpl();
 	    	AdresDaoImpl adresDaoImpl = new AdresDaoImpl();
 	    	ArtikelDaoImpl artikelDaoImpl = new ArtikelDaoImpl();
@@ -53,10 +46,10 @@ public class ReadMenu {
             		break;
                 
             	case 2:
-            		System.out.println("Voer het klant nummer in waarop u de tabel klant wilt doorzoeken: ");
+            		System.out.println("Voer het klantnummer in waarop u de tabel klant wilt doorzoeken: ");
             		klant_id = input.nextInt();
             			while (adresDaoImpl.checkKlant_id(klant_id)!= true){ 
-            				System.out.println("Het desbetreffende klant nummer bevind zich niet in de database! \nKlantnummer: ");
+            				System.out.println("Het desbetreffende klantnummer bevind zich niet in de database! \nKlantnummer: ");
         					klant_id = input.nextInt();
             			}            				
             		klantDaoImpl.readKlant(klant_id);
@@ -97,18 +90,18 @@ public class ReadMenu {
         				System.out.println("Een postcode mag niet meer dan 6 karakters bevatten! \nPostcode: ");
         					straatnaam = input.next();
         				}
-        		System.out.println("Voer het huisnummer in: ");
-        			int huisnummer = input.nextInt();
-        			while (Integer.toString(huisnummer).length() > 6){
-        				System.out.println("Een huisnummer mag niet meer dan 6 karakters bevatten! \nHuisnummer: ");
-        					huisnummer = input.nextInt();				
-        				}
-        		adresDaoImpl.searchAdres(postcode, huisnummer);	
-        		toonMenu();
+        			System.out.println("Voer het huisnummer in: ");
+        				int huisnummer = input.nextInt();
+        					while (Integer.toString(huisnummer).length() > 6){
+        						System.out.println("Een huisnummer mag niet meer dan 6 karakters bevatten! \nHuisnummer: ");
+        						huisnummer = input.nextInt();				
+        					}
+        			adresDaoImpl.searchAdres(postcode, huisnummer);	
+        			toonMenu();
         			break;
         			
             	case 7:
-            		artikelDaoImpl.read();
+            		System.out.println(artikelDaoImpl.read());
             		toonMenu();
             		break;
             		
@@ -117,12 +110,12 @@ public class ReadMenu {
             		int artikel_id = input.nextInt();								// controle geldig artikel id dmv methode
             		System.out.println("Voer het bestellingnummer in ");
             		int bestelling_id = input.nextInt();
-            		artikelDaoImpl.readArtikel(bestelling_id, artikel_id);
+            		System.out.println(artikelDaoImpl.readArtikel(bestelling_id, artikel_id));
             		toonMenu();
             		break;
             		
             	case 9:
-            		bestellingDaoImpl.read();
+            		System.out.println(bestellingDaoImpl.read());
             		toonMenu();
             		break;
             	
@@ -149,9 +142,9 @@ public class ReadMenu {
 		}
 		
 		finally {
-			// zinnige code			
+				
 		}	
 
-	}	
-}
+		}	
+	}
 

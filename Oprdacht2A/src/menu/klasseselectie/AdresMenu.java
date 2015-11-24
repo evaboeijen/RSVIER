@@ -2,7 +2,6 @@ package menu.klasseselectie;
 
 import java.util.Scanner;
 import business.Adres;
-import dao.*;
 import dao.AdresDaoImpl;
 import menu.*;
 
@@ -56,7 +55,7 @@ public class AdresMenu {
 	public void toonMenu() {
 		Adres adres = null;
 		
-	    System.out.println("\t----------");
+	    System.out.println("\n\t----------");
 	    System.out.println("\tAdres Menu");
 	    System.out.println("\t----------");
 	   
@@ -71,15 +70,17 @@ public class AdresMenu {
 
 	    System.out.println("");
 	    
-	    System.out.println("10. Terug naar het vorige menu"); 	// waarbij nummer nog bepaald moet worden afhankelijk van de plek van deze optie in het menu
-	    System.out.println("11. Terug naar het hoofdmenu"); 	// waarbij nummer nog bepaald moet worden afhankelijk van de plek van deze optie in het menu
-	    System.out.println("12. Stoppen"); 						// waarbij nummer nog bepaald moet worden afhankelijk van de plek van deze optie in het menu
+	    System.out.println("10. Terug naar het vorige menu"); 
+	    System.out.println("11. Terug naar het hoofdmenu"); 
+	    System.out.println("12. Stoppen");
 	    
 	    System.out.println("");
 	    
 	    System.out.println("Voer optie in en druk op Enter:");
 	    
-	    try (Scanner input = new Scanner(System.in);) {		     
+	    Scanner input = new Scanner(System.in);
+	    
+	    try {		     
         
 	    
 			int keuze = input.nextInt();
@@ -114,48 +115,49 @@ public class AdresMenu {
             			while (postcode.length() > 6){
             				System.out.println("Een postcode mag niet meer dan 6 karakters bevatten! \nPostcode: ");
             					straatnaam = input.next();
-            				}
+            			}
             		System.out.println("Voer het huisnummer in: ");
             			int huisnummer = input.nextInt();
             			while (Integer.toString(huisnummer).length() > 6){
             				System.out.println("Een huisnummer mag niet meer dan 6 karakters bevatten! \nHuisnummer: ");
             					huisnummer = input.nextInt();				
-            				}
+            			}
             		adresDaoImpl.searchAdres(postcode, huisnummer);	
             		toonMenu();
             		break;
-            		
+            	
             	case 5:
             		System.out.println("Voer de gegevens in van het bij te werken adres ");
             			adres = createAdresObject();
             		adresDaoImpl.updateAdres(adres);
             		toonMenu();
             		break;
-            		
+            	
             	case 6:
-            		System.out.println("Voer te te verwijderen adres in: ");
-            			adres = createAdresObject();
+            		System.out.println("Voer klantnummer van het te verwijderen adres in: ");
+            		int klant_id = input.nextInt();
+            			adres = new Adres(klant_id, "-", "-", "-", 1, "-");
             		adresDaoImpl.deleteAdres(adres);	
             		toonMenu();
             		break;
-            		
+            	
             	
             	
             	case 10:
             		KlasseSelectieMenu klasseSelectieMenu = new KlasseSelectieMenu();
             		klasseSelectieMenu.toonMenu();
             		break;
-            		
+            	
             	case 11:
             		HoofdMenu hoofdMenu =  new HoofdMenu();
             		hoofdMenu.toonMenu();
             		break;
-            		
+            	
             	case 12:
             		System.out.println("\nTot de volgende keer...");
             		System.exit(1);
             		break;
-            		
+            	
             	default:
             		System.out.println("\n! Ongeldige optie, probeer het nogmaals !\n");
             		this.toonMenu();

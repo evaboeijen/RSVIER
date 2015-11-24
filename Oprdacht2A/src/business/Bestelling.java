@@ -189,23 +189,17 @@ public class Bestelling {
     }
     @Override
     public String toString(){
-    	return 	"\nBestelling Id: " + bestelling_id +
-    			"\tKlant Id: " + klant_id +
-    			"\nArtikel 1 Id: " + artikel1_id + 
-    			"\tArtikel 1 aantal: " + artikel1_aantal + 
-    			"\tArtikel 1 naam: " + artikel1_naam + 
-    			"\tArtikel 1 prijs: " + artikel1_prijs + 
-    			"\n" +
-    			"Artikel 2 Id: " + artikel2_id + 
-    			"\tArtikel 2 aantal: " + artikel2_aantal + 
-    			"\tArtikel 2 naam: " + artikel2_naam + 
-    			"\tArtikel 2 prijs: " + artikel2_prijs + 
-    			"\n" +
-    			"Artikel 3 Id: " + artikel3_id + 
-    			"\tArtikel 3 aantal: " + artikel3_aantal + 
-    			"\tArtikel 3 naam: " + artikel3_naam + 
-    			"\tArtikel 3 prijs: " + artikel3_prijs + 
-    			"\n";
+    	return 	 
+        "\nKlantnummer : " + klant_id + ". Ordernummer : " + bestelling_id + 
+        "\n--------------------------------------------------------------------------" +
+        "\nArtikelnummer: " + artikel1_id+ "\tArtikelnaam: " + artikel1_naam + "\tAantal: " + artikel1_aantal + "\tPrijs: " + artikel1_prijs + 
+        "\nArtikelnummer: " + artikel2_id+ "\tArtikelnaam: " + artikel2_naam + "\tAantal: " + artikel2_aantal + "\tPrijs: " + artikel2_prijs + 
+        "\nArtikelnummer: " + artikel3_id+ "\tArtikelnaam: " + artikel3_naam + "\tAantal: " + artikel3_aantal + "\tPrijs: " + artikel3_prijs + 
+        "\n\n";
+        
+    			
+    			
+    			
     }
 
     
