@@ -3,8 +3,8 @@ package dao;
 import java.sql.*;
 import java.util.*;
 
-import business.Artikel;
-import menu.DBConnectivityManagement;
+import business.*;
+import menu.*;
 
 public class ArtikelDaoImpl implements ArtikelDao {
     
@@ -41,17 +41,16 @@ public class ArtikelDaoImpl implements ArtikelDao {
     }
    
    @Override
-    public List<Artikel> read() {
+    public Artikel read(Artikel artikel) {
     
-        List<Artikel> artikellen = new ArrayList<>();
-         
+                 
         try {
         	Connection connection = DBConnectivityManagement.getConnectionStatus(); 
         	
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM Bestelling WHERE bestelling_id");
                  
-                Artikel artikel;
+            
                 while(resultSet.next()){
                     artikel = new Artikel();
                     artikel.setKlant_id(resultSet.getInt("Klant_id"));
@@ -70,7 +69,6 @@ public class ArtikelDaoImpl implements ArtikelDao {
                     
                     
                     
-                    artikellen.add(artikel);
                 }
                 resultSet.close();
                 statement.close();
@@ -79,8 +77,7 @@ public class ArtikelDaoImpl implements ArtikelDao {
                 e.printStackTrace();
             }
             
-        
-            return artikellen;
+            return artikel;
     }
 
 
@@ -153,6 +150,7 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
         }catch (SQLException e){
         	e.printStackTrace();
         }
+        
         return artikel;
 }
 
@@ -233,12 +231,20 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 		                    int artikelnummer3 = result.getInt("artikel3_id");
 
 			            			            	                
-			            	 if (artikelnummer3 != 0) {
-			            		 System.out.println("Maximum aantal artikelen voor deze bestelling bereikt");
-			            		 return;
+			            	if (artikelnummer1 == 0){
+			            		 PreparedStatement statement1 = connection.prepareStatement("UPDATE bestelling SET artikel1_id=?, artikel1_naam=?, artikel1_aantal=?, artikel1_prijs=? WHERE bestelling_id=?");
+			            		 statement1.setInt(1, artikel.getArtikel1_id());
+			            		 statement1.setString(2, artikel.getArtikel1_naam());
+			            		 statement1.setInt(3, artikel.getArtikel1_aantal());
+			            		 statement1.setDouble(4, artikel.getArtikel1_prijs());
+			            		 statement1.setInt(5, artikel.getBestelling_id());
+			            		 
+			            		 int rowsUpdated1 = statement1.executeUpdate();
+				                 if (rowsUpdated1 > 0) {
+				                 System.out.println(artikel.getArtikel1_naam() + " (" + artikel.getArtikel1_aantal() + " stuks)" + " is succesvol toegevoegd!");
+				                 } 
 			            	 }
-			                	                
-			            	 else if (artikelnummer2 == 0) {	                
+			            	 else if (artikelnummer1 !=0 || artikelnummer2 == 0) {	                
 			 	                 PreparedStatement statement2 = connection.prepareStatement("UPDATE bestelling SET artikel2_id=?, artikel2_naam=?, artikel2_aantal=?, artikel2_prijs=? WHERE bestelling_id=?");
 			            		 statement2.setInt(1, artikel.getArtikel1_id());
 			            		 statement2.setString(2, artikel.getArtikel1_naam());
@@ -263,11 +269,12 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 			 	            	 int rowsUpdated3 = statement3.executeUpdate();
 				                 if (rowsUpdated3 > 0) {
 					                 System.out.println(artikel.getArtikel1_id() + " (" + artikel.getArtikel1_aantal() + " stuks)" + " is succesvol toegevoegd!");
-					                 System.out.println("Maximum van 3 verschillende artikelen is bereikt.");
-				                 }
+					                              }
 			            	 }
 		                    
-		                    
+			            	 else {
+			            		 System.out.println("Maximum aantal artikellen bereikt!");
+			            	 }
 		               
 	   		            }
 	   		            
