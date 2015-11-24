@@ -181,7 +181,7 @@ public class KlantDaoImpl implements KlantDao {
             try {
             	Connection connection = DBConnectivityManagement.getConnectionStatus();
 
-                PreparedStatement statement = connection.prepareStatement("UPDATE Klant SET voornaam=?, tussenvoegsel=?, achternaam=?, email=? WHERE Klant_id=?");
+                PreparedStatement statement = connection.prepareStatement("UPDATE klant SET voornaam=?, tussenvoegsel=?, achternaam=?, email=? WHERE Klant_id=?");
                 statement.setString(1, klant.getVoornaam());
                 statement.setString(2, klant.getTussenvoegsel());
                 statement.setString(3, klant.getAchternaam());
