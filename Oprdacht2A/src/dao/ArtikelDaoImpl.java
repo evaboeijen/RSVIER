@@ -39,6 +39,46 @@ public class ArtikelDaoImpl implements ArtikelDao {
         return connection;
         
     }
+   @Override
+   public List<Artikel> read() {
+   
+	   List<Artikel> artikelen = new ArrayList<>();
+                
+       try {
+       	Connection connection = DBConnectivityManagement.getConnectionStatus(); 
+       	
+               Statement statement = connection.createStatement();
+               ResultSet resultSet = statement.executeQuery("SELECT * FROM Bestelling");
+                
+               Artikel artikel;
+               while(resultSet.next()){
+                   artikel = new Artikel();
+                   artikel.setKlant_id(resultSet.getInt("Klant_id"));
+                   artikel.setArtikel1_id(resultSet.getInt("Artikel1_id"));
+                   artikel.setArtikel1_naam(resultSet.getString("Artikel1_naam"));
+                   artikel.setArtikel1_aantal(resultSet.getInt("Artikel1_aantal"));
+                   artikel.setArtikel1_prijs(resultSet.getDouble("Artikel1_prijs"));
+                   artikel.setArtikel2_id(resultSet.getInt("Artikel2_id"));
+                   artikel.setArtikel2_naam(resultSet.getString("Artikel2_naam"));
+                   artikel.setArtikel2_aantal(resultSet.getInt("Artikel2_aantal"));
+                   artikel.setArtikel2_prijs(resultSet.getDouble("Artikel2_prijs"));
+                   artikel.setArtikel3_id(resultSet.getInt("Artikel3_id"));
+                   artikel.setArtikel3_naam(resultSet.getString("Artikel3_naam"));
+                   artikel.setArtikel3_aantal(resultSet.getInt("Artikel3_aantal"));
+                   artikel.setArtikel3_prijs(resultSet.getDouble("Artikel3_prijs"));
+                   
+                   artikelen.add(artikel);
+                   
+               }
+               resultSet.close();
+               statement.close();
+                
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+           System.out.println(artikelen);
+           return artikelen;
+   }
    
    @Override
     public Artikel read(Artikel artikel) {
@@ -48,7 +88,7 @@ public class ArtikelDaoImpl implements ArtikelDao {
         	Connection connection = DBConnectivityManagement.getConnectionStatus(); 
         	
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM Bestelling WHERE bestelling_id");
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM Bestelling WHERE bestelling_id =" + artikel.getBestelling_id());
                  
             
                 while(resultSet.next()){
@@ -76,7 +116,7 @@ public class ArtikelDaoImpl implements ArtikelDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            
+            System.out.println(artikel);
             return artikel;
     }
 
