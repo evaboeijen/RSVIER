@@ -140,13 +140,6 @@ CREATE TABLE IF NOT EXISTS klant_adres (
          FOREIGN KEY (`adres_id`) REFERENCES `opdracht1`.`adres` (`adres_id`)
        );
 	
-ALTER TABLE `klant` 
-DROP COLUMN `woonplaats`,
-DROP COLUMN `huisnummer`,
-DROP COLUMN `toevoeging`,
-DROP COLUMN `postcode`,
-DROP COLUMN `straatnaam`;
-
 CREATE TABLE IF NOT EXISTS `artikel` (
   `artikel_id` INT(11) NOT NULL ,
   `artikel_naam` VARCHAR(20) NOT NULL ,
@@ -165,6 +158,13 @@ CREATE TABLE IF NOT EXISTS bestelling_artikel (
          FOREIGN KEY (`artikel_id`) REFERENCES `opdracht1`.`artikel` (`artikel_id`)
        );
 	
+ALTER TABLE `klant` 
+DROP COLUMN `woonplaats`,
+DROP COLUMN `huisnummer`,
+DROP COLUMN `toevoeging`,
+DROP COLUMN `postcode`,
+DROP COLUMN `straatnaam`;  
+    
 ALTER TABLE `bestelling` 
 DROP COLUMN `artikel1_id`,
 DROP COLUMN `artikel1_naam` ,
