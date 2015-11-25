@@ -31,6 +31,10 @@ public class BestellingMenu  {
 	AdresDaoImpl adresDaoImpl = new AdresDaoImpl();
 	Artikel artikel = new Artikel(); 
 	Bestelling teverwijderenBestelling = new Bestelling();
+	String gewensteArtikelNaam = null;
+	int gewensteKlantID = 0;
+	double gewensteArtikelPrijs = 0;
+	
 	
 	public void toonMenu() {
 	    System.out.println("\t---------------");
@@ -65,7 +69,7 @@ public class BestellingMenu  {
             			                      	            
             		int gewensteKlant_id = input.nextInt();
             				          		
-                	while (adresDaoImpl.checkKlant_id(gewensteKlant_id)!= true) { 
+                	while (klantDaoImpl.checkKlant_id(gewensteKlant_id)!= true) { 
                 		System.out.print("\nVoer een ander klantnummer in: ");
                 		gewensteKlant_id = input.nextInt();
                 		System.out.println();
@@ -134,9 +138,10 @@ public class BestellingMenu  {
                 			nieuweBestelling.setArtikel1_naam(resultSet.getString("Artikel1_naam"));
                 			nieuweBestelling.setArtikel1_prijs(resultSet.getInt("Artikel1_prijs"));
                 		}
-                                
-                		BestellingDaoImpl bestellingDaoImpl1 = new BestellingDaoImpl();
-                		bestellingDaoImpl1.create(nieuweBestelling);  
+                        
+                		// System.out.println(nieuweBestelling.getArtikel1_id() + " " + nieuweBestelling.getArtikel1_naam() + " " + nieuweBestelling.getArtikel1_prijs());
+                		
+                		bestellingDaoImpl.create(nieuweBestelling);  
                 	}
                 			
                 	catch (SQLException e) {
@@ -209,17 +214,34 @@ public class BestellingMenu  {
             			gewensteBestelling_id = input.nextInt();
             			System.out.println();
             		}            		        
-            			          			
-            		Bestelling aantepassenBestelling = new Bestelling();
-            		aantepassenBestelling.setBestelling_id(gewensteBestelling_id);
-            			       			
+            		
+            		try {
+            			Connection connection = DBConnectivityManagement.getConnectionStatus();
+                    	
+            			PreparedStatement preparedStatement;
+            			preparedStatement = connection.prepareStatement("SELECT Klant_id FROM Bestelling WHERE Bestelling_id = ?");
+            			preparedStatement.setInt(1, gewensteBestelling_id);   
+            			ResultSet resultSet = preparedStatement.executeQuery();
+            			
+            			while(resultSet.next()){                                
+            				gewensteKlantID = resultSet.getInt("Klant_id");                                                                                                    
+            			}
+            			resultSet.close();
+            			preparedStatement.close();
+                             
+            		} 
+            		
+            		catch (SQLException e) {
+            			e.printStackTrace();
+            		}
+            		
+            		
+            		
             		System.out.println();
             		System.out.println("Welk artikel wil je toevoegen aan de bestelling?");
             		System.out.println();
             		System.out.println("Hieronder een overzicht van alle aanwezige artikelen: ");
-            		
-            		
-                    
+            		                   
             		try {
             			Connection connection = DBConnectivityManagement.getConnectionStatus();
                     	
@@ -261,9 +283,7 @@ public class BestellingMenu  {
             						            						
             		System.out.print("\nVoer het aantal in dat je aan de bestelling wil toevoegen: ");
             		gewensteAantal = input.nextInt();      
-        				
-            		aantepassenBestelling.setArtikel2_id(gewensteArtikel_id);
-            		aantepassenBestelling.setArtikel2_aantal(gewensteAantal);
+
       			
             		try {
 
@@ -275,12 +295,13 @@ public class BestellingMenu  {
             			ResultSet resultSet = statement.executeQuery();
             				     		
             			while(resultSet.next()){                
-            				aantepassenBestelling.setArtikel2_naam(resultSet.getString("Artikel1_naam"));
-            				aantepassenBestelling.setArtikel2_prijs(resultSet.getInt("Artikel1_prijs"));
+            				gewensteArtikelNaam = resultSet.getString("Artikel1_naam");
+            				gewensteArtikelPrijs = resultSet.getInt("Artikel1_prijs");
             			}
-                            
-            			BestellingDaoImpl bestellingDaoImpl1 = new BestellingDaoImpl();
-            			bestellingDaoImpl1.update(aantepassenBestelling);  
+            			       
+            			Bestelling aantepassenBestelling = new Bestelling(gewensteBestelling_id, gewensteKlantID, gewensteArtikel_id, gewensteArtikelNaam, gewensteAantal, gewensteArtikelPrijs);
+            				
+            			bestellingDaoImpl.update(aantepassenBestelling);  
             		}
             			
             		catch (SQLException e) {
