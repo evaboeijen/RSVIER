@@ -32,7 +32,7 @@
 					}			
 			System.out.println("Achternaam: ");
 				String achternaam = input.nextLine();
-					while (achternaam.length() > 6){
+					while (achternaam.length() > 51){
 					System.out.println("Een achternaam mag niet meer dan 51 karakters bevatten! \n Achternaam: ");
 						achternaam = input.nextLine();
 					}
@@ -81,7 +81,8 @@
 	            				nieuweKlantDaoImpl.create(nieuweKlant);
 	            				System.out.println();
 	            				System.out.println("Een nieuwe klant is aangemaakt");
-	            			 
+	            				nieuweKlantDaoImpl.read();
+	            				
 	            				toonMenu();
 	            		break; 
 	            			           		          		

@@ -1,1 +1,0 @@
-SELECT * FROM opdracht1.bestelling;
