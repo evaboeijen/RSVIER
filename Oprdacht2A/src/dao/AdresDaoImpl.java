@@ -55,14 +55,16 @@ public class AdresDaoImpl implements AdresDao{
 	}
 
 	@Override
-	public void insert(Adres adres) {			// Kan niet op huidige manier/ in huidige tabel structuur!! 
+	public void insert(Adres adres) {			// Wordt nog aan gewerkt!!! --> melding als poging tot een tweede adres voor 1 klant invullen
 		int klant_id = adres.getKlant_id(); 
 		
 		if (checkKlant_id(klant_id)){
 			try {
 				Connection connection = DBConnectivityManagement.getConnectionStatus();
-				PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO áders WHERE klant_id=? (straatnaam, postcode , toevoeging , huisnummer , woonplaats)VALUES(?,?,?,?,?)");
+						
+				PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO adres (klant_id, straatnaam, postcode , toevoeging , huisnummer , woonplaats)VALUES(?,?,?,?,?,?)");
 
+					preparedStatement.setInt(1, adres.getKlant_id());
 					preparedStatement.setString(1, adres.getStraatnaam());
 					preparedStatement.setString(2, adres.getPostcode());
 					preparedStatement.setString(3, adres.getToevoeging());
@@ -79,6 +81,8 @@ public class AdresDaoImpl implements AdresDao{
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+				
+			
 		System.out.println(adres.toString());
         System.out.println("Adres succesvol toegevoegd");
 		}
@@ -119,7 +123,7 @@ public class AdresDaoImpl implements AdresDao{
 	}
 
 	@Override
-	public void updateAdres(Adres adres) {																/* nu nog in dezelfde tabel!!! */
+	public void updateAdres(Adres adres) {
 		int klant_id = adres.getKlant_id();
 		
 		if (checkKlant_id(klant_id)){
@@ -143,18 +147,17 @@ public class AdresDaoImpl implements AdresDao{
 				e.printStackTrace();
 			}
 			System.out.println("Adres is succesvol veranderd");
-	
 		}
 	}	
 
 	@Override
-	public void deleteAdres(Adres adres) {																/* nu nog in dezelfde tabel!!!*/
+	public void deleteAdres(Adres adres) {		
 		int klant_id = adres.getKlant_id(); 
 		
 		if (checkKlant_id(klant_id)){
 			try{ 
 				Connection connection = DBConnectivityManagement.getConnectionStatus();
-				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE adres SET straatnaam='-', postcode='-', toevoeging='-', huisnummer='0', woonplaats='-' WHERE klant_id=?");
+				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE adres SET straatnaam='-', postcode='-', toevoeging='-', huisnummer='', woonplaats='-' WHERE klant_id=?");
 				preparedStatement.setInt(1, adres.getKlant_id());		
 			
 				int rowsUpdated = preparedStatement.executeUpdate();
@@ -250,7 +253,7 @@ public class AdresDaoImpl implements AdresDao{
 		
 		try {
 			Connection connection = DBConnectivityManagement.getConnectionStatus();
-			preparedStatement = connection.prepareStatement("SELECT * FROM adres WHERE klant_id=?");
+			preparedStatement = connection.prepareStatement("SELECT * FROM klant WHERE klant_id=?");
 			preparedStatement.setInt(1, klant_id);
 			resultSet = preparedStatement.executeQuery(); 
 			
