@@ -6,7 +6,6 @@ import menu.DBConnectivityManagement;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -65,13 +64,12 @@ public class AdresDaoImpl implements AdresDao{
 				PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO adres (klant_id, straatnaam, postcode , toevoeging , huisnummer , woonplaats)VALUES(?,?,?,?,?,?)");
 
 					preparedStatement.setInt(1, adres.getKlant_id());
-					preparedStatement.setString(1, adres.getStraatnaam());
-					preparedStatement.setString(2, adres.getPostcode());
-					preparedStatement.setString(3, adres.getToevoeging());
-					preparedStatement.setInt(4, adres.getHuisnummer());
-					preparedStatement.setString(5, adres.getWoonplaats());
-					preparedStatement.setInt(6, adres.getKlant_id());
-
+					preparedStatement.setString(2, adres.getStraatnaam());
+					preparedStatement.setString(3, adres.getPostcode());
+					preparedStatement.setString(4, adres.getToevoeging());
+					preparedStatement.setInt(5, adres.getHuisnummer());
+					preparedStatement.setString(6, adres.getWoonplaats());
+					
 					int rowsUpdated = preparedStatement.executeUpdate();
 					preparedStatement.close();
 							
@@ -81,12 +79,9 @@ public class AdresDaoImpl implements AdresDao{
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-				
-			
 		System.out.println(adres.toString());
         System.out.println("Adres succesvol toegevoegd");
 		}
-     
     }
 
 	@Override
