@@ -76,7 +76,7 @@ public class BestellingMenu  {
                 	}    
             		    
                 	nieuweBestelling.setKlant_id(gewensteKlant_id);
-                	nieuweBestelling.setBestelling_id(bestellingDaoImpl.checkHoogste_Bestelling_id() + 1);
+                	// nieuweBestelling.setBestelling_id(bestellingDaoImpl.checkHoogste_Bestelling_id() + 1);
             			
                 	System.out.println("Welk artikel wil je in de bestelling plaatsen?");
                 	System.out.println("Hieronder een overzicht van alle aanwezige artikelen: ");
@@ -85,15 +85,19 @@ public class BestellingMenu  {
                 		Connection connection = DBConnectivityManagement.getConnectionStatus();
                         	
                 		Statement statement = connection.createStatement();
-                		ResultSet resultSet = statement.executeQuery("SELECT ARTIKEL1_ID, ARTIKEL1_NAAM, ARTIKEL2_ID, ARTIKEL2_NAAM, ARTIKEL3_ID, ARTIKEL3_NAAM FROM Bestelling");
+                		 
+                		//aanpassing tbv opdracht 5 || AU 26/11/15
+                		ResultSet resultSet = statement.executeQuery("SELECT ARTIKEL_ID, ARTIKEL_NAAM, ARTIKEL_PRIJS FROM Artikel"); 
                                 
                 		while(resultSet.next()){		                                 
-                			artikel.setArtikel1_id(resultSet.getInt("Artikel1_id"));
-                			artikel.setArtikel1_naam(resultSet.getString("Artikel1_naam"));
-                			artikel.setArtikel2_id(resultSet.getInt("Artikel2_id"));
+                			artikel.setArtikel1_id(resultSet.getInt("Artikel_id"));  //aanpassing tbv opdracht 5 || AU 26/11/15
+                			artikel.setArtikel1_naam(resultSet.getString("Artikel_naam"));  //aanpassing tbv opdracht 5 || AU 26/11/15
+                			
+                			/* uitgecomment tbv opdracht 5 || AU 26/11/15
+                			/* artikel.setArtikel2_id(resultSet.getInt("Artikel2_id"));
                 			artikel.setArtikel2_naam(resultSet.getString("Artikel2_naam"));
                 			artikel.setArtikel3_id(resultSet.getInt("Artikel3_id"));
-                			artikel.setArtikel3_naam(resultSet.getString("Artikel3_naam"));
+                			artikel.setArtikel3_naam(resultSet.getString("Artikel3_naam")); */ 
                                                                                                         
                 			alleArtikelen.add(artikel);
                 		}
@@ -105,9 +109,10 @@ public class BestellingMenu  {
                 		e.printStackTrace();
                 	}
 
-                	for(int i = 0; i < alleArtikelen.size(); i++) {
-                		System.out.println("artikel_id: " + alleArtikelen.get(i).getArtikel1_id() + "\tartikel omschrijving: " + alleArtikelen.get(i).getArtikel1_naam() + "\nartikel_id: " + alleArtikelen.get(i).getArtikel2_id() + "\tartikel omschrijving: " + alleArtikelen.get(i).getArtikel2_naam() + "\nartikel_id: " + alleArtikelen.get(i).getArtikel3_id() + "\tartikel omschrijving: " + alleArtikelen.get(i).getArtikel3_naam());                          
-                	}
+                	/*for(int i = 0; i < alleArtikelen.size(); i++) {
+                		// aangepast tbv opdracht 5 || 26/11/15 AU : System.out.println("artikel_id: " + alleArtikelen.get(i).getArtikel1_id() + "\tartikel omschrijving: " + alleArtikelen.get(i).getArtikel1_naam() + "\nartikel_id: " + alleArtikelen.get(i).getArtikel2_id() + "\tartikel omschrijving: " + alleArtikelen.get(i).getArtikel2_naam() + "\nartikel_id: " + alleArtikelen.get(i).getArtikel3_id() + "\tartikel omschrijving: " + alleArtikelen.get(i).getArtikel3_naam());                          
+                		System.out.println("artikel_id: " + alleArtikelen.get(i).getArtikel_id() + "\tartikel omschrijving: " + alleArtikelen.get(i).getArtikel_naam();  
+                	} */
                                                        			
                 	System.out.print("\nVoer het artikel ID in dat je in de bestelling wil plaatsen: ");
                 	System.out.println(); 
@@ -121,22 +126,25 @@ public class BestellingMenu  {
                 	System.out.print("\nVoer het aantal in dat je in de bestelling wil plaatsen: ");
                 	gewensteAantal = input.nextInt();      
             				
-                	nieuweBestelling.setArtikel1_id(gewensteArtikel_id);
-                	nieuweBestelling.setArtikel1_aantal(gewensteAantal);
+                	nieuweBestelling.setArtikel_id(gewensteArtikel_id);  //aanpassing tbv opdracht 5 || AU 26/11/15
+                	nieuweBestelling.setArtikel_aantal(gewensteAantal); //aanpassing tbv opdracht 5 || AU 26/11/15
 	
                 			
                 	try {
 
                 		Connection connection = DBConnectivityManagement.getConnectionStatus();
                 					
-                		PreparedStatement statement = connection.prepareStatement("SELECT ARTIKEL1_NAAM, ARTIKEl1_PRIJS FROM Bestelling WHERE Artikel1_id=?");
+                		// uitgecomment tbv opdracht 5 || 26/11/15 AU : PreparedStatement statement = connection.prepareStatement("SELECT ARTIKEL1_NAAM, ARTIKEl1_PRIJS FROM Bestelling WHERE Artikel1_id=?");
+                		
+                		// nieuw toegevoegd tbv opdracht 5 || 26/11/15 AU
+                		PreparedStatement statement = connection.prepareStatement("SELECT ARTIKEL_NAAM, ARTIKEl_PRIJS FROM Artikel WHERE Artikel_id=?");
                 		statement.setInt(1, gewensteArtikel_id);
 
                 		ResultSet resultSet = statement.executeQuery();
                 				     		
                 		while(resultSet.next()) {                                    
-                			nieuweBestelling.setArtikel1_naam(resultSet.getString("Artikel1_naam"));
-                			nieuweBestelling.setArtikel1_prijs(resultSet.getInt("Artikel1_prijs"));
+                			nieuweBestelling.setArtikel_naam(resultSet.getString("Artikel_naam"));  //aanpassing tbv opdracht 5 || AU 26/11/15
+                			nieuweBestelling.setArtikel_prijs(resultSet.getInt("Artikel_prijs")); 	 //aanpassing tbv opdracht 5 || AU 26/11/15
                 		}
                         
                 		// System.out.println(nieuweBestelling.getArtikel1_id() + " " + nieuweBestelling.getArtikel1_naam() + " " + nieuweBestelling.getArtikel1_prijs());
@@ -168,9 +176,9 @@ public class BestellingMenu  {
             		for (Bestelling overzicht : lijst) {
             			System.out.println("Klantnummer : " + overzicht.getKlant_id() + ". Ordernummer : " + overzicht.getBestelling_id());
             			System.out.println("---------------------------------------------");
-            			System.out.println("Artikelnummer: " + overzicht.getArtikel1_id() + ". Artikelnaam: " + overzicht.getArtikel1_naam() + ". Aantal: "+ overzicht.getArtikel1_aantal() + ". Prijs: " + overzicht.getArtikel1_prijs());
-            			System.out.println("Artikelnummer: " + overzicht.getArtikel2_id() + ". Artikelnaam: " + overzicht.getArtikel2_naam() + ". Aantal: "+ overzicht.getArtikel2_aantal() + ". Prijs: " + overzicht.getArtikel2_prijs());
-            			System.out.println("Artikelnummer: " + overzicht.getArtikel3_id() + ". Artikelnaam: " + overzicht.getArtikel3_naam() + ". Aantal: "+ overzicht.getArtikel3_aantal() + ". Prijs: " + overzicht.getArtikel3_prijs());
+            			
+            			//aanpassing tbv opdracht 5 || AU 26/11/15
+            			System.out.println("Artikelnummer: " + overzicht.getArtikel_id() + ". Artikelnaam: " + overzicht.getArtikel_naam() + ". Aantal: "+ overzicht.getArtikel_aantal() + ". Prijs: " + overzicht.getArtikel_prijs());
             			System.out.println();
             			System.out.println();	
             		}
@@ -195,9 +203,9 @@ public class BestellingMenu  {
             		for (Bestelling overzicht : lijst) {
             			System.out.println("Klantnummer : " + overzicht.getKlant_id() + ". Ordernummer : " + overzicht.getBestelling_id());
             			System.out.println("---------------------------------------------");
-            			System.out.println("Artikelnummer: " + overzicht.getArtikel1_id() + ". Artikelnaam: " + overzicht.getArtikel1_naam() + ". Aantal: "+ overzicht.getArtikel1_aantal() + ". Prijs: " + overzicht.getArtikel1_prijs());
-            			System.out.println("Artikelnummer: " + overzicht.getArtikel2_id() + ". Artikelnaam: " + overzicht.getArtikel2_naam() + ". Aantal: "+ overzicht.getArtikel2_aantal() + ". Prijs: " + overzicht.getArtikel2_prijs());
-            			System.out.println("Artikelnummer: " + overzicht.getArtikel3_id() + ". Artikelnaam: " + overzicht.getArtikel3_naam() + ". Aantal: "+ overzicht.getArtikel3_aantal() + ". Prijs: " + overzicht.getArtikel3_prijs());
+            			
+            			//aanpassing tbv opdracht 5 || AU 26/11/15
+            			System.out.println("Artikelnummer: " + overzicht.getArtikel_id() + ". Artikelnaam: " + overzicht.getArtikel_naam() + ". Aantal: "+ overzicht.getArtikel_aantal() + ". Prijs: " + overzicht.getArtikel_prijs());
             			System.out.println();
             			System.out.println();	
             		}
@@ -332,9 +340,9 @@ public class BestellingMenu  {
             		for (Bestelling overzicht : lijst) {
             			System.out.println("Klantnummer : " + overzicht.getKlant_id() + ". Ordernummer : " + overzicht.getBestelling_id());
             			System.out.println("---------------------------------------------");
-            			System.out.println("Artikelnummer: " + overzicht.getArtikel1_id() + ". Artikelnaam: " + overzicht.getArtikel1_naam() + ". Aantal: "+ overzicht.getArtikel1_aantal() + ". Prijs: " + overzicht.getArtikel1_prijs());
-            			System.out.println("Artikelnummer: " + overzicht.getArtikel2_id() + ". Artikelnaam: " + overzicht.getArtikel2_naam() + ". Aantal: "+ overzicht.getArtikel2_aantal() + ". Prijs: " + overzicht.getArtikel2_prijs());
-            			System.out.println("Artikelnummer: " + overzicht.getArtikel3_id() + ". Artikelnaam: " + overzicht.getArtikel3_naam() + ". Aantal: "+ overzicht.getArtikel3_aantal() + ". Prijs: " + overzicht.getArtikel3_prijs());
+            			
+            			//aanpassing tbv opdracht 5 || AU 26/11/15
+            			System.out.println("Artikelnummer: " + overzicht.getArtikel_id() + ". Artikelnaam: " + overzicht.getArtikel_naam() + ". Aantal: "+ overzicht.getArtikel_aantal() + ". Prijs: " + overzicht.getArtikel_prijs());
             			System.out.println();
             			System.out.println();	
             		}

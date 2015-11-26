@@ -44,20 +44,38 @@ public class BestellingDaoImpl implements BestellingDao {
 	@Override
 	public int create(Bestelling bestelling){
 	        
-	        
+		PreparedStatement preparedStatement1 ;	// aangepast tbv opdracht 5 || 26/11/15 AU
+		PreparedStatement preparedStatement2 ;	// toegevoegd tbv opdracht 5 || 26/11/15 AU
+		PreparedStatement preparedStatement3 ; 	// toegevoegd tbv opdracht 5 || 26/11/15 AU
 		
-		PreparedStatement preparedStatement ;
-	        int rowsCreated = 0;
-            String sql = "insert into Bestelling (bestelling_id, klant_id, artikel1_id, artikel1_naam, artikel1_aantal, artikel1_prijs, artikel2_id, artikel2_naam, artikel2_aantal, artikel2_prijs, artikel3_id, artikel3_naam, artikel3_aantal, artikel3_prijs) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+	        // int rowsCreated = 0; // uitgecomment tbv opdracht 5 || 26/11/15 AU
+	        int rowsCreated1 = 0; // toegevoegd tbv opdracht 5 || 26/11/15 AU
+	        int rowsCreated2 = 0; // toegevoegd tbv opdracht 5 || 26/11/15 AU
+	        int rowsCreated3 = 0; // toegevoegd tbv opdracht 5 || 26/11/15 AU
+	        
+	        /* uitgecomment tbv opdracht 5 || 26/11/15 AU
+	        String sql = "insert into Bestelling (bestelling_id, klant_id, artikel1_id, artikel1_naam, artikel1_aantal, artikel1_prijs, artikel2_id, artikel2_naam, artikel2_aantal, artikel2_prijs, artikel3_id, artikel3_naam, artikel3_aantal, artikel3_prijs) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			*/
+	        // toegevoegd tbv opdracht 5 || 26/11/15 AU
+	        String sql1 = "insert into Bestelling (bestelling_id, klant_id) values (?, ?)";
+	        String sql2 = "insert into Artikel (artikel_id, artikel_naam, artikel_prijs) values (?, ?, ?)";
+	        String sql3 = "insert into Bestelling_Artikel (bestelling_id, artikel_id, artikel_aantal) values (?, ?, ?)";
 	        
 	        try {
 	                 
 	        	Connection connection = DBConnectivityManagement.getConnectionStatus();
 	        	
-	            preparedStatement = connection.prepareStatement(sql);
-	            preparedStatement.setInt(1, bestelling.getBestelling_id());
-	            preparedStatement.setInt(2, bestelling.getKlant_id());
+	            preparedStatement1 = connection.prepareStatement(sql1);
+	            preparedStatement1.setInt(1, bestelling.getBestelling_id());
+	            preparedStatement1.setInt(2, bestelling.getKlant_id());
+	            
+	            // toegevoegd tbv opdracht 5 || 26/11/15 AU
+	            preparedStatement2 = connection.prepareStatement(sql2);
+	            preparedStatement2.setInt(1, bestelling.getArtikel_id());
+	            preparedStatement2.setString(2, bestelling.getArtikel_naam());	           
+	            preparedStatement2.setDouble(3, bestelling.getArtikel_prijs());	 
+	            
+	            /* uitgecomment tbv opdracht 5 || 26/11/15 AU
 	            preparedStatement.setInt(3, bestelling.getArtikel1_id());
 	            preparedStatement.setString(4, bestelling.getArtikel1_naam());
 	            preparedStatement.setInt(5, bestelling.getArtikel1_aantal());
@@ -70,9 +88,21 @@ public class BestellingDaoImpl implements BestellingDao {
 	            preparedStatement.setString(12, bestelling.getArtikel3_naam());
 	            preparedStatement.setInt(13, bestelling.getArtikel3_aantal());
 	            preparedStatement.setDouble(14, bestelling.getArtikel3_prijs());	
-	                   	            
-	            rowsCreated = preparedStatement.executeUpdate();	            
-	            preparedStatement.close();
+	            */
+	            
+	            // toegevoegd tbv opdracht 5 || 26/11/15 AU
+	            preparedStatement3 = connection.prepareStatement(sql3);
+	            preparedStatement3.setInt(1, bestelling.getBestelling_id());
+	            preparedStatement3.setInt(2, bestelling.getArtikel_id());
+	            preparedStatement3.setInt(3, bestelling.getArtikel_aantal());
+	            
+	            rowsCreated1 = preparedStatement1.executeUpdate();	
+	            rowsCreated2 = preparedStatement2.executeUpdate();
+	            rowsCreated3 = preparedStatement3.executeUpdate();
+	            
+	            preparedStatement1.close();
+	            preparedStatement2.close();
+	            preparedStatement3.close();
 	        
 	            
 	        } catch (SQLException e) {
@@ -80,12 +110,12 @@ public class BestellingDaoImpl implements BestellingDao {
 	        }
 	        System.out.println();
 	        System.out.println("Bestelling met ordernummer " + bestelling.getBestelling_id() + " voor klantnummer " + bestelling.getKlant_id() + " succesvol toegevoegd");
-	        System.out.println("Inhoud van de bestelling: " + bestelling.getArtikel1_aantal() + " stuks " + bestelling.getArtikel1_naam() + " (" + (bestelling.getArtikel1_prijs()*100)/100.00 + " euro per stuk) en met totaalprijs van " + ((bestelling.getArtikel1_aantal() * bestelling.getArtikel1_prijs())*100)/100.00 + " euro.");
-	         
-	        System.out.println("Aantal rijen in tabel Bestelling toegevoegd : " + rowsCreated);
+	     // aangepast tbv opdracht 5 || 26/11/15 AU
+	        System.out.println("Inhoud van de bestelling: " + bestelling.getArtikel_aantal() + " stuks " + bestelling.getArtikel_naam() + " (" + (bestelling.getArtikel_prijs()*100)/100.00 + " euro per stuk) en met totaalprijs van " + ((bestelling.getArtikel_aantal() * bestelling.getArtikel_prijs())*100)/100.00 + " euro.");	         
+	        System.out.println("Aantal rijen in tabel Bestelling toegevoegd : " + rowsCreated1);
 	        System.out.println();
 	        
-	        return rowsCreated;
+	        return rowsCreated1;
 	        
 	        
 	       
@@ -325,10 +355,13 @@ public class BestellingDaoImpl implements BestellingDao {
 				
 				Connection connection = DBConnectivityManagement.getConnectionStatus(); 
 				
-				preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE (artikel1_id=? OR artikel2_id=? OR artikel3_id=?)");
+				// uitgecomment tbv opdracht 5 || AU 26/11/15 : preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE (artikel1_id=? OR artikel2_id=? OR artikel3_id=?)");
+				
+				// nieuw tbv opdracht 5 || AU 26/11/15
+				preparedStatement = connection.prepareStatement("SELECT * FROM artikel WHERE artikel_id=?");
 				preparedStatement.setInt(1, artikel_id);
-				preparedStatement.setInt(2, artikel_id);
-				preparedStatement.setInt(3, artikel_id);
+				// preparedStatement.setInt(2, artikel_id);
+				// preparedStatement.setInt(3, artikel_id);
 				resultSet = preparedStatement.executeQuery(); 
 				
 				if (resultSet.next()){

@@ -2,11 +2,18 @@ package business;
 
 
 public class Bestelling {
-	// Klant besteller;
-	// int   artikel_aantal;
-	// ArrayList <Artikel> bestellingsLijst = null;
 	private int bestelling_id;
 	private int klant_id;
+	// de volgende variabelen zijn tevoegd bij opdracht 5 - AU 26/11/15
+	private int artikel_id;
+	private String artikel_naam;
+	private int artikel_aantal;
+	private double artikel_prijs; 
+	
+	
+	
+	/* de volgende variabelen werden gebruikt tot en met opdracht 2 - AU 26/11/15
+	 * en derhalve uitgecommentarieerd voor de opdrachten daarna
 	private int artikel1_id;
 	private String artikel1_naam;
 	private int artikel1_aantal;
@@ -19,7 +26,7 @@ public class Bestelling {
 	private String artikel3_naam;
 	private int artikel3_aantal;
 	private double artikel3_prijs;
-
+	*/
 
 	
 	// default constructor
@@ -32,15 +39,24 @@ public class Bestelling {
 	}
 		
 	// constructor voor 1 artikel
-	public Bestelling(int bestelling_id, int klant_id, int artikel1_id, String artikel1_naam, int artikel1_aantal, double artikel1_prijs) {		
+	// uitgecomment tbv opdracht 5 | 26/11/15 AU : public Bestelling(int bestelling_id, int klant_id, int artikel1_id, String artikel1_naam, int artikel1_aantal, double artikel1_prijs) {		
+	// nieuwe parameters voor deze constructor tbv opdracht 5 | 26/11/15 AU
+	public Bestelling(int bestelling_id, int klant_id, int artikel_id, String artikel_naam, int artikel_aantal, double artikel_prijs) {		
 		this.bestelling_id = bestelling_id;
-		this.klant_id = klant_id;
+		this.klant_id = klant_id;		
+		/* uitgecomment tbv opdracht 5 | 26/11/15 AU
 		this.artikel1_id = artikel1_id;
 		this.artikel1_naam = artikel1_naam;
 		this.artikel1_aantal = artikel1_aantal;
-		this.artikel1_prijs = artikel1_prijs;		
+		this.artikel1_prijs = artikel1_prijs;		*/			
+		// nieuwe variabelen voor deze constructor tbv opdracht 5 | 26/11/15 AU
+		this.artikel_id = artikel_id;
+		this.artikel_naam = artikel_naam;
+		this.artikel_aantal = artikel_aantal;
+		this.artikel_prijs = artikel_prijs;
 	}
 	
+	/* uitgecomment tbv opdracht 5 | 26/11/15 AU
 	// constructor voor 2 artikelen
 	public Bestelling(int bestelling_id, int klant_id, int artikel1_id, String artikel1_naam, int artikel1_aantal, double artikel1_prijs, int artikel2_id, String artikel2_naam, int artikel2_aantal, double artikel2_prijs) {		
 		this.bestelling_id = bestelling_id;
@@ -53,8 +69,9 @@ public class Bestelling {
 		this.artikel2_naam = artikel2_naam;
 		this.artikel2_aantal = artikel2_aantal;
 		this.artikel2_prijs = artikel2_prijs;		
-	}
+	} */
 	
+	/* uitgecomment tbv opdracht 5 | 26/11/15 AU
 	// constructor voor 3 artikelen
 	public Bestelling(int newBestelling_id, int klant_id, int artikel1_id, String artikel1_naam, int artikel1_aantal, double artikel1_prijs, int artikel2_id, String artikel2_naam, int artikel2_aantal, double artikel2_prijs, int artikel3_id, String artikel3_naam, int artikel3_aantal, double artikel3_prijs) {		
 		bestelling_id = newBestelling_id;
@@ -71,7 +88,7 @@ public class Bestelling {
 		this.artikel3_naam = artikel3_naam;
 		this.artikel3_aantal = artikel3_aantal;
 		this.artikel3_prijs = artikel3_prijs;			
-	}
+	} */
 	
 	
 	public int getBestelling_id() {
@@ -91,38 +108,47 @@ public class Bestelling {
     	this.klant_id = klant_id;
     }  
     
-    public int getArtikel1_id() {
-    	return artikel1_id;
+    // aangepast tbv opdracht 5 | 26/11/15 AU
+    public int getArtikel_id() {
+    	return artikel_id;
     }
    
-    public void setArtikel1_id(int artikel1_id) {
-    	this.artikel1_id = artikel1_id;
+    // aangepast tbv opdracht 5 | 26/11/15 AU
+    public void setArtikel_id(int artikel_id) {
+    	this.artikel_id = artikel_id;
     }
     
-    public String getArtikel1_naam() {
-    	return artikel1_naam;
+    // aangepast tbv opdracht 5 | 26/11/15 AU
+    public String getArtikel_naam() {
+    	return artikel_naam;
     }
     
-    public void setArtikel1_naam(String artikel1_naam) {
-    	this.artikel1_naam = artikel1_naam;
+    // aangepast tbv opdracht 5 | 26/11/15 AU
+    public void setArtikel_naam(String artikel_naam) {
+    	this.artikel_naam = artikel_naam;
     }
  
-    public int getArtikel1_aantal() {
-    	return artikel1_aantal;
+    // aangepast tbv opdracht 5 | 26/11/15 AU
+    public int getArtikel_aantal() {
+    	return artikel_aantal;
     }
     
-    public void setArtikel1_aantal(int artikel1_aantal) {
-    	this.artikel1_aantal = artikel1_aantal;
+    // aangepast tbv opdracht 5 | 26/11/15 AU
+    public void setArtikel_aantal(int artikel_aantal) {
+    	this.artikel_aantal = artikel_aantal;
     }
     
-    public double getArtikel1_prijs() {
-    	return artikel1_prijs;
+    // aangepast tbv opdracht 5 | 26/11/15 AU
+    public double getArtikel_prijs() {
+    	return artikel_prijs;
     }
     
-    public void setArtikel1_prijs(double artikel1_prijs) {
-    	this.artikel1_prijs = artikel1_prijs;
+    // aangepast tbv opdracht 5 | 26/11/15 AU
+    public void setArtikel_prijs(double artikel_prijs) {
+    	this.artikel_prijs = artikel_prijs;
     }
     
+    /* uitgecomment tbv opdracht 5 | 26/11/15 AU
     public int getArtikel2_id() {
     	return artikel2_id;
     }
@@ -186,25 +212,22 @@ public class Bestelling {
 
     public void setArtikel3_prijs(double artikel3_prijs) {
     	this.artikel3_prijs = artikel3_prijs;
-    }
+    } */
+    
+    
+    // aangepast tbv opdracht 5 | 26/11/15 AU
     @Override
     public String toString(){
     	return 	 
         "\nKlantnummer : " + klant_id + ". Ordernummer : " + bestelling_id + 
         "\n--------------------------------------------------------------------------" +
-        "\nArtikelnummer: " + artikel1_id+ "\tArtikelnaam: " + artikel1_naam + "\tAantal: " + artikel1_aantal + "\tPrijs: " + artikel1_prijs + 
-        "\nArtikelnummer: " + artikel2_id+ "\tArtikelnaam: " + artikel2_naam + "\tAantal: " + artikel2_aantal + "\tPrijs: " + artikel2_prijs + 
-        "\nArtikelnummer: " + artikel3_id+ "\tArtikelnaam: " + artikel3_naam + "\tAantal: " + artikel3_aantal + "\tPrijs: " + artikel3_prijs + 
+        "\nArtikelnummer: " + artikel_id+ "\tArtikelnaam: " + artikel_naam + "\tAantal: " + artikel_aantal + "\tPrijs: " + artikel_prijs +   
+        //   "\nArtikelnummer: " + artikel1_id+ "\tArtikelnaam: " + artikel1_naam + "\tAantal: " + artikel1_aantal + "\tPrijs: " + artikel1_prijs +         
+     //   "\nArtikelnummer: " + artikel2_id+ "\tArtikelnaam: " + artikel2_naam + "\tAantal: " + artikel2_aantal + "\tPrijs: " + artikel2_prijs + 
+     //   "\nArtikelnummer: " + artikel3_id+ "\tArtikelnaam: " + artikel3_naam + "\tAantal: " + artikel3_aantal + "\tPrijs: " + artikel3_prijs + 
         "\n\n";
-        
-    			
-    			
-    			
-    }
-
-    
-    
-    
+            			    			   			
+    }          
 }
 
 
