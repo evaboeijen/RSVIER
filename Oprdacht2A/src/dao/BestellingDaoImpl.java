@@ -49,16 +49,15 @@ public class BestellingDaoImpl implements BestellingDao {
 		PreparedStatement preparedStatement3 ; 	// toegevoegd tbv opdracht 5 || 26/11/15 AU
 		
 	        // int rowsCreated = 0; // uitgecomment tbv opdracht 5 || 26/11/15 AU
-	        int rowsCreated1 = 0; // toegevoegd tbv opdracht 5 || 26/11/15 AU
-	        int rowsCreated2 = 0; // toegevoegd tbv opdracht 5 || 26/11/15 AU
-	        int rowsCreated3 = 0; // toegevoegd tbv opdracht 5 || 26/11/15 AU
+	        int rowsCreated = 0; // toegevoegd tbv opdracht 5 || 26/11/15 AU
+
 	        
 	        /* uitgecomment tbv opdracht 5 || 26/11/15 AU
 	        String sql = "insert into Bestelling (bestelling_id, klant_id, artikel1_id, artikel1_naam, artikel1_aantal, artikel1_prijs, artikel2_id, artikel2_naam, artikel2_aantal, artikel2_prijs, artikel3_id, artikel3_naam, artikel3_aantal, artikel3_prijs) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			*/
 	        // toegevoegd tbv opdracht 5 || 26/11/15 AU
 	        String sql1 = "insert into Bestelling (bestelling_id, klant_id) values (?, ?)";
-	        String sql2 = "insert into Artikel (artikel_id, artikel_naam, artikel_prijs) values (?, ?, ?)";
+	        //String sql2 = "insert into Artikel (artikel_id, artikel_naam, artikel_prijs) values (?, ?, ?)";
 	        String sql3 = "insert into Bestelling_Artikel (bestelling_id, artikel_id, artikel_aantal) values (?, ?, ?)";
 	        
 	        try {
@@ -70,10 +69,10 @@ public class BestellingDaoImpl implements BestellingDao {
 	            preparedStatement1.setInt(2, bestelling.getKlant_id());
 	            
 	            // toegevoegd tbv opdracht 5 || 26/11/15 AU
-	            preparedStatement2 = connection.prepareStatement(sql2);
-	            preparedStatement2.setInt(1, bestelling.getArtikel_id());
-	            preparedStatement2.setString(2, bestelling.getArtikel_naam());	           
-	            preparedStatement2.setDouble(3, bestelling.getArtikel_prijs());	 
+	            //preparedStatement2 = connection.prepareStatement(sql2);
+	            //preparedStatement2.setInt(1, bestelling.getArtikel_id());
+	            //preparedStatement2.setString(2, bestelling.getArtikel_naam());	           
+	            //preparedStatement2.setDouble(3, bestelling.getArtikel_prijs());	 
 	            
 	            /* uitgecomment tbv opdracht 5 || 26/11/15 AU
 	            preparedStatement.setInt(3, bestelling.getArtikel1_id());
@@ -96,12 +95,19 @@ public class BestellingDaoImpl implements BestellingDao {
 	            preparedStatement3.setInt(2, bestelling.getArtikel_id());
 	            preparedStatement3.setInt(3, bestelling.getArtikel_aantal());
 	            
-	            rowsCreated1 = preparedStatement1.executeUpdate();	
-	            rowsCreated2 = preparedStatement2.executeUpdate();
-	            rowsCreated3 = preparedStatement3.executeUpdate();
+	            System.out.println("nieuwe bestelling ID " + bestelling.getBestelling_id()); //test
+	            rowsCreated = preparedStatement1.executeUpdate();
+	            System.out.println("1st query : " + rowsCreated); 	// test
+	            
+	            //int rowsCreated2 = preparedStatement2.executeUpdate();
+	            //System.out.println("2nd query : " + rowsCreated2); 	// test
+	            
+	            System.out.println("nieuwe bestelling ID " + bestelling.getBestelling_id()); //test
+	            int rowsCreated3 = preparedStatement3.executeUpdate();	        
+	            System.out.println("3rd query : " + rowsCreated3); 	// test
 	            
 	            preparedStatement1.close();
-	            preparedStatement2.close();
+	            //preparedStatement2.close();
 	            preparedStatement3.close();
 	        
 	            
@@ -112,10 +118,10 @@ public class BestellingDaoImpl implements BestellingDao {
 	        System.out.println("Bestelling met ordernummer " + bestelling.getBestelling_id() + " voor klantnummer " + bestelling.getKlant_id() + " succesvol toegevoegd");
 	     // aangepast tbv opdracht 5 || 26/11/15 AU
 	        System.out.println("Inhoud van de bestelling: " + bestelling.getArtikel_aantal() + " stuks " + bestelling.getArtikel_naam() + " (" + (bestelling.getArtikel_prijs()*100)/100.00 + " euro per stuk) en met totaalprijs van " + ((bestelling.getArtikel_aantal() * bestelling.getArtikel_prijs())*100)/100.00 + " euro.");	         
-	        System.out.println("Aantal rijen in tabel Bestelling toegevoegd : " + rowsCreated1);
+	        System.out.println("Aantal rijen in tabel Bestelling toegevoegd : " + rowsCreated);
 	        System.out.println();
 	        
-	        return rowsCreated1;
+	        return rowsCreated;
 	        
 	        
 	       

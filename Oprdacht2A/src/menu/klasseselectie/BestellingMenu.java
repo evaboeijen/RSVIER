@@ -76,7 +76,7 @@ public class BestellingMenu  {
                 	}    
             		    
                 	nieuweBestelling.setKlant_id(gewensteKlant_id);
-                	// nieuweBestelling.setBestelling_id(bestellingDaoImpl.checkHoogste_Bestelling_id() + 1);
+                	nieuweBestelling.setBestelling_id(bestellingDaoImpl.checkHoogste_Bestelling_id() + 1);
             			
                 	System.out.println("Welk artikel wil je in de bestelling plaatsen?");
                 	System.out.println("Hieronder een overzicht van alle aanwezige artikelen: ");
@@ -109,10 +109,10 @@ public class BestellingMenu  {
                 		e.printStackTrace();
                 	}
 
-                	/*for(int i = 0; i < alleArtikelen.size(); i++) {
+                	for(int i = 0; i < alleArtikelen.size(); i++) {
                 		// aangepast tbv opdracht 5 || 26/11/15 AU : System.out.println("artikel_id: " + alleArtikelen.get(i).getArtikel1_id() + "\tartikel omschrijving: " + alleArtikelen.get(i).getArtikel1_naam() + "\nartikel_id: " + alleArtikelen.get(i).getArtikel2_id() + "\tartikel omschrijving: " + alleArtikelen.get(i).getArtikel2_naam() + "\nartikel_id: " + alleArtikelen.get(i).getArtikel3_id() + "\tartikel omschrijving: " + alleArtikelen.get(i).getArtikel3_naam());                          
-                		System.out.println("artikel_id: " + alleArtikelen.get(i).getArtikel_id() + "\tartikel omschrijving: " + alleArtikelen.get(i).getArtikel_naam();  
-                	} */
+                		System.out.println("artikel_id: " + alleArtikelen.get(i).getArtikel1_id() + "\tartikel omschrijving: " + alleArtikelen.get(i).getArtikel1_naam());  
+                	} 
                                                        			
                 	System.out.print("\nVoer het artikel ID in dat je in de bestelling wil plaatsen: ");
                 	System.out.println(); 
@@ -148,6 +148,8 @@ public class BestellingMenu  {
                 		}
                         
                 		// System.out.println(nieuweBestelling.getArtikel1_id() + " " + nieuweBestelling.getArtikel1_naam() + " " + nieuweBestelling.getArtikel1_prijs());
+                		
+                		System.out.println("CREATE ZAL WORDEN AANGEROEPEN");
                 		
                 		bestellingDaoImpl.create(nieuweBestelling);  
                 	}
