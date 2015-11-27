@@ -148,9 +148,7 @@ public class BestellingMenu  {
                 		}
                         
                 		// System.out.println(nieuweBestelling.getArtikel1_id() + " " + nieuweBestelling.getArtikel1_naam() + " " + nieuweBestelling.getArtikel1_prijs());
-                		
-                		System.out.println("CREATE ZAL WORDEN AANGEROEPEN");
-                		
+               		                	
                 		bestellingDaoImpl.create(nieuweBestelling);  
                 	}
                 			
