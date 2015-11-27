@@ -5,7 +5,7 @@
 set foreign_key_checks=0;  
  
 CREATE TABLE IF NOT EXISTS `adres` (
-  `adres_id` INT(11) NOT NULL ,
+  `adres_id` INT(11) NOT NULL AUTO_INCREMENT,
   `straatnaam` VARCHAR(26) NULL DEFAULT NULL,
   `postcode` VARCHAR(6) NULL DEFAULT NULL,
   `toevoeging` VARCHAR(6) NULL DEFAULT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS klant_adres (
        );
 	
 CREATE TABLE IF NOT EXISTS `artikel` (
-  `artikel_id` INT(11) NOT NULL ,
+  `artikel_id` INT(11) NOT NULL AUTO_INCREMENT,
   `artikel_naam` VARCHAR(20) NOT NULL ,
   `artikel_prijs` DOUBLE NOT NULL,
 	INDEX `artikel_id_idx` (`artikel_id` ASC) ,
