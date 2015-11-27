@@ -20,6 +20,13 @@ SET time_zone = "+00:00";
 -- Database: `opdracht1`
 --
 
+DROP DATABASE OPDRACHT1;
+
+CREATE DATABASE OPDRACHT1;
+
+USE OPDRACHT1;
+
+
 -- --------------------------------------------------------
 --
 -- Table structure for table `bestelling`
@@ -46,8 +53,8 @@ CREATE TABLE IF NOT EXISTS `bestelling` (
 -- Dumping data for table `bestelling`
 --
 
-INSERT INTO `bestelling` (`bestelling_id`, `klant_id`, `artikel1_id`, `artikel1_naam`, `artikel1_aantal`, `artikel1_prijs`, `artikel2_id`, `artikel2_naam`, `artikel2_aantal`, `artikel2_prijs`, `artikel3_id`, `artikel3_naam`, `artikel3_aantal`, `artikel3_prijs`) VALUES
-(1, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0, 0);
+-- INSERT INTO `bestelling` (`bestelling_id`, `klant_id`, `artikel1_id`, `artikel1_naam`, `artikel1_aantal`, `artikel1_prijs`, `artikel2_id`, `artikel2_naam`, `artikel2_aantal`, `artikel2_prijs`, `artikel3_id`, `artikel3_naam`, `artikel3_aantal`, `artikel3_prijs`) VALUES
+-- (1, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -121,15 +128,13 @@ ALTER TABLE `klant`
 set foreign_key_checks=0;  
  
 CREATE TABLE IF NOT EXISTS `adres` (
-  `adres_id` INT(11) NOT NULL ,
+  `adres_id` INT(11) NOT NULL AUTO_INCREMENT,
   `straatnaam` VARCHAR(26) NULL DEFAULT NULL,
   `postcode` VARCHAR(6) NULL DEFAULT NULL,
   `toevoeging` VARCHAR(6) NULL DEFAULT NULL,
   `huisnummer` VARCHAR(6) NULL DEFAULT NULL,
   `woonplaats` VARCHAR(26) NULL DEFAULT NULL,
-	INDEX `adres_id_idx` (`adres_id` ASC),
-	CONSTRAINT `adres_id`
-		FOREIGN KEY (`adres_id`) REFERENCES `opdracht1`.`klant_adres` (`adres_id`)	 
+	PRIMARY KEY (`adres_id`)
   );
     
 CREATE TABLE IF NOT EXISTS klant_adres (
@@ -140,13 +145,18 @@ CREATE TABLE IF NOT EXISTS klant_adres (
          FOREIGN KEY (`adres_id`) REFERENCES `opdracht1`.`adres` (`adres_id`)
        );
 	
+ALTER TABLE `klant` 
+DROP COLUMN `woonplaats`,
+DROP COLUMN `huisnummer`,
+DROP COLUMN `toevoeging`,
+DROP COLUMN `postcode`,
+DROP COLUMN `straatnaam`;
+
 CREATE TABLE IF NOT EXISTS `artikel` (
-  `artikel_id` INT(11) NOT NULL ,
+  `artikel_id` INT(11) NOT NULL AUTO_INCREMENT,
   `artikel_naam` VARCHAR(20) NOT NULL ,
   `artikel_prijs` DOUBLE NOT NULL,
-	INDEX `artikel_id_idx` (`artikel_id` ASC) ,
-	CONSTRAINT `artikel_id`
-		FOREIGN KEY (`artikel_id`) REFERENCES `opdracht1`.`bestelling_artikel` (`artikel_id`)	 
+	PRIMARY KEY (`artikel_id`)
   );
     
 CREATE TABLE IF NOT EXISTS bestelling_artikel (
@@ -158,13 +168,6 @@ CREATE TABLE IF NOT EXISTS bestelling_artikel (
          FOREIGN KEY (`artikel_id`) REFERENCES `opdracht1`.`artikel` (`artikel_id`)
        );
 	
-ALTER TABLE `klant` 
-DROP COLUMN `woonplaats`,
-DROP COLUMN `huisnummer`,
-DROP COLUMN `toevoeging`,
-DROP COLUMN `postcode`,
-DROP COLUMN `straatnaam`;  
-    
 ALTER TABLE `bestelling` 
 DROP COLUMN `artikel1_id`,
 DROP COLUMN `artikel1_naam` ,
@@ -178,3 +181,6 @@ DROP COLUMN `artikel3_id` ,
 DROP COLUMN `artikel3_naam` ,
 DROP COLUMN `artikel3_aantal`, 
 DROP COLUMN `artikel3_prijs`; 
+
+INSERT INTO `artikel` (`artikel_id`, `artikel_naam`, `artikel_prijs`) VALUES
+(1, 'Ipad Air 2', 599.99);
