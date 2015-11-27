@@ -54,34 +54,52 @@ public class AdresDaoImpl implements AdresDao{
 	}
 
 	@Override
-	public void insert(Adres adres) {			// Wordt nog aan gewerkt!!! --> melding als poging tot een tweede adres voor 1 klant invullen
+	public void insert(Adres adres) {					// Moet nog worden gecontroleerd.
 		int klant_id = adres.getKlant_id(); 
 		
-		if (checkKlant_id(klant_id)){
-			try {
+		try {
 				Connection connection = DBConnectivityManagement.getConnectionStatus();
-						
-				PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO adres (klant_id, straatnaam, postcode , toevoeging , huisnummer , woonplaats)VALUES(?,?,?,?,?,?)");
-
-					preparedStatement.setInt(1, adres.getKlant_id());
-					preparedStatement.setString(2, adres.getStraatnaam());
-					preparedStatement.setString(3, adres.getPostcode());
-					preparedStatement.setString(4, adres.getToevoeging());
-					preparedStatement.setInt(5, adres.getHuisnummer());
-					preparedStatement.setString(6, adres.getWoonplaats());
+				int adres_id = 0;
+								
+				if (checkKlant_id(klant_id)){ /*Adres kan alleen toegevoegd worden voor een bestaande klant --> Adres al in DB ?*/
+					PreparedStatement searchAdresStatement = connection.prepareStatement("SELECT adres_id FROM adres WHERE straatnaam = ?" + 
+							"AND postcode = ? AND toevoeging = ? AND huisnummer = ? AND woonplaats =?");
+					searchAdresStatement.setString(1, adres.getStraatnaam());
+					searchAdresStatement.setString(2,adres.getPostcode());
+					searchAdresStatement.setString(3, adres.getToevoeging());
+					searchAdresStatement.setInt(4,  adres.getHuisnummer());
+					searchAdresStatement.setString(5, adres.getWoonplaats());
 					
-					int rowsUpdated = preparedStatement.executeUpdate();
-					preparedStatement.close();
-							
-						if (rowsUpdated > 0){
-								System.out.println("Het adres is succesvol toegevoegd ");
-							}
-			} catch (SQLException e) {
+					ResultSet resultSetAdresReedsInDB = searchAdresStatement.executeQuery();
+					adres_id = resultSetAdresReedsInDB.getInt(1);
+					resultSetAdresReedsInDB.close();
+					searchAdresStatement.close();
+					
+					if (!resultSetAdresReedsInDB.next() ){ /*Adres toevoegen als nog niet in DB*/
+						PreparedStatement insertAdresStatement = connection.prepareStatement("INSERT INTO adres" +
+								"(straatnaam, postcode , toevoeging , huisnummer , woonplaats)VALUES (?,?,?,?,?)");
+						insertAdresStatement.setString(1, adres.getStraatnaam());
+						insertAdresStatement.setString(2, adres.getPostcode());
+						insertAdresStatement.setString(3, adres.getToevoeging());
+						insertAdresStatement.setInt(4, adres.getHuisnummer());
+						insertAdresStatement.setString(5, adres.getWoonplaats());
+
+						ResultSet resultSetInsertAdres = insertAdresStatement.executeQuery();
+						adres_id = resultSetInsertAdres.getInt(1);
+						resultSetInsertAdres.close();
+						insertAdresStatement.close();
+					}		
+					PreparedStatement adresBijKlantStatement = connection.prepareStatement("INSERT into klant_adres klant_id = ?, adres_id = ? ");/*klant_-d & adres_id invoegen in klant_adres tabel*/
+					adresBijKlantStatement.setInt(1, adres.getKlant_id());
+					adresBijKlantStatement.setInt(2, adres_id);
+					adresBijKlantStatement.executeQuery();
+					adresBijKlantStatement.close();
+				}	
+		} catch (SQLException e) {
 				e.printStackTrace();
-			}
+		}
 		System.out.println(adres.toString());
         System.out.println("Adres succesvol toegevoegd");
-		}
     }
 
 	@Override
@@ -118,25 +136,37 @@ public class AdresDaoImpl implements AdresDao{
 	}
 
 	@Override
-	public void updateAdres(Adres adres) {
+	public void updateAdres(Adres adres) {				// Moetnog worden gecontroleerd. Nog niet af!!!
 		int klant_id = adres.getKlant_id();
 		
-		if (checkKlant_id(klant_id)){
+		if (checkKlant_id(klant_id)){ 
 			try {
 				Connection connection = DBConnectivityManagement.getConnectionStatus();
-				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE adres SET straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE klant_id =? ");
-              
+				/*Controleren of er meerdere personen op het zelfde adres wonen*/
+				int adres_id = bijpassendAdres_id(klant_id);
+				PreparedStatement checkMeerPersOpAdresStatement = connection.prepareStatement("SELECT * FROM klant_adres WHERE adres_id=? AND klant_id IS NOT ?");
+				checkMeerPersOpAdresStatement.setInt(1,adres_id);
+				checkMeerPersOpAdresStatement.setInt(2, klant_id);
+				ResultSet meerPersOpAdres =checkMeerPersOpAdresStatement.executeQuery(); 
+				checkMeerPersOpAdresStatement.close();
+				meerPersOpAdres.close(); 
+				
+				if (meerPersOpAdres.next()){ /* Enkel uit klant_adres tabel regel verwijderen*/
+					PreparedStatement verwijderKlantBijAdresStatement = connection.prepareStatement("DELETE * FROM klant_adres WHERE klant_id=?");
+					verwijderKlantBijAdresStatement.setInt(1, klant_id);
+					verwijderKlantBijAdresStatement.executeQuery();
+					verwijderKlantBijAdresStatement.close();
+					insert(adres);
+				}
+				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE adres SET straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=?");
 				preparedStatement.setString(1, adres.getStraatnaam());
 				preparedStatement.setString(2, adres.getPostcode());
 				preparedStatement.setString(3, adres.getToevoeging());
 				preparedStatement.setInt(4, adres.getHuisnummer());
 				preparedStatement.setString(5, adres.getWoonplaats());
-				preparedStatement.setInt(6, adres.getKlant_id());
 
 				preparedStatement.executeUpdate();
 				preparedStatement.close();
-               
-               
 
 			} catch (SQLException e){
 				e.printStackTrace();
@@ -203,7 +233,7 @@ public class AdresDaoImpl implements AdresDao{
 		System.out.println(adressenStraatnaam);
 		return adressenStraatnaam;
 	}
-	
+
 	public List<Adres> searchAdres(String postcode, int huisnummer) {
 		List<Adres> adressenPostcodeAndHuisnummer = new LinkedList<Adres>();
 		ResultSet resultSet;
@@ -267,6 +297,72 @@ public class AdresDaoImpl implements AdresDao{
 		}
 		
 		return result;
+	}
+	
+	public boolean checkAdres_id(int adres_id) {
+		PreparedStatement preparedStatement;
+		ResultSet resultSet;
+		boolean result = false;
+		
+		try {
+			Connection connection = DBConnectivityManagement.getConnectionStatus();
+			preparedStatement = connection.prepareStatement("SELECT * FROM adres WHERE adres_id=?");
+			preparedStatement.setInt(1, adres_id);
+			resultSet = preparedStatement.executeQuery(); 
+			
+			// preparedStatement.close(); uitgecomment op 21/11/15 AU 	-->		Staat nu zowel bij if als else 23-11-2015 EB
+
+			if (resultSet.next()){
+				result = true;
+				preparedStatement.close();
+			} else {
+				System.out.println("Het opgegeven adres_id bevindt zich niet in de database...");
+				preparedStatement.close();
+			}
+
+		} catch (SQLException e) {
+                e.printStackTrace();	
+		}
+		
+		return result;
+	}
+
+	public int bijpassendAdres_id(int klant_id){
+		ResultSet resultSet;
+		int adres_id = 0;
+		
+		try {
+			Connection connection = DBConnectivityManagement.getConnectionStatus();
+			PreparedStatement preparedStatement = connection.prepareStatement("SELECT adres_id FROM klant_adres WHERE klant_id=?");
+			preparedStatement.setInt(1,  klant_id);
+			resultSet = preparedStatement.executeQuery();
+			
+			adres_id = resultSet.getInt(1);
+			return adres_id;
+			
+		} catch (SQLException e) {
+            e.printStackTrace();
+		}
+		return adres_id;
+	}
+	
+	public int bijpassendKlant_id(int adres_id){
+		ResultSet resultSet;
+		int klant_id = 0;
+		
+		try {
+			Connection connection = DBConnectivityManagement.getConnectionStatus();
+			PreparedStatement preparedStatement = connection.prepareStatement("SELECT klant_id FROM klant_adres WHERE adres_id=?");
+			preparedStatement.setInt(1,  adres_id);
+			resultSet = preparedStatement.executeQuery();
+			
+			adres_id = resultSet.getInt(1);
+			return klant_id;
+			
+		} catch (SQLException e) {
+            e.printStackTrace();
+		}
+		return klant_id;
 	}
 }
 	

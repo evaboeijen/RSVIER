@@ -3,7 +3,7 @@ package business;
 public class Adres {
 	
 	private int klant_id;
-	
+	private int adres_id;
 	String straatnaam;
 	String postcode;
 	String toevoeging;
@@ -13,14 +13,18 @@ public class Adres {
 	public Adres(){}
 	
 	public Adres(int klant_id, String straatnaam, String postcode, String toevoeging, int huisnummer, String woonplaats ){
-	this.klant_id =  klant_id;
+	this.klant_id   = klant_id;
 	this.straatnaam = straatnaam;
-	this.postcode = postcode;
+	this.postcode   = postcode;
 	this.toevoeging = toevoeging;
 	this.huisnummer = huisnummer;
 	this.woonplaats = woonplaats;
 	}
 	
+	public int getAdres_id() {
+		return adres_id;
+	}
+
 	public String getStraatnaam() {
 		return straatnaam;
 	}
@@ -71,10 +75,9 @@ public class Adres {
 
 	@Override
 	public String toString() {
-		return  "\n\tKlant_id: " 		+ getKlant_id()+
-				"\nStraatnaam: " 	+  getStraatnaam() + 
+		return  "\nStraatnaam: " 	+ getStraatnaam() + 
 				"\nPostcode: " 		+ getPostcode() + 
-				"\nToevoeging: " 	+ 	getToevoeging() + 
+				"\nToevoeging: " 	+ getToevoeging() + 
 				"\nHuisnummer: " 	+ getHuisnummer() + 
 				"\nWoonplaats: " 	+ getWoonplaats() + 
 				"\n";
