@@ -45,8 +45,7 @@ public class BestellingDaoImpl implements BestellingDao {
 	public int create(Bestelling bestelling){
 	        
 		PreparedStatement preparedStatement1 ;	// aangepast tbv opdracht 5 || 26/11/15 AU
-		PreparedStatement preparedStatement2 ;	// toegevoegd tbv opdracht 5 || 26/11/15 AU
-		PreparedStatement preparedStatement3 ; 	// toegevoegd tbv opdracht 5 || 26/11/15 AU
+		PreparedStatement preparedStatement2 ;	// toegevoegd tbv opdracht 5 || 26/11/15 AU	
 		
 	        // int rowsCreated = 0; // uitgecomment tbv opdracht 5 || 26/11/15 AU
 	        int rowsCreated = 0; // toegevoegd tbv opdracht 5 || 26/11/15 AU
@@ -57,8 +56,7 @@ public class BestellingDaoImpl implements BestellingDao {
 			*/
 	        // toegevoegd tbv opdracht 5 || 26/11/15 AU
 	        String sql1 = "insert into Bestelling (bestelling_id, klant_id) values (?, ?)";
-	        //String sql2 = "insert into Artikel (artikel_id, artikel_naam, artikel_prijs) values (?, ?, ?)";
-	        String sql3 = "insert into Bestelling_Artikel (bestelling_id, artikel_id, artikel_aantal) values (?, ?, ?)";
+	        String sql2 = "insert into Bestelling_Artikel (bestelling_id, artikel_id, artikel_aantal) values (?, ?, ?)";
 	        
 	        try {
 	                 
@@ -90,25 +88,18 @@ public class BestellingDaoImpl implements BestellingDao {
 	            */
 	            
 	            // toegevoegd tbv opdracht 5 || 26/11/15 AU
-	            preparedStatement3 = connection.prepareStatement(sql3);
-	            preparedStatement3.setInt(1, bestelling.getBestelling_id());
-	            preparedStatement3.setInt(2, bestelling.getArtikel_id());
-	            preparedStatement3.setInt(3, bestelling.getArtikel_aantal());
+	            preparedStatement2 = connection.prepareStatement(sql2);
+	            preparedStatement2.setInt(1, bestelling.getBestelling_id());
+	            preparedStatement2.setInt(2, bestelling.getArtikel_id());
+	            preparedStatement2.setInt(3, bestelling.getArtikel_aantal());
 	            
-	            System.out.println("nieuwe bestelling ID " + bestelling.getBestelling_id()); //test
-	            rowsCreated = preparedStatement1.executeUpdate();
-	            System.out.println("1st query : " + rowsCreated); 	// test
+
+	            rowsCreated = preparedStatement1.executeUpdate();            	           
+	            preparedStatement2.executeUpdate();	        
+
 	            
-	            //int rowsCreated2 = preparedStatement2.executeUpdate();
-	            //System.out.println("2nd query : " + rowsCreated2); 	// test
-	            
-	            System.out.println("nieuwe bestelling ID " + bestelling.getBestelling_id()); //test
-	            int rowsCreated3 = preparedStatement3.executeUpdate();	        
-	            System.out.println("3rd query : " + rowsCreated3); 	// test
-	            
-	            preparedStatement1.close();
-	            //preparedStatement2.close();
-	            preparedStatement3.close();
+	            preparedStatement1.close();	            
+	            preparedStatement2.close();
 	        
 	            
 	        } catch (SQLException e) {
@@ -135,13 +126,24 @@ public class BestellingDaoImpl implements BestellingDao {
 	                Connection connection = DBConnectivityManagement.getConnectionStatus();	           
 	                
 	        	 	Statement statement = connection.createStatement();	               
-	                ResultSet resultSet = statement.executeQuery("SELECT * FROM bestelling");
-	                 
+	                // oude query : ResultSet resultSet = statement.executeQuery("SELECT * FROM bestelling");
+	                // nieuwe query tbv opdracht 5 :
+	        	 	ResultSet resultSet = statement.executeQuery("SELECT * FROM bestelling JOIN bestelling_artikel JOIN artikel WHERE (bestelling.bestelling_id = bestelling_artikel.bestelling_id AND bestelling_artikel.artikel_id = artikel.artikel_id)");
+	        	 	
+	        	 	
+	        	 	
 	                Bestelling bestelling;
 	                while(resultSet.next()){
 	                    bestelling = new Bestelling();
-	                    bestelling.setBestelling_id(resultSet.getInt("bestelling_id"));
-	                    bestelling.setKlant_id(resultSet.getInt("klant_id"));
+	                    bestelling.setBestelling_id(resultSet.getInt("bestelling_id"));	                   	                   	                    
+	                    bestelling.setKlant_id(resultSet.getInt("klant_id"));	
+	                    // nieuwe statements tbv opdracht 5 - 27/11/15 - AU
+	                    bestelling.setArtikel_id(resultSet.getInt("artikel_id"));
+	                    bestelling.setArtikel_naam(resultSet.getString("artikel_naam"));
+	                    bestelling.setArtikel_aantal(resultSet.getInt("artikel_aantal"));
+	                    bestelling.setArtikel_prijs(resultSet.getDouble("artikel_prijs"));
+	                    
+	                    /* uitgecomment tbv opdracht 5 - 27/11/15 - AU
 	                    bestelling.setArtikel1_id(resultSet.getInt("artikel1_id"));
 	                    bestelling.setArtikel1_naam(resultSet.getString("artikel1_naam"));
 	                    bestelling.setArtikel1_aantal(resultSet.getInt("artikel1_aantal"));
@@ -154,6 +156,7 @@ public class BestellingDaoImpl implements BestellingDao {
 	                    bestelling.setArtikel3_naam(resultSet.getString("artikel3_naam"));
 	                    bestelling.setArtikel3_aantal(resultSet.getInt("artikel3_aantal"));
 	                    bestelling.setArtikel3_prijs(resultSet.getDouble("artikel3_prijs"));
+	                    */
 	                  
 	                    bestellingen.add(bestelling);
 	                }
