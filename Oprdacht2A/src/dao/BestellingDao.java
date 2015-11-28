@@ -16,4 +16,6 @@ public interface BestellingDao {
 	public boolean checkBestelling_id(int bestelling_id);	// toegevoegd 21/11/15 AU
 	public boolean checkArtikel_id(int artikel_id);			// toegevoegd 21/11/15 AU
 	public int checkHoogste_Bestelling_id();				// toegevoegd 21/11/15 AU
+	public boolean checkArtikelAlAanwezigInBestelling(int bestelling_id, int artikel_id); //toegevoegd 28/11/15 AU
+	public int deleteArtikelFromBestelling(Bestelling bestelling); //toegevoegd 28/11/15 AU
 }	

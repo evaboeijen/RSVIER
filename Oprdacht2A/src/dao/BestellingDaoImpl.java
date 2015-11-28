@@ -173,16 +173,18 @@ public class BestellingDaoImpl implements BestellingDao {
 	public int update(Bestelling bestelling) {       	        
 	
         int bestelling_id = bestelling.getBestelling_id();       
-        int new_artikel_id = bestelling.getArtikel1_id();
-        String new_artikel_naam = bestelling.getArtikel1_naam();
-        int new_artikel_aantal = bestelling.getArtikel1_aantal();
-        double new_artikel_prijs = bestelling.getArtikel1_prijs();	
-               
-        int rowsUpdated2 = 0;
-        int rowsUpdated3 = 0;
+        int new_artikel_id = bestelling.getArtikel_id();
+        String new_artikel_naam = bestelling.getArtikel_naam();
+        int new_artikel_aantal = bestelling.getArtikel_aantal();
+        double new_artikel_prijs = bestelling.getArtikel_prijs();	
+        
+        int rowsUpdated = 0;
+  
+        //int rowsUpdated2 = 0;
+        //int rowsUpdated3 = 0;
 					
 		PreparedStatement preparedStatement ;
-					String sql = "select * from Bestelling where bestelling_id = ?";
+					String sql = "SELECT * FROM bestelling JOIN bestelling_artikel JOIN artikel WHERE (bestelling.bestelling_id = ? AND bestelling.bestelling_id = bestelling_artikel.bestelling_id AND bestelling_artikel.artikel_id = artikel.artikel_id)";
 	    	        
 	   	         try {	  
 	   	        	 	Connection connection = DBConnectivityManagement.getConnectionStatus();
@@ -204,12 +206,15 @@ public class BestellingDaoImpl implements BestellingDao {
 	   		            System.out.println();
 	   		            System.out.println("Het opgegeven bestellings ID / Ordernummer luidt: " + bestelling_id);
 	   		            
-	   		            while(rset.next()){	   		        
-		                    int artikelnummer1 = rset.getInt("artikel1_id");
-		                    int artikelnummer2 = rset.getInt("artikel2_id");
-		                    int artikelnummer3 = rset.getInt("artikel3_id");
+	   		            //while(rset.next()){	   	
+	   		            	// opdracht 5 - 27/11/15 - AU : 
+	   		            	//int artikelnummer = rset.getInt("artikel_id");
+	   		            	// opdracht 5 - 27/11/15 - AU : int artikelnummer1 = rset.getInt("artikel1_id");
+		                    // opdracht 5 - 27/11/15 - AU : int artikelnummer2 = rset.getInt("artikel2_id");
+		                    // opdracht 5 - 27/11/15 - AU : int artikelnummer3 = rset.getInt("artikel3_id");
 
-			            	String sql2 = "UPDATE bestelling SET artikel2_id=?, artikel2_naam=?, artikel2_aantal=?, artikel2_prijs=? WHERE bestelling_id = ?";
+			            	/* uitgecomment tbv opdracht 5 - 27/11/15 - AU
+	   		            	String sql2 = "UPDATE bestelling SET artikel2_id=?, artikel2_naam=?, artikel2_aantal=?, artikel2_prijs=? WHERE bestelling_id = ?";
 			            	String sql3 = "UPDATE bestelling SET artikel3_id=?, artikel3_naam=?, artikel3_aantal=?, artikel3_prijs=? WHERE bestelling_id = ?";	
 			            	                
 			            	 if (artikelnummer3 != 0) {
@@ -243,22 +248,32 @@ public class BestellingDaoImpl implements BestellingDao {
 					                 System.out.println(new_artikel_naam + " (" + new_artikel_aantal + " stuks)" + " is succesvol toegevoegd!");
 					                 System.out.println("Deze bestelling bevat nu het maximale aantal van 3 verschillende artikelen.");
 				                 }
-			            	 }
+			            	 } */
 		                    
-		                    
-		               
-	   		            }
-	   		            	   		           
-		                rset.close();
-		                preparedStatement.close();
-		                 
-		            } 
+	   		            	  		            	
+	   		            // nieuw tbv opdracht 5 - 27/11/15 - AU	
+	   		            	String sql2 = "insert into Bestelling_Artikel (bestelling_id, artikel_id, artikel_aantal) values (?, ?, ?)";
+			            				            	                               
+			 	                 PreparedStatement statement1 = connection.prepareStatement(sql2);
+			 	                 statement1.setInt(1, bestelling_id);
+			 	                 statement1.setInt(2, new_artikel_id);
+			            		 statement1.setInt(3, new_artikel_aantal);
+		            		 
+			            		 int rowsUpdated1 = 0;
+			 	            	 rowsUpdated = statement1.executeUpdate();
+				                 if (rowsUpdated1 > 0) {
+				                	 System.out.println(new_artikel_naam + " (" + new_artikel_aantal + " stuks)" + " succesvol toegevoegd!");
+				                 } 	
+				                 return rowsUpdated1;
+	   	         			}
 				                 
 				    catch (SQLException e) {
 		                e.printStackTrace();
 		            }
 	   		             
-	   	  if(rowsUpdated2 > 0) {	   	          	         
+	   	         
+	   	   // opdracht 5 - 27/11/15 - AU :        
+	   	  /* if(rowsUpdated2 > 0) {	   	          	         
 	   		  System.out.println("Aantal rijen geupdate : " + rowsUpdated2);
 	   		  return rowsUpdated2;
 	   	  }
@@ -269,8 +284,11 @@ public class BestellingDaoImpl implements BestellingDao {
 	   	  else {
 	   		  System.out.println("Aantal rijen geupdate : 0");
 	   		  return 0;
-	   	  }
-	   	     	     	   	  
+	   	  } */
+	   	         
+	   	   // opdracht 5 - 27/11/15 - AU : 
+	   	      return rowsUpdated;
+	   		  
 	}
 		
 	            	 
@@ -286,7 +304,7 @@ public class BestellingDaoImpl implements BestellingDao {
 
 				Connection connection = DBConnectivityManagement.getConnectionStatus();
 					
-				PreparedStatement statement = connection.prepareStatement("DELETE FROM Bestelling WHERE bestelling_id=?");
+				PreparedStatement statement = connection.prepareStatement("DELETE bestelling_artikel FROM bestelling_artikel WHERE bestelling_id = ?");
 				statement.setInt(1, bestelling_id);
 
 				rowsDeleted = statement.executeUpdate();
@@ -311,7 +329,43 @@ public class BestellingDaoImpl implements BestellingDao {
 		}
 
 	 
-	
+		@Override
+	public int deleteArtikelFromBestelling(Bestelling bestelling) {
+			
+			int bestelling_id = bestelling.getBestelling_id(); 
+			int artikel_id = bestelling.getArtikel_id();
+			int rowsDeleted = 0;
+			
+			try {
+
+				Connection connection = DBConnectivityManagement.getConnectionStatus();
+					
+				PreparedStatement statement = connection.prepareStatement("DELETE bestelling_artikel FROM bestelling_artikel WHERE bestelling_artikel.artikel_id = ?");
+				statement.setInt(1, artikel_id);
+
+				rowsDeleted = statement.executeUpdate();
+				if (rowsDeleted > 0) {
+					System.out.println();
+					System.out.println("Artikel " + artikel_id + " is gewist van bestelling " + bestelling_id + ".");													
+				}
+				else {
+					System.out.println();
+					System.out.println("Artikel " + artikel_id + " bestaat niet in bestelling " + bestelling_id + ".");	
+				}
+									
+			} 
+			
+			catch (SQLException e) {
+				e.printStackTrace();	
+			}
+		
+			System.out.println("Aantal rijen verwijderd : " + rowsDeleted);			
+			return rowsDeleted;
+		
+		}
+
+		
+		
 	     
 	 public void closeDBConnection(){
 	        try {
@@ -412,6 +466,41 @@ public class BestellingDaoImpl implements BestellingDao {
         
 			
 	}
+	
+	@Override	
+	public boolean checkArtikelAlAanwezigInBestelling(int bestelling_id, int artikel_id) {		// toegevoegd 28/11/15 AU
+	
+		
+			// System.out.println("checkArtikelAlAanwezigInBestelling wordt uitgevoerd"); debugstatement
+		
+			PreparedStatement preparedStatement;
+			ResultSet resultSet;
+			boolean result = false;
+			
+			try {
+				
+				Connection connection = DBConnectivityManagement.getConnectionStatus(); 
+				
+				// uitgecomment tbv opdracht 5 || AU 26/11/15 : preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE (artikel1_id=? OR artikel2_id=? OR artikel3_id=?)");
+				
+				// nieuw tbv opdracht 5 || AU 26/11/15
+				preparedStatement = connection.prepareStatement("select * from Bestelling_Artikel where bestelling_id = ? AND artikel_id = ?");
+				preparedStatement.setInt(1, bestelling_id);
+				preparedStatement.setInt(2, artikel_id);
+				// preparedStatement.setInt(3, artikel_id);
+				resultSet = preparedStatement.executeQuery(); 
+				
+				if (resultSet.next()){
+					result = true;
+					System.out.println("Het opgegeven artikelnummer zit al in deze bestelling...");
+				} 
+
+			} catch (SQLException e) {
+	                e.printStackTrace();	
+			}
+			return result;
+		}
+	
 	 
 }
 	
