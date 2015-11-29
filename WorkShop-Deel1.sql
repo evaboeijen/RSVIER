@@ -53,8 +53,6 @@ CREATE TABLE IF NOT EXISTS `bestelling` (
 -- Dumping data for table `bestelling`
 --
 
--- INSERT INTO `bestelling` (`bestelling_id`, `klant_id`, `artikel1_id`, `artikel1_naam`, `artikel1_aantal`, `artikel1_prijs`, `artikel2_id`, `artikel2_naam`, `artikel2_aantal`, `artikel2_prijs`, `artikel3_id`, `artikel3_naam`, `artikel3_aantal`, `artikel3_prijs`) VALUES
--- (1, 0, 0, '', 0, 0, 0, '', 0, 0, 0, '', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -98,7 +96,7 @@ ALTER TABLE `bestelling`
   ADD PRIMARY KEY (`bestelling_id`),
   ADD UNIQUE KEY `bestelling_id` (`bestelling_id`),
   ADD KEY `klant_id_idx` (`klant_id`);
-
+  
 --
 -- Indexes for table `klant`
 --
@@ -130,7 +128,9 @@ ALTER TABLE `klant`
 -- naar het databaseschema van opdracht 5 (many to many database schema)
 
 set foreign_key_checks=0;  
- 
+
+ALTER TABLE bestelling ADD CONSTRAINT fk_bestelling_klant_id FOREIGN KEY (`klant_id`) REFERENCES `opdracht1`.`klant` (`klant_id`) ON UPDATE CASCADE ON DELETE CASCADE;
+
 CREATE TABLE IF NOT EXISTS `adres` (
   `adres_id` INT(11) NOT NULL AUTO_INCREMENT,
   `straatnaam` VARCHAR(26) NULL DEFAULT NULL,
@@ -145,8 +145,8 @@ CREATE TABLE IF NOT EXISTS klant_adres (
          `klant_id`   INT(11) NOT NULL,
          `adres_id`  INT(11) NOT NULL,
          PRIMARY KEY (`klant_id`, `adres_id`),
-         FOREIGN KEY (`klant_id`) REFERENCES `opdracht1`.`klant` (`klant_id`),
-         FOREIGN KEY (`adres_id`) REFERENCES `opdracht1`.`adres` (`adres_id`)
+         FOREIGN KEY (`klant_id`) REFERENCES `opdracht1`.`klant` (`klant_id`) ON UPDATE CASCADE ON DELETE CASCADE,
+         FOREIGN KEY (`adres_id`) REFERENCES `opdracht1`.`adres` (`adres_id`) ON UPDATE CASCADE ON DELETE CASCADE
        );
 	
 ALTER TABLE `klant` 
@@ -168,8 +168,8 @@ CREATE TABLE IF NOT EXISTS bestelling_artikel (
          `artikel_id` INT(11) NOT NULL,
          `artikel_aantal` INT(11) NOT NULL,
          PRIMARY KEY (`bestelling_id`, `artikel_id`),
-         FOREIGN KEY (`bestelling_id`) REFERENCES `opdracht1`.`bestelling` (`bestelling_id`),
-         FOREIGN KEY (`artikel_id`) REFERENCES `opdracht1`.`artikel` (`artikel_id`)
+         FOREIGN KEY (`bestelling_id`) REFERENCES `opdracht1`.`bestelling` (`bestelling_id`) ON UPDATE CASCADE ON DELETE CASCADE,
+         FOREIGN KEY (`artikel_id`) REFERENCES `opdracht1`.`artikel` (`artikel_id`) ON UPDATE CASCADE ON DELETE CASCADE
        );
 	
 ALTER TABLE `bestelling` 
