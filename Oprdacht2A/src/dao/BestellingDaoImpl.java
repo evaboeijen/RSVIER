@@ -304,7 +304,7 @@ public class BestellingDaoImpl implements BestellingDao {
 
 				Connection connection = DBConnectivityManagement.getConnectionStatus();
 					
-				PreparedStatement statement = connection.prepareStatement("DELETE bestelling_artikel FROM bestelling_artikel WHERE bestelling_id = ?");
+				PreparedStatement statement = connection.prepareStatement("DELETE FROM bestelling WHERE bestelling_id = ?");
 				statement.setInt(1, bestelling_id);
 
 				rowsDeleted = statement.executeUpdate();

@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import dao.*;
@@ -32,6 +34,8 @@ public class DeleteMenu  {
 	String gewensteArtikelNaam = null;
 	int gewensteArtikelPrijs = 0;
 	int gewensteAantal = 0;
+	Artikel artikel = new Artikel(); 
+	List<Artikel> alleArtikelen = null;
 	
 	
 	public void toonMenu() {
@@ -268,7 +272,47 @@ public class DeleteMenu  {
             	break; 
                 	
             case 4:	
-            	System.out.println("Hier komt een nieuwe methode om artikelen uit het assortiment te verwijderen");   
+        		System.out.println();
+        		System.out.println("Hieronder een overzicht van alle artikelen uit het assortiment: ");
+                
+            	try {
+            		Connection connection = DBConnectivityManagement.getConnectionStatus();
+                    	
+            		Statement statement = connection.createStatement();
+            		 
+            		//aanpassing tbv opdracht 5 || AU 26/11/15
+            		ResultSet resultSet = statement.executeQuery("SELECT DISTINCT(ARTIKEL_ID), ARTIKEL_NAAM, ARTIKEL_PRIJS FROM Artikel"); 
+                    
+            		resultSet.beforeFirst();
+            		
+            		while(resultSet.next()){
+            			System.out.println("artikel_id: " + resultSet.getInt("Artikel_id") + "\tartikelnaam: " + resultSet.getString("Artikel_naam") + "\tprijs: " + resultSet.getDouble("Artikel_prijs"));                                                                             			
+            		}
+            		
+            		resultSet.close();
+            		statement.close();                                
+            	} 
+            	
+        		catch (SQLException e) {
+        			e.printStackTrace();
+        		}
+        			
+        		finally {
+        			// zinnige code
+        		}
+            	
+            	System.out.print("\nVoer het artikel ID in van het artikel dat je wil verwijderen uit het assortiment: ");
+            	System.out.println(); 
+            	int gewensteArtikel_id = input.nextInt();
+            	while (bestellingDaoImpl.checkArtikel_id(gewensteArtikel_id)!= true) { 
+            		System.out.print("\nVoer een ander artikelnummer in: ");
+            		gewensteArtikel_id = input.nextInt();
+            		System.out.println();
+            	}    
+            	
+            	gewensteBestelling_id = 0; // LATER TE VERWIJDEREN ZODRA DELETE METHOD VAN ARTIKELDAOIMPL IS AANGEPAST - 29/11/15 AU
+            	artikelDaoImpl.delete(gewensteBestelling_id, gewensteArtikel_id); // LATER AAN TE PASSEN ZODRA DELETE METHOD VAN ARTIKELDAOIMPL IS AANGEPAST - 29/11/15 AU
+            	
             	toonMenu();
             	break; 
             	
