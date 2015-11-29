@@ -24,6 +24,9 @@ public class Adres {
 	public int getAdres_id() {
 		return adres_id;
 	}
+	public void setAdres_id(int adres_id) {
+		this.adres_id = adres_id;
+	}
 
 	public String getStraatnaam() {
 		return straatnaam;
@@ -75,7 +78,8 @@ public class Adres {
 
 	@Override
 	public String toString() {
-		return  "\nStraatnaam: " 	+ getStraatnaam() + 
+		return  "\nAdresnummer: " + getAdres_id() +
+				"\nStraatnaam: " 	+ getStraatnaam() + 
 				"\nPostcode: " 		+ getPostcode() + 
 				"\nToevoeging: " 	+ getToevoeging() + 
 				"\nHuisnummer: " 	+ getHuisnummer() + 

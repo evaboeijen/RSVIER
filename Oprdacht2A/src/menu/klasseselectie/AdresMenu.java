@@ -24,13 +24,13 @@ public class AdresMenu {
 				System.out.println("Een straatnaam mag niet meer dan 26 karakters bevatten! \nStraatnaam: ");
 					straatnaam = input.next();
 				}			
-		System.out.println("Postcode (zonder spatie) : ");
+		System.out.println("Postcode: 			( zonder spatie ) ");
 			String postcode = input.next();
 				while (postcode.length() > 6){
 				System.out.println("Een postcode mag niet meer dan 6 karakters bevatten! \nPostcode: ");
 					straatnaam = input.next();
 				}
-		System.out.println("Toevoeging: ");
+		System.out.println("Toevoeging: 		( als geen toevoeging vul - in ) ");
 			String toevoeging =  input.next();
 				while (toevoeging.length() > 6){
 				System.out.println("Een toevoeging mag niet meer dan 6 karakters bevatten! \nToevoeging: ");
@@ -54,51 +54,44 @@ public class AdresMenu {
 
 	public void toonMenu() {
 		Adres adres = null;
-		
-	    System.out.println("\n\t----------");
+
+		System.out.println("\n\t----------");
 	    System.out.println("\tAdres Menu");
-	    System.out.println("\t----------");
-	   
-	    System.out.println("");
-	    
+	    System.out.println("\t----------\n");
+
 	    System.out.println("1. Create:      Creëer een nieuw adres voor bestaande klant");
 	    System.out.println("2. Read:        Lees alle adressen uit de tabel");
 	    System.out.println("3. Read:        Zoek op straatnaam");
 	    System.out.println("4. Read:        Zoek op de combinatie van postcode & huisnummer");
 	    System.out.println("5. Update:      Verander het adres van een bestaande klant");
-	    System.out.println("6. Delete:      Verwijder het adres van een bestaande klant");    
+	    System.out.println("6. Delete:      Verwijder het adres van een bestaande klant/n");    
 
-	    System.out.println("");
-	    
 	    System.out.println("10. Terug naar het vorige menu"); 
 	    System.out.println("11. Terug naar het hoofdmenu"); 
-	    System.out.println("12. Stoppen");
-	    
-	    System.out.println("");
-	    
+	    System.out.println("12. Stoppen/n");
+
 	    System.out.println("Voer optie in en druk op Enter:");
-	    
+
 	    Scanner input = new Scanner(System.in);
-	    
+
 	    try {		     
-        
-	    
+
 			int keuze = input.nextInt();
 		       
 			switch (keuze) {
-            	case 1:
+            	case 1://Create --> adres
             		System.out.println("Voer het nieuw toetevoegen adres in: ");
             			adres = createAdresObject();
             		adresDaoImpl.insert(adres);
             		toonMenu();
             		break;
                 
-            	case 2:
+            	case 2://Read --> alle adresen
             		adresDaoImpl.readAllAdresses();
             		toonMenu();
             		break;
                 
-            	case 3:
+            	case 3://Read --> straatnaam
             		System.out.println("Voer de straatnaam in waarop u de tabel wil doorzoeken: ");
             			String straatnaam = input.next();
             			while (straatnaam.length() > 26){
@@ -109,7 +102,7 @@ public class AdresMenu {
             		toonMenu();
             		break;
                 	
-            	case 4:
+            	case 4://Read --> postcode & huisnummer
             		System.out.println("Voer de postcode in, zonder spatie: ");
             			String postcode = input.next();
             			while (postcode.length() > 6){
@@ -126,14 +119,14 @@ public class AdresMenu {
             		toonMenu();
             		break;
             	
-            	case 5:
+            	case 5://Update --> adres
             		System.out.println("Voer de gegevens in van het bij te werken adres ");
             			adres = createAdresObject();
             		adresDaoImpl.updateAdres(adres);
             		toonMenu();
             		break;
             	
-            	case 6:
+            	case 6://Delete --> adres
             		System.out.println("Voer klantnummer van het te verwijderen adres in: ");
             		int klant_id = input.nextInt();
             			adres = new Adres(klant_id, "-", "-", "-", 1, "-");
@@ -143,17 +136,17 @@ public class AdresMenu {
             	
             	
             	
-            	case 10:
+            	case 10://Terug naar het vorige menu
             		KlasseSelectieMenu klasseSelectieMenu = new KlasseSelectieMenu();
             		klasseSelectieMenu.toonMenu();
             		break;
             	
-            	case 11:
+            	case 11://Hoofdmenu
             		HoofdMenu hoofdMenu =  new HoofdMenu();
             		hoofdMenu.toonMenu();
             		break;
             	
-            	case 12:
+            	case 12://Stoppen
             		System.out.println("\nTot de volgende keer...");
             		System.exit(1);
             		break;
@@ -162,14 +155,9 @@ public class AdresMenu {
             		System.out.println("\n! Ongeldige optie, probeer het nogmaals !\n");
             		this.toonMenu();
 			} 
-        
 		}
-		
 		finally {
-			// zinnige code			
+			System.out.println("---Uw keuze is uitgevoerd---");		
 		}	
-
 	}
-	
 }
-

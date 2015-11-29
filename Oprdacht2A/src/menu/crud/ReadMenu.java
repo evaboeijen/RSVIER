@@ -40,12 +40,12 @@ public class ReadMenu {
 		    int klant_id;
 			
 			switch (keuze) {
-            	case 1:
+            	case 1://klant --> voledige tabel
             		klantDaoImpl.read();
             		toonMenu();
             		break;
                 
-            	case 2:
+            	case 2://Klant --> klantnummer 
             		System.out.println("Voer het klantnummer in waarop u de tabel klant wilt doorzoeken: ");
             		klant_id = input.nextInt();
             			while (adresDaoImpl.checkKlant_id(klant_id)!= true){ 
@@ -56,7 +56,7 @@ public class ReadMenu {
             		toonMenu();            		
             		break;
                 
-            	case 3:
+            	case 3://Klant --> voornaam
             		System.out.println("Voer de voornaam in waarop u de tabel klant wilt doorzoeken: ");
             		String voornaam = input.next();
             			while (voornaam.length() > 50){
@@ -67,12 +67,12 @@ public class ReadMenu {
             		toonMenu();
             		break;
                 	
-            	case 4:
+            	case 4://Adres --> voledige tabel
             		adresDaoImpl.readAllAdresses();
             		toonMenu();
             		break;
             	
-            	case 5:
+            	case 5://Adres --> straatnaam 
             		System.out.println("Voer de straatnaam in waarop u de tabel wilt doorzoeken: ");
         			String straatnaam = input.next();
         			while (straatnaam.length() > 26){
@@ -83,7 +83,7 @@ public class ReadMenu {
         		toonMenu();
         			break;
             	
-            	case 6:
+            	case 6://Adres --> postcode & huisnummer
             		System.out.println("Voer de postcode in, zonder spatie: ");
         			String postcode = input.next();
         			while (postcode.length() > 6){
@@ -100,12 +100,12 @@ public class ReadMenu {
         			toonMenu();
         			break;
         			
-            	case 7:
+            	case 7://Artikel --> voledige tabel
             		System.out.println(artikelDaoImpl.read());
             		toonMenu();
             		break;
             		
-            	case 8:
+            	case 8://Artikel --> artikelnummer & bestellingnummer
             		System.out.println("Voer het artikelnummer in: ");
             		int artikel_id = input.nextInt();								// controle geldig artikel id dmv methode
             		System.out.println("Voer het bestellingnummer in ");
@@ -114,22 +114,24 @@ public class ReadMenu {
             		toonMenu();
             		break;
             		
-            	case 9:
+            	case 9://Bestelling --> voledige tabel
             		System.out.println(bestellingDaoImpl.read());
             		toonMenu();
             		break;
             	
-            	case 10:
+            	
+            	
+            	case 10://Terug naar het vorige menu
             		KlasseSelectieMenu klasseSelectieMenu = new KlasseSelectieMenu();
             		klasseSelectieMenu.toonMenu();
             		break;
             		
-            	case 11:
+            	case 11://Hoofdmenu
             		HoofdMenu hoofdMenu =  new HoofdMenu();
             		hoofdMenu.toonMenu();
             		break;
             		
-            	case 12:
+            	case 12://Stoppen
             		System.out.println("\nTot de volgende keer...");
             		System.exit(1);
             		break;
@@ -138,13 +140,9 @@ public class ReadMenu {
             		System.out.println("\n! Ongeldige optie, probeer het nogmaals !\n");
             		this.toonMenu();
 			} 
-        
 		}
-		
 		finally {
-				
+			System.out.println("---Uw keuze is uitgevoerd---");
 		}	
-
 		}	
 	}
-
