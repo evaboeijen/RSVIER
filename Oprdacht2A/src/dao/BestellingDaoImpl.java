@@ -340,8 +340,9 @@ public class BestellingDaoImpl implements BestellingDao {
 
 				Connection connection = DBConnectivityManagement.getConnectionStatus();
 					
-				PreparedStatement statement = connection.prepareStatement("DELETE bestelling_artikel FROM bestelling_artikel WHERE bestelling_artikel.artikel_id = ?");
+				PreparedStatement statement = connection.prepareStatement("DELETE bestelling_artikel FROM bestelling_artikel WHERE bestelling_artikel.artikel_id = ? AND bestelling_artikel.bestelling_id = ?");
 				statement.setInt(1, artikel_id);
+				statement.setInt(2, bestelling_id);
 
 				rowsDeleted = statement.executeUpdate();
 				if (rowsDeleted > 0) {
@@ -491,8 +492,7 @@ public class BestellingDaoImpl implements BestellingDao {
 				resultSet = preparedStatement.executeQuery(); 
 				
 				if (resultSet.next()){
-					result = true;
-					System.out.println("Het opgegeven artikelnummer zit al in deze bestelling...");
+					result = true;				
 				} 
 
 			} catch (SQLException e) {
@@ -500,6 +500,86 @@ public class BestellingDaoImpl implements BestellingDao {
 			}
 			return result;
 		}
+	
+	
+	public int updateAantallen(Bestelling bestelling) {		// added 29-11-15 AU
+		
+		
+		int bestelling_id = bestelling.getBestelling_id();       
+        int new_artikel_id = bestelling.getArtikel_id();
+        String new_artikel_naam = bestelling.getArtikel_naam();
+        int new_artikel_aantal = bestelling.getArtikel_aantal();
+        double new_artikel_prijs = bestelling.getArtikel_prijs();	
+        int oud_artikel_aantal = 0;
+        
+        int rowsUpdated = 0;
+  				
+		PreparedStatement preparedStatement ;
+					String sql = "SELECT * FROM bestelling JOIN bestelling_artikel JOIN artikel WHERE (bestelling.bestelling_id = ? AND bestelling.bestelling_id = bestelling_artikel.bestelling_id AND bestelling_artikel.artikel_id = artikel.artikel_id)";
+	    	        
+	   	         try {	  
+	   	        	 	Connection connection = DBConnectivityManagement.getConnectionStatus();
+	   	        	 
+	   		            preparedStatement = connection.prepareStatement(sql);	   		            	   		            
+	   		            preparedStatement.setInt(1, bestelling_id);	   		                   	            
+	   		            ResultSet rset = preparedStatement.executeQuery();
+	   		           		            
+	   		            
+	   		            if (!rset.next()) {
+	   		            	System.out.println();
+	   		            	System.out.println("Het opgegeven bestellings ID / Ordernummer " + bestelling_id + " bestaat niet. \nDerhalve kan er niks aan worden toegevoegd.");	
+	   			   		  	System.out.println("Aantal rijen geupdate : 0");
+	   			   		  	return 0;
+	   		            }
+	   		                       		            	   		            
+	   		            rset.beforeFirst();
+	   		           
+	   		            
+	   		            while (rset.next()) {	   		            	
+	   		            	oud_artikel_aantal = rset.getInt("artikel_aantal");	   		            	
+	   		            }
+	   		            
+	   		            String sql2 = "update Bestelling_Artikel set artikel_aantal = ? WHERE bestelling_id = ? AND artikel_id = ?";
+			            				            	                               
+			 	                 PreparedStatement statement1 = connection.prepareStatement(sql2);
+			 	                 statement1.setInt(1, new_artikel_aantal);
+			 	                 statement1.setInt(2, bestelling_id);
+			 	                 statement1.setInt(3, new_artikel_id);
+			            		 
+		            		 
+			            		 int rowsUpdated1 = 0;
+			 	            	 rowsUpdated1 = statement1.executeUpdate();
+				                 if (rowsUpdated1 > 0) {
+				                	 System.out.println("");
+				                	 System.out.println("Aantal " +  new_artikel_naam + " in bestelling " + bestelling_id + " aangepast van "+ oud_artikel_aantal + " stuks naar " + new_artikel_aantal + " stuks.");
+				                	 System.out.println("");
+				                 } 	
+				                 return rowsUpdated1;
+	   	         			}
+				                 
+				    catch (SQLException e) {
+		                e.printStackTrace();
+		            }
+	   		             
+	   	         
+	   	   // opdracht 5 - 27/11/15 - AU :        
+	   	  /* if(rowsUpdated2 > 0) {	   	          	         
+	   		  System.out.println("Aantal rijen geupdate : " + rowsUpdated2);
+	   		  return rowsUpdated2;
+	   	  }
+	   	  else if (rowsUpdated3 > 0) {
+	   		  System.out.println("Aantal rijen geupdate : " + rowsUpdated3);
+	   		  return rowsUpdated3;
+	   	  }
+	   	  else {
+	   		  System.out.println("Aantal rijen geupdate : 0");
+	   		  return 0;
+	   	  } */
+	   	         
+	   	   // opdracht 5 - 27/11/15 - AU : 
+	   	      return rowsUpdated;
+	   		  
+	}
 	
 	 
 }

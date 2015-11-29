@@ -59,5 +59,23 @@ DROP COLUMN `artikel3_naam` ,
 DROP COLUMN `artikel3_aantal`, 
 DROP COLUMN `artikel3_prijs`; 
 
+   ALTER TABLE bestelling add (created timestamp default now(), 
+  updated timestamp default '0000-00-00 00:00:00' on update now());
+  
+    ALTER TABLE bestelling_artikel add (created timestamp default now(), 
+  updated timestamp default '0000-00-00 00:00:00' on update now());
+  
+     ALTER TABLE artikel add (created timestamp default now(), 
+  updated timestamp default '0000-00-00 00:00:00' on update now());
+  
+    ALTER TABLE klant add (created timestamp default now(), 
+  updated timestamp default '0000-00-00 00:00:00' on update now());
+  
+     ALTER TABLE klant_adres add (created timestamp default now(), 
+  updated timestamp default '0000-00-00 00:00:00' on update now());
+  
+    ALTER TABLE adres add (created timestamp default now(), 
+  updated timestamp default '0000-00-00 00:00:00' on update now());
+
 INSERT INTO `artikel` (`artikel_id`, `artikel_naam`, `artikel_prijs`) VALUES
 (1, 'Ipad Air 2', 599.99);
