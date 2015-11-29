@@ -43,8 +43,9 @@ public class BestellingMenu  {
 	    System.out.println("1. Create nieuwe bestelling voor bestaande klant");  
 	    System.out.println("2. Read alle bestellingen");  
 	    System.out.println("3. Update een bestaande bestelling door toevoegen van artikelen");  
-	    System.out.println("4. Delete een bepaalde bestelling");  
-	    System.out.println("5. Delete een artikel uit een bepaalde bestelling");  
+	    System.out.println("4. Update het aantal van een bepaald artikel in een bepaalde bestelling");  
+	    System.out.println("5. Delete een bepaalde bestelling");  
+	    System.out.println("6. Delete een artikel uit een bepaalde bestelling");  
 	    System.out.println();	    
 	    System.out.println("10. Terug naar het vorige menu");
 	    System.out.println("11. Terug naar het hoofdmenu"); 
@@ -80,7 +81,7 @@ public class BestellingMenu  {
                 	nieuweBestelling.setBestelling_id(bestellingDaoImpl.checkHoogste_Bestelling_id() + 1);
             			
                 	System.out.println("Welk artikel wil je in de bestelling plaatsen?");
-                	System.out.println("Hieronder een overzicht van alle aanwezige artikelen: ");
+                	System.out.println("Hieronder een overzicht van het hele assortiment: ");
                 		                	                      
                 	try {
                 		Connection connection = DBConnectivityManagement.getConnectionStatus();
@@ -314,7 +315,10 @@ public class BestellingMenu  {
             		gewensteArtikel_id = input.nextInt();
             		
             		while (bestellingDaoImpl.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) == true || bestellingDaoImpl.checkArtikel_id(gewensteArtikel_id)!= true) {
-            			System.out.print("\nVoer een ander artikelnummer in: ");
+            			if (bestellingDaoImpl.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) == true) {          	
+            				System.out.print("\nHet opgegeven artikelnummer zit al in deze bestelling. ");
+            			}     
+            			System.out.println("Voer een ander artikelnummer in: ");
                     	gewensteArtikel_id = input.nextInt();
                     	if (gewensteArtikel_id == 0) {
                     		toonMenu();
@@ -382,7 +386,130 @@ public class BestellingMenu  {
                 	toonMenu();          			   			  		          		
                 	break; 
                 	
-            	case 4:
+                	             	
+            	case 4:	// added 29-11-15 AU
+            		System.out.println();           		
+            		System.out.println("Je kan hier het aantal van een bepaald artikel in een bestaande bestelling wijzigen.");
+            		System.out.println("Hieronder een overzicht van alle bestellingen: ");
+            		               		       			
+            		lijst = bestellingDaoImpl.read();	// lees en toon alle bestellingen uit de Bestelling tabel
+            		
+            		System.out.println();
+            		System.out.println();	
+            		
+            		System.out.println("Overzicht van alle bestellingen: ");
+            		System.out.println("=================================");
+            		
+            		for (Bestelling overzicht : lijst) {
+            			System.out.println("Klantnummer : " + overzicht.getKlant_id() + ". Ordernummer : " + overzicht.getBestelling_id());
+            			System.out.println("---------------------------------------------");
+            			
+            			//aanpassing tbv opdracht 5 || AU 26/11/15
+            			System.out.println("Artikelnummer: " + overzicht.getArtikel_id() + ". Artikelnaam: " + overzicht.getArtikel_naam() + ". Aantal: "+ overzicht.getArtikel_aantal() + ". Prijs: " + overzicht.getArtikel_prijs());
+            			System.out.println();
+            			System.out.println();	
+            		}
+            		
+            		System.out.println();          		
+            		System.out.print("Voer het bestelling ID in van de bestelling waarvan je een artikel aantal wil wijzigen: ");
+            		System.out.println(); 
+            		            		           		
+        			gewensteBestelling_id = input.nextInt();
+        				
+
+            		while (bestellingDaoImpl.checkBestelling_id(gewensteBestelling_id)!= true) { 
+            			System.out.print("\nVoer een ander bestellingnummer in: ");
+            			gewensteBestelling_id = input.nextInt();
+            			System.out.println();
+            		}            		        
+            		
+            		try {
+            			Connection connection = DBConnectivityManagement.getConnectionStatus();
+                    	
+            			PreparedStatement preparedStatement;
+            			preparedStatement = connection.prepareStatement("SELECT Klant_id FROM Bestelling WHERE Bestelling_id = ?");
+            			preparedStatement.setInt(1, gewensteBestelling_id);   
+            			ResultSet resultSet = preparedStatement.executeQuery();
+            			
+            			while(resultSet.next()){                                
+            				gewensteKlantID = resultSet.getInt("Klant_id");                                                                                                    
+            			}
+            			resultSet.close();
+            			preparedStatement.close();
+                             
+            		} 
+            		
+            		catch (SQLException e) {
+            			e.printStackTrace();
+            		}
+            		          		      		
+            		System.out.println();
+            		System.out.println("Van welk artikel in de desbetreffende bestelling wil je het aantal aanpassen?");           		
+            		System.out.print("\nVoer het artikel ID in (0 is terug naar het vorige menu): ");
+            		System.out.println(); 
+            		gewensteArtikel_id = input.nextInt();
+            		
+            		while (bestellingDaoImpl.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) != true) {
+            			System.out.print("\nHet artikel zit niet in de desbetreffende bestelling. \nVoer een ander artikelnummer in: ");
+                    	gewensteArtikel_id = input.nextInt();
+                    	if (gewensteArtikel_id == 0) {
+                    		toonMenu();
+                    	}
+                    	System.out.println();
+            		}
+         		
+            		System.out.print("\nVoer het nieuwe aantal in: ");
+            		gewensteAantal = input.nextInt();      
+
+      			
+            		try {
+
+            			Connection connection = DBConnectivityManagement.getConnectionStatus();
+           					  
+            			PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT(ARTIKEL_NAAM), ARTIKEL_PRIJS FROM artikel JOIN bestelling_artikel WHERE (bestelling_artikel.artikel_id = artikel.artikel_id AND artikel.artikel_id=?)");
+            			statement.setInt(1, gewensteArtikel_id);
+
+            			ResultSet resultSet = statement.executeQuery();
+            				     		
+            			while(resultSet.next()){          
+            				// aangepast tbv opdracht 5 | 27/11/15 |AU     
+            				gewensteArtikelNaam = resultSet.getString("Artikel_naam");
+            				gewensteArtikelPrijs = resultSet.getInt("Artikel_prijs");
+            			}
+            			      
+            			//System.out.println("AANTEPASSENBESTELLING OBJECT");	debug statement
+            			
+            			Bestelling aantepassenBestelling = new Bestelling(gewensteBestelling_id, gewensteKlantID, gewensteArtikel_id, gewensteArtikelNaam, gewensteAantal, gewensteArtikelPrijs);
+            				
+            			
+            			//System.out.println(aantepassenBestelling.getBestelling_id());   debug statements
+            			//System.out.println(aantepassenBestelling.getKlant_id());
+            			//System.out.println(aantepassenBestelling.getArtikel_id());
+            			//System.out.println(aantepassenBestelling.getArtikel_naam());
+            			//System.out.println(aantepassenBestelling.getArtikel_aantal());
+            			//System.out.println(aantepassenBestelling.getArtikel_prijs());
+            			
+            			// System.out.println("UPDATE METHODE WORDT AANGEROEPEN"); debug statements
+
+            			          		
+            			bestellingDaoImpl.updateAantallen(aantepassenBestelling);  
+            		}
+            			
+            		catch (SQLException e) {
+            			e.printStackTrace();
+            		}
+            			
+            		finally {
+            			// zinnige code
+            		}
+  
+                	toonMenu();          			   			  		          		
+                	break;  	
+                	
+
+                	
+                	
+            	case 5:
             		System.out.println();           		
             		System.out.println("Je kan hier complete bestellingen verwijderen");
             		System.out.println("Hieronder een overzicht van alle bestellingen: ");
@@ -423,7 +550,8 @@ public class BestellingMenu  {
             		toonMenu(); 	   			  		          		
             		break; 
             
-            	case 5:
+            		
+            	case 6:
             		System.out.println();           		
             		System.out.println("Je kan hier artikelen verwijderen van een bestaande bestelling.");
             		System.out.println("Hieronder een overzicht van alle bestellingen en hun artikelen: ");
@@ -485,7 +613,7 @@ public class BestellingMenu  {
             		gewensteArtikel_id = input.nextInt();
             		
             		while (bestellingDaoImpl.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) != true) {
-            			System.out.print("\nVoer een ander artikelnummer in: ");
+            			System.out.print("\nArtikelnummer niet gevonden in desbetreffende bestelling. Voer een ander artikelnummer in: ");
                     	gewensteArtikel_id = input.nextInt();
                     	if (gewensteArtikel_id == 0) {
                     		toonMenu();

@@ -80,6 +80,10 @@ CREATE TABLE IF NOT EXISTS `klant` (
 -- Dumping data for table `klant`
 --
 
+    ALTER TABLE klant add (created timestamp default now(), 
+  updated timestamp default '0000-00-00 00:00:00' on update now());
+
+
 INSERT INTO `klant` (`klant_id`, `voornaam`, `achternaam`, `tussenvoegsel`, `email`, `straatnaam`, `postcode`, `toevoeging`, `huisnummer`, `woonplaats`) VALUES
 (1, 'Eva', 'Boeijen', '', 'eva.e.boeijen@gmail.com', 'Atjehstraat ', '2315CS', '', '87', 'Leiden');
 
@@ -182,5 +186,23 @@ DROP COLUMN `artikel3_naam` ,
 DROP COLUMN `artikel3_aantal`, 
 DROP COLUMN `artikel3_prijs`; 
 
+
+   ALTER TABLE bestelling add (created timestamp default now(), 
+  updated timestamp default '0000-00-00 00:00:00' on update now());
+  
+    ALTER TABLE bestelling_artikel add (created timestamp default now(), 
+  updated timestamp default '0000-00-00 00:00:00' on update now());
+  
+     ALTER TABLE artikel add (created timestamp default now(), 
+  updated timestamp default '0000-00-00 00:00:00' on update now());
+  
+     ALTER TABLE klant_adres add (created timestamp default now(), 
+  updated timestamp default '0000-00-00 00:00:00' on update now());
+  
+    ALTER TABLE adres add (created timestamp default now(), 
+  updated timestamp default '0000-00-00 00:00:00' on update now());
+
+
 INSERT INTO `artikel` (`artikel_id`, `artikel_naam`, `artikel_prijs`) VALUES
 (1, 'Ipad Air 2', 599.99);
+
