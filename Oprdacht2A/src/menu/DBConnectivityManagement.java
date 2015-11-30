@@ -159,7 +159,7 @@ public class DBConnectivityManagement {
 				System.out.println("Database driver is geladen	");
 
 				if (connection == null) {
-					String dbURL = ("jdbc:mysql://localhost:3306/opdracht1");
+					String dbURL = ("jdbc:mysql://localhost:3308/opdracht1");
 					String username = "root";
 					String password = "JaRsvier15";
 					connection = DriverManager.getConnection(dbURL, username, password);	

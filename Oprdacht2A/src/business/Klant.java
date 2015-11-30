@@ -5,6 +5,10 @@ package business;
  * and open the template in the editor.
  */
 
+import java.util.Scanner;
+
+import org.apache.commons.validator.routines.EmailValidator;
+
 /**
  *
  * @author Jesse
@@ -54,9 +58,19 @@ public void setTussenvoegsel(String tussenvoegsel) {
 public String getEmail() {
 	return email;
 }
+
 public void setEmail(String email) {
+	EmailValidator emailValidator = EmailValidator.getInstance();
+	Scanner input = new Scanner(System.in);
+	
+	while (emailValidator.isValid(email)== false){
+		System.out.println("Incorrecte email. Voer uw emailadres opnieuw in");
+		email = input.next();
+	}
+		
 	this.email = email;
 }
+
 @Override 
 public String toString(){
 	return  "\n\tKlant_id: " 	+ klant_id +

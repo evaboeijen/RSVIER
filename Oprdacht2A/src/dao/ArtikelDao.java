@@ -11,6 +11,7 @@ public Artikel readArtikel(int bestelling_id, int artikel_id);
 public void create(Artikel artikel);   
 public void update(Artikel artikel);   
 public void delete(int bestelling_id, int artikel_id);
+public void delete(Artikel Artikel);
 
 }
 

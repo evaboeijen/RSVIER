@@ -1,5 +1,12 @@
 package menu.crud;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import dao.*;
 import menu.*;
@@ -16,6 +23,7 @@ public class UpdateMenu {
 	    System.out.println("1. Update klant");
 	    System.out.println("2. Update adres");
 	    System.out.println("3. Update bestelling");
+	    System.out.println("4, Update artikel");
    
 	    	    
 	    System.out.println("10. Terug naar het vorige menu"); 
@@ -68,16 +76,167 @@ public class UpdateMenu {
             		break;
                 
             	case 3:
-            		ArtikelDaoImpl createArtikelDaoImpl = new ArtikelDaoImpl();
-            		ArtikelMenu artikelMenu = new ArtikelMenu();
-            		Artikel createArtikel = artikelMenu.createArtikelObject();
-            		createArtikelDaoImpl.update(createArtikel); 
             		
-            		toonMenu();
+            		List<Artikel> alleArtikelen = new ArrayList<>();
+            		int gewensteArtikel_id = 0;
+            		int gewensteAantal = 0;
+            		BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
+            		int gewensteBestelling_id = 0;
+            	    Artikel artikel = new Artikel(); 
+               		String gewensteArtikelNaam = null;
+            		int gewensteKlantID = 0;
+            		double gewensteArtikelPrijs = 0;
             		
-            		break;
+            		System.out.println();           		
+            		System.out.println("Je kan hier artikelen toevoegen aan een bestaande bestelling.");
+            		System.out.println("Hieronder een overzicht van alle bestellingen: ");
+            		               		       			
+            		List<Bestelling> lijst = bestellingDaoImpl.read();	// lees en toon alle bestellingen uit de Bestelling tabel
+            		
+            		System.out.println();
+            		System.out.println();	
+            		
+            		System.out.println("Overzicht van alle bestellingen: ");
+            		System.out.println("=================================");
+            		
+            		for (Bestelling overzicht : lijst) {
+            			System.out.println("Klantnummer : " + overzicht.getKlant_id() + ". Ordernummer : " + overzicht.getBestelling_id());
+            			System.out.println("---------------------------------------------");
+            			
+            			//aanpassing tbv opdracht 5 || AU 26/11/15
+            			System.out.println("Artikelnummer: " + overzicht.getArtikel_id() + ". Artikelnaam: " + overzicht.getArtikel_naam() + ". Aantal: "+ overzicht.getArtikel_aantal() + ". Prijs: " + overzicht.getArtikel_prijs());
+            			System.out.println();
+            			System.out.println();	
+            		}
+            		
+            		System.out.println();          		
+            		System.out.print("Voer het bestelling ID in van de bestelling die je wil uitbreiden: ");
+            		System.out.println(); 
+            		            		           		
+        			gewensteBestelling_id = input.nextInt();
+        				
+
+            		while (bestellingDaoImpl.checkBestelling_id(gewensteBestelling_id)!= true) { 
+            			System.out.print("\nVoer een ander bestellingnummer in: ");
+            			gewensteBestelling_id = input.nextInt();
+            			System.out.println();
+            		}            		        
+            		
+            		try {
+            			Connection connection = DBConnectivityManagement.getConnectionStatus();
+                    	
+            			PreparedStatement preparedStatement;
+            			preparedStatement = connection.prepareStatement("SELECT Klant_id FROM Bestelling WHERE Bestelling_id = ?");
+            			preparedStatement.setInt(1, gewensteBestelling_id);   
+            			ResultSet resultSet = preparedStatement.executeQuery();
+            			
+            			while(resultSet.next()){                                
+            				gewensteKlantID = resultSet.getInt("Klant_id");                                                                                                    
+            			}
+            			resultSet.close();
+            			preparedStatement.close();
+                             
+            		} 
+            		
+            		catch (SQLException e) {
+            			e.printStackTrace();
+            		}
+            		
+            		System.out.println();
+            		System.out.println("Welk artikel wil je toevoegen aan de bestelling?");
+            		System.out.println();
+            		System.out.println("Hieronder een overzicht van alle aanwezige artikelen: ");
+                    
+                	try {
+                		Connection connection = DBConnectivityManagement.getConnectionStatus();
+                        	
+                		Statement statement = connection.createStatement();
+                		
+                		ResultSet resultSet = statement.executeQuery("SELECT DISTINCT(ARTIKEL_ID), ARTIKEL_NAAM, ARTIKEL_PRIJS FROM Artikel"); 
+                        
+                		resultSet.beforeFirst();
+                		
+                		while(resultSet.next()){
+                					
+                			System.out.println("artikel_id: " + resultSet.getInt("Artikel_id") + "\tartikelnaam: " + resultSet.getString("Artikel_naam") + "\tprijs: " + resultSet.getDouble("Artikel_prijs"));  
+                			               			                                                                                                        
+                			alleArtikelen.add(artikel);
+                		}
+                		resultSet.close();
+                		statement.close();                                
+                	} 
+                		
+                	catch (SQLException e) {
+                		e.printStackTrace();
+                	}                                                  			
+
+            		System.out.print("\nVoer het artikel ID in dat je wil toevoegen aan de bestelling (0 is terug naar het vorige menu): ");
+            		System.out.println(); 
+            		gewensteArtikel_id = input.nextInt();
+            		
+            		while (bestellingDaoImpl.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) == true || bestellingDaoImpl.checkArtikel_id(gewensteArtikel_id)!= true) {
+            			if (bestellingDaoImpl.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) == true) {          	
+            				System.out.print("\nHet opgegeven artikelnummer zit al in deze bestelling. ");
+            			}     
+            			System.out.println("Voer een ander artikelnummer in: ");
+                    	gewensteArtikel_id = input.nextInt();
+                    	if (gewensteArtikel_id == 0) {
+                    		toonMenu();
+                    	}
+                    	System.out.println();
+            		}
+            		
+            		           		
+            		System.out.print("\nVoer het aantal in dat je aan de bestelling wil toevoegen: ");
+            		gewensteAantal = input.nextInt();      
+
+      			
+            		try {
+
+            			Connection connection = DBConnectivityManagement.getConnectionStatus();
+            		  
+            			PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT(ARTIKEL_NAAM), ARTIKEL_PRIJS FROM artikel JOIN bestelling_artikel WHERE (bestelling_artikel.artikel_id = artikel.artikel_id AND artikel.artikel_id=?)");
+            			statement.setInt(1, gewensteArtikel_id);
+
+            			ResultSet resultSet = statement.executeQuery();
+            				     		
+            			while(resultSet.next()){          
+            				  
+            				gewensteArtikelNaam = resultSet.getString("Artikel_naam");
+            				gewensteArtikelPrijs = resultSet.getInt("Artikel_prijs");
+            			}
+            			                			
+            			Bestelling aantepassenBestelling = new Bestelling(gewensteBestelling_id, gewensteKlantID, gewensteArtikel_id, gewensteArtikelNaam, gewensteAantal, gewensteArtikelPrijs);
+            				          			          		
+            			bestellingDaoImpl.update(aantepassenBestelling);  
+            		}
+            			
+            		catch (SQLException e) {
+            			e.printStackTrace();
+            		}
+            			
+            		finally {
+            			// zinnige code
+            		}
+  
+                	toonMenu();          			   			  		          		
+                	break; 
               
-            
+            	case 4:
+            		System.out.println("U kunt de artikelgegevens wijzigen. Voer het artikelnummer in, en druk op enter");
+            		int updateArtikel_id = input.nextInt();
+            		
+            		ArtikelDaoImpl updateArtikelDaoImpl = new ArtikelDaoImpl();
+            		ArtikelMenu artikelMenu = new ArtikelMenu();
+            		Artikel updateArtikel = artikelMenu.createArtikelObject();
+            		updateArtikel.setArtikel_id(updateArtikel_id);
+            		
+            		updateArtikelDaoImpl.update(updateArtikel);
+            		
+            		System.out.println("De artikel gegevens zijn aangepast");
+            		
+            		toonMenu();          			   			  		          		
+                	break; 
             	
 		
 	case 10:

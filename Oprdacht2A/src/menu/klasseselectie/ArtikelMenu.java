@@ -10,43 +10,19 @@ public class ArtikelMenu {
 	
 public Artikel createArtikelObject(){
 			Scanner input = new Scanner(System.in);	
-	
-			BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
-			
-			System.out.println("Voer uw bestellingnummer in, en druk op enter: ");
-			int bestelling_id = input.nextInt();
-			       		
-			while (bestellingDaoImpl.checkBestelling_id(bestelling_id)!= true) { 
-				System.out.println("\nVoer een ander bestellingnummer in: ");
-				bestelling_id = input.nextInt();
-				
-				System.out.println();
-			}  
-			
-				
+		
 			Artikel artikel = new Artikel();
-			          		            		            		
-			System.out.println("Vul uw Klant ID in: ");
-			int klant_id = input.nextInt(); 
 			
-			System.out.println("Vul het artikelnummer in: ");
-			int artikel_id = input.nextInt(); 
 			
 			System.out.println("Vul de naam van het artikel in: ");
 			String artikel_naam = input.nextLine(); 
 			
-			System.out.println("Vul het aantal in, wat u van dit artikel wilt: ");
-			int artikel_aantal = input.nextInt();
-			
 			System.out.println("Wat is de prijs van het artikel: ");
 			double artikel_prijs = input.nextDouble();
 
-			artikel.setBestelling_id(bestelling_id);
-			artikel.setKlant_id(klant_id);
-			artikel.setArtikel1_id(artikel_id);
-			artikel.setArtikel1_naam(artikel_naam);
-			artikel.setArtikel1_aantal(artikel_aantal);
-			artikel.setArtikel1_prijs(artikel_prijs);
+		
+			artikel.setArtikel_naam(artikel_naam);
+			artikel.setArtikel_prijs(artikel_prijs);
 			
 			return artikel;
 		}
@@ -59,10 +35,10 @@ public void toonMenu() {
 	   
 	    System.out.println("");
 	    
-	    System.out.println("1. Create:      Voeg een nieuw artikel toe aan een bestaande bestelling");
-	    System.out.println("2. Read:        Bekijk alle artikelen van uw bestaande bestelling");
-	    System.out.println("3. Read:        Zoek een artikel in uw bestaande bestelling");
-	    System.out.println("4. Delete:      Verwijder een artikel van een bestaande bestaande");    
+	    System.out.println("1. Create:      Voeg een nieuw artikel toe aan het assortiment");
+	    System.out.println("2. Read:        Bekijk alle artikelen uit het assortiment");
+	    System.out.println("3. Update:      Verander de gegevens van een bestaand artikel");
+	    System.out.println("4. Delete:      Verwijder een artikel uit het assortiment");    
 
 	    System.out.println("");
 	    
@@ -84,7 +60,7 @@ public void toonMenu() {
             		
             		ArtikelDaoImpl createArtikelDaoImpl = new ArtikelDaoImpl();
             		Artikel createArtikel = createArtikelObject();
-            		createArtikelDaoImpl.update(createArtikel);
+            		createArtikelDaoImpl.create(createArtikel);
             		
             		
             		toonMenu(); 	   			  		          		
@@ -93,48 +69,42 @@ public void toonMenu() {
     
             	case 2:
             		
-            		System.out.println("Voer uw bestellingnummer in, en druk op enter: ");
-            		int leesBestelling_id = input.nextInt();
-            		
+            		          		
             		ArtikelDaoImpl leesArtikelDaoImpl = new ArtikelDaoImpl();
-            		Artikel leesAlleArtikellen = new Artikel();
-            		leesAlleArtikellen.setBestelling_id(leesBestelling_id);
-            		
-            		System.out.println("De volgende artikellen zitten in de ingevoerde bestelling: " + leesBestelling_id);
-            		leesArtikelDaoImpl.read(leesAlleArtikellen).toString();
+            		            		
+            		System.out.println("De volgende artikellen zitten in het assortiment: ");
+            		leesArtikelDaoImpl.read();
             		
             		toonMenu();
             		break;
                 
             		
             	case 3:
+            		   		
+            		System.out.println("U kunt de artikelgegevens wijzigen. Voer het artikelnummer in, en druk op enter");
+            		int updateArtikel_id = input.nextInt();
             		
-            		System.out.println("Voer uw bestellingnummer in, en druk op enter: ");
-            		int zoekBestelling_id = input.nextInt();
+            		ArtikelDaoImpl updateArtikelDaoImpl = new ArtikelDaoImpl();
+            		Artikel updateArtikel = createArtikelObject();
+            		updateArtikel.setArtikel_id(updateArtikel_id);
             		
-            		System.out.println("Voer het artikelnummer in, en druk op enter");
-            		int zoekArtikel_id = input.nextInt();
+            		updateArtikelDaoImpl.update(updateArtikel);
             		
-            		ArtikelDaoImpl zoekArtikelDaoImpl = new ArtikelDaoImpl();
-            		
-            		System.out.println("De volgende artikellen zitten in de ingevoerde bestelling: " + zoekBestelling_id);
-            		Artikel zoekArtikel = zoekArtikelDaoImpl.readArtikel(zoekBestelling_id, zoekArtikel_id);
-            		
-            		System.out.println("Artikel ID: " + zoekArtikel.getArtikel1_id() + ". Artikel naam: " + zoekArtikel.getArtikel1_naam() + ". Artikel prijs: " + zoekArtikel.getArtikel1_prijs() + ". Artikel aantal: " + zoekArtikel.getArtikel1_aantal());
+            		System.out.println("De artikel gegevens zijn aangepast");
             		
             		toonMenu();
             		break;
                 	
             		
             	case 4:
-            		System.out.println("Voer uw bestellingnummer in, en druk op enter: ");
-            		int deleteBestelling_id = input.nextInt();
             		
             		System.out.println("Voer het artikelnummer in, en druk op enter");
             		int deleteArtikel_id = input.nextInt();
+            		Artikel deleteArtikel = new Artikel();
+            		deleteArtikel.setArtikel_id(deleteArtikel_id);
             	           		
             		ArtikelDaoImpl deleteArtikelDaoImpl = new ArtikelDaoImpl();
-            		deleteArtikelDaoImpl.delete(deleteBestelling_id, deleteArtikel_id);
+            		deleteArtikelDaoImpl.delete(deleteArtikel);
 
             		toonMenu();
             		break;

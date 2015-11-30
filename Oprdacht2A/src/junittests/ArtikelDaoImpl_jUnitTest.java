@@ -29,10 +29,10 @@ public class ArtikelDaoImpl_jUnitTest{
 		// test create method plus test readArtikel method
 		testArtikel.setBestelling_id(56757);
 		testArtikel.setKlant_id(4102);
-		testArtikel.setArtikel1_id(1000);
-		testArtikel.setArtikel1_prijs(40);
-		testArtikel.setArtikel1_naam("prullenbak");
-		testArtikel.setArtikel1_aantal(1);
+		testArtikel.setArtikel_id(1000);
+		testArtikel.setArtikel_prijs(40);
+		testArtikel.setArtikel_naam("prullenbak");
+		testArtikel.setArtikel_aantal(1);
 		
 		testArtikelDaoImpl.create(testArtikel);
 		Artikel artikel = testArtikelDaoImpl.readArtikel(56757, 1000);
@@ -41,10 +41,10 @@ public class ArtikelDaoImpl_jUnitTest{
 		
 		
 		//test update and read method
-		testArtikel.setArtikel1_id(81756);
-		testArtikel.setArtikel1_aantal(4);
-		testArtikel.setArtikel1_prijs(50);
-		testArtikel.setArtikel1_naam("stoel");
+		testArtikel.setArtikel_id(81756);
+		testArtikel.setArtikel_aantal(4);
+		testArtikel.setArtikel_prijs(50);
+		testArtikel.setArtikel_naam("stoel");
 		
 		testArtikelDaoImpl.update(testArtikel);
 		
@@ -55,10 +55,10 @@ public class ArtikelDaoImpl_jUnitTest{
 				//test delete method
 				testArtikelDaoImpl.delete(56757, 1000);
 				Artikel artikel2 = testArtikelDaoImpl.readArtikel(56757, 1000);
-				assertEquals("Artikel id should be 0", 0 , artikel2.getArtikel1_id());
-				assertEquals("Artikel naam should be null", null, artikel2.getArtikel1_naam());
-				assertEquals("Artikel prijs should be 0", 0,0 , artikel2.getArtikel1_prijs());
-				assertEquals("Artikel aantal should be 0", 0, artikel2.getArtikel1_aantal());
+				assertEquals("Artikel id should be 0", 0 , artikel2.getArtikel_id());
+				assertEquals("Artikel naam should be null", null, artikel2.getArtikel_naam());
+				assertEquals("Artikel prijs should be 0", 0,0 , artikel2.getArtikel_prijs());
+				assertEquals("Artikel aantal should be 0", 0, artikel2.getArtikel_aantal());
 				
 	}
 	
