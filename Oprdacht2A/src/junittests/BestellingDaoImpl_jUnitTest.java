@@ -47,7 +47,7 @@ public class BestellingDaoImpl_jUnitTest {
 	@Test
 	public void testCreate() {
 		BestellingDaoImpl testBestellingDaoImpl = new BestellingDaoImpl();
-		Bestelling testBestelling = new Bestelling(9000, 9000, 9000, "test jUnit artikel1", 9000, 9000.99, 10000, "test jUnit artikel2", 10000, 1999.99, 20000, "test jUnit artikel4", 20000, 22222.99);	
+		Bestelling testBestelling = new Bestelling(9000, 9000, 9000, "test jUnit artikel1", 9000, 9000.99);	
 		testBestellingDaoImpl.initializeDB();
 		assertEquals("Number of rows created is 1", 1, testBestellingDaoImpl.create(testBestelling));
 		testBestellingDaoImpl.closeDBConnection();

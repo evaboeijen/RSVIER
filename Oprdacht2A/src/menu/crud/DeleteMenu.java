@@ -307,11 +307,11 @@ public class DeleteMenu  {
             	while (bestellingDaoImpl.checkArtikel_id(gewensteArtikel_id)!= true) { 
             		System.out.print("\nVoer een ander artikelnummer in: ");
             		gewensteArtikel_id = input.nextInt();
-            		System.out.println();
+            		System.out.println();	
             	}    
             	
-            	gewensteBestelling_id = 0; // LATER TE VERWIJDEREN ZODRA DELETE METHOD VAN ARTIKELDAOIMPL IS AANGEPAST - 29/11/15 AU
-            	artikelDaoImpl.delete(gewensteBestelling_id, gewensteArtikel_id); // LATER AAN TE PASSEN ZODRA DELETE METHOD VAN ARTIKELDAOIMPL IS AANGEPAST - 29/11/15 AU
+            	artikel.setArtikel_id(gewensteArtikel_id);
+            	artikelDaoImpl.delete(artikel);
             	
             	toonMenu();
             	break; 
