@@ -21,6 +21,10 @@ public class Adres {
 	this.woonplaats = woonplaats;
 	}
 	
+	public Adres(int adres_id) {
+		
+	}
+	
 	public int getAdres_id() {
 		return adres_id;
 	}
@@ -78,7 +82,7 @@ public class Adres {
 
 	@Override
 	public String toString() {
-		return  "\nAdresnummer: " + getAdres_id() +
+		return  "\nAdresnummer: "   + getAdres_id() +
 				"\nStraatnaam: " 	+ getStraatnaam() + 
 				"\nPostcode: " 		+ getPostcode() + 
 				"\nToevoeging: " 	+ getToevoeging() + 

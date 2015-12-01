@@ -64,11 +64,11 @@ public class AdresMenu {
 	    System.out.println("3. Read:        Zoek op straatnaam");
 	    System.out.println("4. Read:        Zoek op de combinatie van postcode & huisnummer");
 	    System.out.println("5. Update:      Verander het adres van een bestaande klant");
-	    System.out.println("6. Delete:      Verwijder het adres van een bestaande klant/n");    
+	    System.out.println("6. Delete:      Verwijder het adres van een bestaande klant\n");    
 
 	    System.out.println("10. Terug naar het vorige menu"); 
 	    System.out.println("11. Terug naar het hoofdmenu"); 
-	    System.out.println("12. Stoppen/n");
+	    System.out.println("12. Stoppen\n");
 
 	    System.out.println("Voer optie in en druk op Enter:");
 
