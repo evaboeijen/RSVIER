@@ -5,7 +5,7 @@ import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+	
 import business.*;
 import menu.*;
 
@@ -72,6 +72,7 @@ private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.cla
                    //artikel.setArtikel3_prijs(resultSet.getDouble("Artikel3_prijs"));
                    artikelen.add(artikel);
                    logger.info("");
+                   System.err.println(artikelen);
                }
                resultSet.close();
                statement.close();
