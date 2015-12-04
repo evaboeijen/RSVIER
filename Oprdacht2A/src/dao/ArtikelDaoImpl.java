@@ -3,10 +3,15 @@ package dao;
 import java.sql.*;
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import business.*;
 import menu.*;
 
 public class ArtikelDaoImpl implements ArtikelDao {
+	
+private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.class);
     
     public Connection connection = null;
 
@@ -41,7 +46,8 @@ public class ArtikelDaoImpl implements ArtikelDao {
     }
    @Override
    public List<Artikel> read() {
-   
+   logger.info("read all artikelen methode start");
+  
 	   List<Artikel> artikelen = new ArrayList<>();
                 
        try {
@@ -64,9 +70,8 @@ public class ArtikelDaoImpl implements ArtikelDao {
                    //artikel.setArtikel3_naam(resultSet.getString("Artikel3_naam"));
                    //artikel.setArtikel3_aantal(resultSet.getInt("Artikel3_aantal"));
                    //artikel.setArtikel3_prijs(resultSet.getDouble("Artikel3_prijs"));
-                   
                    artikelen.add(artikel);
-                   
+                   logger.info("");
                }
                resultSet.close();
                statement.close();
@@ -75,6 +80,7 @@ public class ArtikelDaoImpl implements ArtikelDao {
                e.printStackTrace();
            }
            System.out.println(artikelen);
+           logger.info("read all artikelen methode eindigt");
            return artikelen;
    }
    

@@ -130,8 +130,6 @@ public class AdresDaoImpl implements AdresDao{
 				System.out.println("Voer het adres_id in van het adres dat u wil updaten: ");
 				int adres_id = input.nextInt();
 				
-				
-				//if (checkMeerderePersAdres(adres_id)){  Als meerdere personen op adres --> enkel uit klant_adres tabel regel verwijderen
 					PreparedStatement verwijderKlantBijAdresStatement = connection.prepareStatement("DELETE FROM klant_adres WHERE klant_id=? AND adres_id=?");
 					System.out.println(klant_id);
 					System.out.println(adres_id);
@@ -141,18 +139,8 @@ public class AdresDaoImpl implements AdresDao{
 					System.out.println("delete query goed uitgevoerd");
 					verwijderKlantBijAdresStatement.close();
 					insert(adres);
-				/*}else { /*Als maar een iemand op adres --> adres updaten/*
-				PreparedStatement updateAdresStatement = connection.prepareStatement("UPDATE adres SET straatnaam=?, postcode=?, toevoeging=?, huisnummer=?, woonplaats=? WHERE adres_id=?");
-				updateAdresStatement.setString(1, adres.getStraatnaam());
-				updateAdresStatement.setString(2, adres.getPostcode());
-				updateAdresStatement.setString(3, adres.getToevoeging());
-				updateAdresStatement.setInt(4, adres.getHuisnummer());
-				updateAdresStatement.setString(5, adres.getWoonplaats());
-				updateAdresStatement.setInt(6,  adres_id);
-				updateAdresStatement.executeQuery();
-				updateAdresStatement.close();
 				
-				}*/
+				
 			} catch (SQLException e){
 				e.printStackTrace();
 			}
