@@ -74,6 +74,7 @@ public class CreateMenu {
 	    
 	    Scanner input = new Scanner(System.in);	     
         int keuze = input.nextInt();
+        logger.info("Gebruiker koos voor optie: " + keuze);
 		       
 			switch (keuze) {
             	case 1:
