@@ -13,7 +13,12 @@ import menu.HoofdMenu;
 import menu.DBConnectivityManagement;
 import business.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class BestellingMenu  {
+	
+	private static final Logger logger =  LoggerFactory.getLogger(BestellingMenu.class);
 	
 	// declaratie en initialisering van gemeenschappelijk objecten en primitieve variabelen 
 	// die zullen worden geraadpleegd door
@@ -37,6 +42,8 @@ public class BestellingMenu  {
 	
 	
 	public void toonMenu() {
+				
+			
 	    System.out.println("\t---------------");
 	    System.out.println("\tBestelling Menu");
 	    System.out.println("\t---------------");
@@ -55,6 +62,8 @@ public class BestellingMenu  {
 	            
             	    	    	
 			int keuze = input.nextInt();
+			
+			logger.info("content of variable 'keuze' is : " + keuze);
 		       
 			switch (keuze) {
             	case 1:
@@ -118,6 +127,7 @@ public class BestellingMenu  {
                 	} 
                 		
                 	catch (SQLException e) {
+                		logger.warn("SQL error");
                 		e.printStackTrace();
                 	}
                          	
@@ -167,6 +177,7 @@ public class BestellingMenu  {
                 	}
                 			
                 	catch (SQLException e) {
+                		logger.warn("SQL error");
                 		e.printStackTrace();
                 	}
                 			
@@ -254,6 +265,7 @@ public class BestellingMenu  {
             		} 
             		
             		catch (SQLException e) {
+            			logger.warn("SQL error");
             			e.printStackTrace();
             		}
             		
@@ -299,6 +311,7 @@ public class BestellingMenu  {
                 	} 
                 		
                 	catch (SQLException e) {
+                		logger.warn("SQL error");
                 		e.printStackTrace();
                 	}
                          	
@@ -376,6 +389,7 @@ public class BestellingMenu  {
             		}
             			
             		catch (SQLException e) {
+            			logger.warn("SQL error");
             			e.printStackTrace();
             		}
             			
@@ -440,6 +454,7 @@ public class BestellingMenu  {
             		} 
             		
             		catch (SQLException e) {
+            			logger.warn("SQL error");
             			e.printStackTrace();
             		}
             		          		      		
@@ -496,6 +511,7 @@ public class BestellingMenu  {
             		}
             			
             		catch (SQLException e) {
+            			logger.warn("SQL error");
             			e.printStackTrace();
             		}
             			

@@ -2,11 +2,16 @@ package dao;
 import java.sql.*;
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 import business.Bestelling;
 import menu.DBConnectivityManagement;
 
 public class BestellingDaoImpl implements BestellingDao {
 	
+	private static final Logger logger =  LoggerFactory.getLogger(BestellingDaoImpl.class);
 	
 	public Connection connection = null;
 		 
@@ -46,11 +51,12 @@ public class BestellingDaoImpl implements BestellingDao {
 	        
 		PreparedStatement preparedStatement1 ;	// aangepast tbv opdracht 5 || 26/11/15 AU
 		PreparedStatement preparedStatement2 ;	// toegevoegd tbv opdracht 5 || 26/11/15 AU	
-		
+			logger.info("Content of connection object is : " + connection);
 	        // int rowsCreated = 0; // uitgecomment tbv opdracht 5 || 26/11/15 AU
 	        int rowsCreated = 0; // toegevoegd tbv opdracht 5 || 26/11/15 AU
-
-	        
+	      	        
+        	logger.info("Content of connection object is : " + connection);
+        		        	       	        
 	        /* uitgecomment tbv opdracht 5 || 26/11/15 AU
 	        String sql = "insert into Bestelling (bestelling_id, klant_id, artikel1_id, artikel1_naam, artikel1_aantal, artikel1_prijs, artikel2_id, artikel2_naam, artikel2_aantal, artikel2_prijs, artikel3_id, artikel3_naam, artikel3_aantal, artikel3_prijs) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			*/
@@ -62,6 +68,8 @@ public class BestellingDaoImpl implements BestellingDao {
 	                 
 	        	Connection connection = DBConnectivityManagement.getConnectionStatus();
 	        	
+	        	logger.info("Content of connection object is : " + connection);
+	        	           
 	            preparedStatement1 = connection.prepareStatement(sql1);
 	            preparedStatement1.setInt(1, bestelling.getBestelling_id());
 	            preparedStatement1.setInt(2, bestelling.getKlant_id());
@@ -97,12 +105,21 @@ public class BestellingDaoImpl implements BestellingDao {
 	            rowsCreated = preparedStatement1.executeUpdate();            	           
 	            preparedStatement2.executeUpdate();	        
 
+	            logger.info("rowsCreated is " + rowsCreated);
+	          
+	            logger.info("preparedStatement1 is " + preparedStatement2);
+	            logger.info("preparedStatement2 is " + preparedStatement2);
 	            
-	            preparedStatement1.close();	            
+	            preparedStatement1.close();	 
+	            logger.info("preparedStatement1 closed and is " + preparedStatement1);
 	            preparedStatement2.close();
+	            logger.info("preparedStatement2 closed and is " + preparedStatement2);
+	            
+	        
 	        
 	            
 	        } catch (SQLException e) {
+	        	logger.warn("SQL exception voor BestellingDaoImpl.create() methode");
 	            e.printStackTrace();
 	        }
 	        System.out.println();
@@ -122,8 +139,10 @@ public class BestellingDaoImpl implements BestellingDao {
 	public List<Bestelling> read() {
 	        List<Bestelling> bestellingen = new LinkedList<Bestelling>();
 	         try {
-	                                
-	                Connection connection = DBConnectivityManagement.getConnectionStatus();	           
+	        	 	logger.debug("Content of connection object is : " + connection);
+	        	 	logger.info("Execute DBConnectivityManagement.getConnectionStatus()");
+	                Connection connection = DBConnectivityManagement.getConnectionStatus();	
+	                logger.debug("Content of connection object is : " + connection);
 	                
 	        	 	Statement statement = connection.createStatement();	               
 	                // oude query : ResultSet resultSet = statement.executeQuery("SELECT * FROM bestelling");
@@ -160,10 +179,15 @@ public class BestellingDaoImpl implements BestellingDao {
 	                  
 	                    bestellingen.add(bestelling);
 	                }
+	                logger.error("resultSet is " + resultSet);
+	                logger.trace("logtrace");
+	                logger.error("resultSet.close is being called");
 	                resultSet.close();
+	                logger.error("resultSet is " + resultSet);
 	                statement.close();
 	                 
 	            } catch (SQLException e) {
+	            	logger.warn("SQL exception voor BestellingDaoImpl.read() methode");
 	                e.printStackTrace();
 	            }
 	            return bestellingen;
@@ -187,7 +211,9 @@ public class BestellingDaoImpl implements BestellingDao {
 					String sql = "SELECT * FROM bestelling JOIN bestelling_artikel JOIN artikel WHERE (bestelling.bestelling_id = ? AND bestelling.bestelling_id = bestelling_artikel.bestelling_id AND bestelling_artikel.artikel_id = artikel.artikel_id)";
 	    	        
 	   	         try {	  
+	   	        	 	logger.info("Content of connection object is : " + connection);
 	   	        	 	Connection connection = DBConnectivityManagement.getConnectionStatus();
+	   	        	 	logger.info("Content of connection object is : " + connection);
 	   	        	 
 	   		            preparedStatement = connection.prepareStatement(sql);	   		            	   		            
 	   		            preparedStatement.setInt(1, bestelling_id);	   		                   	            
@@ -268,6 +294,7 @@ public class BestellingDaoImpl implements BestellingDao {
 	   	         			}
 				                 
 				    catch (SQLException e) {
+				    	logger.warn("SQL exception voor BestellingDaoImpl.update() methode");
 		                e.printStackTrace();
 		            }
 	   		             
@@ -302,7 +329,9 @@ public class BestellingDaoImpl implements BestellingDao {
 			
 			try {
 
-				Connection connection = DBConnectivityManagement.getConnectionStatus();
+	        	 logger.info("Content of connection object is : " + connection);
+	        	 Connection connection = DBConnectivityManagement.getConnectionStatus();
+	        	 logger.info("Content of connection object is : " + connection);
 					
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM bestelling WHERE bestelling_id = ?");
 				statement.setInt(1, bestelling_id);
@@ -320,6 +349,7 @@ public class BestellingDaoImpl implements BestellingDao {
 			} 
 			
 			catch (SQLException e) {
+				logger.warn("SQL exception voor BestellingDaoImpl.delete() methode");
 				e.printStackTrace();	
 			}
 		
@@ -338,7 +368,9 @@ public class BestellingDaoImpl implements BestellingDao {
 			
 			try {
 
-				Connection connection = DBConnectivityManagement.getConnectionStatus();
+	        	logger.info("Content of connection object is : " + connection);
+	        	Connection connection = DBConnectivityManagement.getConnectionStatus();
+	        	logger.info("Content of connection object is : " + connection);
 					
 				PreparedStatement statement = connection.prepareStatement("DELETE bestelling_artikel FROM bestelling_artikel WHERE bestelling_artikel.artikel_id = ? AND bestelling_artikel.bestelling_id = ?");
 				statement.setInt(1, artikel_id);
@@ -357,6 +389,7 @@ public class BestellingDaoImpl implements BestellingDao {
 			} 
 			
 			catch (SQLException e) {
+				logger.warn("SQL exception voor BestellingDaoImpl.deleteARtikelFromBestelling() methode");
 				e.printStackTrace();	
 			}
 		
@@ -377,6 +410,7 @@ public class BestellingDaoImpl implements BestellingDao {
 	              }
 	        } 
 	        catch (Exception e) { 
+	        	logger.warn("SQL exception voor BestellingDaoImpl.closeDBConnection() methode");
 	            	e.printStackTrace();
 	        }
 	        
@@ -391,7 +425,9 @@ public class BestellingDaoImpl implements BestellingDao {
 			
 			try {
 				
-				Connection connection = DBConnectivityManagement.getConnectionStatus(); 
+	        	logger.info("Content of connection object is : " + connection);
+	        	Connection connection = DBConnectivityManagement.getConnectionStatus();
+	        	logger.info("Content of connection object is : " + connection); 
 				
 				preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE bestelling_id=?");
 				preparedStatement.setInt(1, bestelling_id);
@@ -404,6 +440,7 @@ public class BestellingDaoImpl implements BestellingDao {
 				}
 
 			} catch (SQLException e) {
+				logger.warn("SQL exception voor BestellingDaoImpl.checkBestelling_id() methode");
 	                e.printStackTrace();	
 			}
 			return result;
@@ -417,7 +454,9 @@ public class BestellingDaoImpl implements BestellingDao {
 			
 			try {
 				
-				Connection connection = DBConnectivityManagement.getConnectionStatus(); 
+	        	logger.info("Content of connection object is : " + connection);
+	        	Connection connection = DBConnectivityManagement.getConnectionStatus();
+	        	logger.info("Content of connection object is : " + connection);
 				
 				// uitgecomment tbv opdracht 5 || AU 26/11/15 : preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE (artikel1_id=? OR artikel2_id=? OR artikel3_id=?)");
 				
@@ -435,6 +474,7 @@ public class BestellingDaoImpl implements BestellingDao {
 				}
 
 			} catch (SQLException e) {
+				logger.warn("SQL exception voor BestellingDaoImpl.checkArtikel_id() methode");
 	                e.printStackTrace();	
 			}
 			return result;
@@ -447,7 +487,9 @@ public class BestellingDaoImpl implements BestellingDao {
 		
 		try {
             
-            Connection connection = DBConnectivityManagement.getConnectionStatus();	           
+        	logger.info("Content of connection object is : " + connection);
+        	Connection connection = DBConnectivityManagement.getConnectionStatus();
+        	logger.info("Content of connection object is : " + connection);          
             
     	 	Statement statement = connection.createStatement();	               
             ResultSet resultSet = statement.executeQuery("SELECT MAX(Bestelling_id) FROM bestelling");
@@ -461,6 +503,7 @@ public class BestellingDaoImpl implements BestellingDao {
             statement.close();
              
         } catch (SQLException e) {
+        	logger.warn("SQL exception voor BestellingDaoImpl.checkHoogste_Bestelling_id() methode");
             e.printStackTrace();
         }
         return maxBestellingId;
@@ -480,7 +523,9 @@ public class BestellingDaoImpl implements BestellingDao {
 			
 			try {
 				
-				Connection connection = DBConnectivityManagement.getConnectionStatus(); 
+	        	logger.info("Content of connection object is : " + connection);
+	        	Connection connection = DBConnectivityManagement.getConnectionStatus();
+	        	logger.info("Content of connection object is : " + connection);
 				
 				// uitgecomment tbv opdracht 5 || AU 26/11/15 : preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE (artikel1_id=? OR artikel2_id=? OR artikel3_id=?)");
 				
@@ -496,6 +541,7 @@ public class BestellingDaoImpl implements BestellingDao {
 				} 
 
 			} catch (SQLException e) {
+				logger.warn("SQL exception voor BestellingDaoImpl.checkArtikelAlAanwezigInBestelling() methode");
 	                e.printStackTrace();	
 			}
 			return result;
@@ -518,7 +564,9 @@ public class BestellingDaoImpl implements BestellingDao {
 					String sql = "SELECT * FROM bestelling JOIN bestelling_artikel JOIN artikel WHERE (bestelling.bestelling_id = ? AND bestelling.bestelling_id = bestelling_artikel.bestelling_id AND bestelling_artikel.artikel_id = artikel.artikel_id)";
 	    	        
 	   	         try {	  
-	   	        	 	Connection connection = DBConnectivityManagement.getConnectionStatus();
+	 	        	logger.info("Content of connection object is : " + connection);
+		        	Connection connection = DBConnectivityManagement.getConnectionStatus();
+		        	logger.info("Content of connection object is : " + connection);
 	   	        	 
 	   		            preparedStatement = connection.prepareStatement(sql);	   		            	   		            
 	   		            preparedStatement.setInt(1, bestelling_id);	   		                   	            
@@ -558,6 +606,7 @@ public class BestellingDaoImpl implements BestellingDao {
 	   	         			}
 				                 
 				    catch (SQLException e) {
+				    	logger.warn("SQL exception voor BestellingDaoImpl.updateAantallen() methode");
 		                e.printStackTrace();
 		            }
 	   		             

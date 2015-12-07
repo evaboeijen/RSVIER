@@ -10,10 +10,18 @@ import java.util.List;
 import java.util.Scanner;
 import dao.*;
 import menu.*;
+import menu.klasseselectie.BestellingMenu;
 import business.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class DeleteMenu  {
+	
+	private static final Logger logger =  LoggerFactory.getLogger(DeleteMenu.class);
+	
+	public Connection connection = null;
 	
 	// declaratie en initialisering van gemeenschappelijk objecten en primitieve variabelen 
 	// die zullen worden geraadpleegd door
@@ -57,6 +65,8 @@ public class DeleteMenu  {
             
 		int keuze = input.nextInt();
 		       
+		logger.info("content of variable 'keuze' is : " + keuze);
+		
 		
 		switch (keuze) {
 		
@@ -151,6 +161,7 @@ public class DeleteMenu  {
         		} 
         		
         		catch (SQLException e) {
+        			logger.warn("SQL exception voor DeleteMenu case 2");
         			e.printStackTrace();
         		}
         		
@@ -177,7 +188,9 @@ public class DeleteMenu  {
 	
         		try {
 
-        			Connection connection = DBConnectivityManagement.getConnectionStatus();
+    	        	logger.info("Content of connection object is : " + connection);
+    	        	Connection connection = DBConnectivityManagement.getConnectionStatus();
+    	        	logger.info("Content of connection object is : " + connection);
         					
         			// uitgecomment tbv opdracht 5 | 27/11/15 |AU            		
         			// PreparedStatement statement = connection.prepareStatement("SELECT ARTIKEL1_NAAM, ARTIKEl1_PRIJS FROM Bestelling WHERE Artikel1_id=?");
@@ -215,6 +228,7 @@ public class DeleteMenu  {
         		}
         			
         		catch (SQLException e) {
+        			logger.warn("SQL error");
         			e.printStackTrace();
         		}
         			
@@ -276,7 +290,9 @@ public class DeleteMenu  {
         		System.out.println("Hieronder een overzicht van alle artikelen uit het assortiment: ");
                 
             	try {
-            		Connection connection = DBConnectivityManagement.getConnectionStatus();
+    	        	logger.info("Content of connection object is : " + connection);
+    	        	Connection connection = DBConnectivityManagement.getConnectionStatus();
+    	        	logger.info("Content of connection object is : " + connection);
                     	
             		Statement statement = connection.createStatement();
             		 
@@ -294,6 +310,7 @@ public class DeleteMenu  {
             	} 
             	
         		catch (SQLException e) {
+        			logger.warn("SQL exception voor DeleteMenu case 4");
         			e.printStackTrace();
         		}
         			
