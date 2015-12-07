@@ -5,10 +5,17 @@ import business.*;
 import dao.*;
 import menu.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ArtikelMenu {
 	
+	private static final Logger logger = LoggerFactory.getLogger(ArtikelMenu.class);
 	
 public Artikel createArtikelObject(){
+	
+		logger.info("createArtikelObject methode voor gebruiker input in ArtikelMenu start");
+	
 			Scanner input = new Scanner(System.in);	
 		
 			Artikel artikel = new Artikel();
@@ -23,6 +30,8 @@ public Artikel createArtikelObject(){
 		
 			artikel.setArtikel_naam(artikel_naam);
 			artikel.setArtikel_prijs(artikel_prijs);
+			
+			logger.info("createArtikelObject methode input eindigt");
 			
 			return artikel;
 		}
@@ -53,6 +62,8 @@ public void toonMenu() {
 	    
 	    Scanner input = new Scanner(System.in);    
 		int keuze = input.nextInt();
+		
+		logger.info("Gebruiker koos voor optie:  " + keuze);
 		       
 			switch (keuze) {
             	case 1:
