@@ -78,6 +78,7 @@ private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.cla
                statement.close();
                 
            } catch (SQLException e) {
+        	   logger.warn("SQL Exception voor read all artikelen methode");
                e.printStackTrace();
            }
            System.out.println(artikelen);
@@ -88,7 +89,8 @@ private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.cla
    @Override
     public Artikel read(Artikel artikel) {
     
-                 
+	   logger.info("read artikel(Artikel artikel) methode start voor artikel_id: " + artikel.getArtikel_id());
+	        
         try {
         	Connection connection = DBConnectivityManagement.getConnectionStatus(); 
         	
@@ -118,9 +120,12 @@ private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.cla
                 statement.close();
                  
             } catch (SQLException e) {
+            	logger.warn("SQL Exception voor read Artikel(Artikel artikel) methode");
                 e.printStackTrace();
             }
             System.out.println(artikel);
+            logger.info("readArtikel(Artikel artikel) methode voor artikel_id: " + artikel.getArtikel_id() + "eindigt");
+            
             return artikel;
     }
 
@@ -128,6 +133,8 @@ private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.cla
 @Override
 public Artikel readArtikel(int bestelling_id, int artikel_id){
 
+	logger.info("readArtikel(int bestelling_id, int artikel_id) methode start voor bestelling_id: " + bestelling_id + " en artikel_id: " + artikel_id);
+	  
         Artikel artikel = new Artikel();
              
         
@@ -211,16 +218,19 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 	            
 	            
         }catch (SQLException e){
+        	logger.warn("SQL Exception voor readArtikel(int bestelling_id, int artikel_id) methode");
         	e.printStackTrace();
         }
-        
+        logger.info("readArtikel(int bestelling_id, int artikel_id) methode voor bestelling_id: " + bestelling_id + " en artikel_id: " + artikel_id + " is beeindigd");
         return artikel;
 }
 
   
    @Override
     public void create(Artikel artikel){
-        
+   
+	   logger.info("create methode start");
+		  
         
         List<Artikel> artikellen = new ArrayList<>();
         artikellen.add(artikel);
@@ -252,20 +262,27 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
             if (rowsInserted > 0) {
             System.out.println("Artikel(len) toegevoegd aan het assortiment!");
         }
-        
             preparedStatement.close();
-                
+         
+            logger.info("Create Artikel methode. Een nieuw artikel: " + artikel.getArtikel_naam() + " met prijs: " + artikel.getArtikel_prijs()
+			  + "is aangemaakt, en toegevoegd aan het assortiment");
+          
         }catch (SQLException e) {
             // TODO Auto-generated catch block
+        	logger.warn("SQL Exception create Artikel methode");
+        	
             e.printStackTrace();
         } 
+        
+        logger.info("create Artikel methode eindigt");
     }
    
     
    @Override
   public void update(Artikel artikel) {         
 					
-	    	        
+	    	logger.info("Update Artikel methode start");
+	    	
 	   	         try {	
 	   	      	Connection connection = DBConnectivityManagement.getConnectionStatus(); 
    	        	
@@ -348,23 +365,26 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 			            //	 }
 		               
 	   		            //}
-	   		            
+	   		            logger.info("Update artikel methode. Het volgende artikelnr is geupdate: " + artikel.getArtikel_id() + " naar " + artikel.getArtikel_prijs() + " met prijs"  + artikel.getArtikel_prijs());
+			                 
 		                result.close();
 		                preparedStatement.close();
 		                 
 		            } 
 				                 
 				    catch (SQLException e) {
+				    	logger.warn("SQL Exception update artikel methode");
 		                e.printStackTrace();
 		            }
-	   		               		            
+	   		     
+	   	         logger.info("Update Artikel methode eindigt");
 		  }
   
 
         @Override
 	public void delete(int bestelling_id, int artikel_id) {
 			
-        	
+        	logger.info("delete artikel(int bestelling_id, int artikel_id) methode start");
         	
     	   	         try {	 
     	   	        	
@@ -396,24 +416,27 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
     			                     } 
     			          
     			                  
-    			                   
+    			               logger.info("delete artikel(int bestelling_id, int artikel_id) methode. Het volgende artikel: " + artikel_id + " is gewist uit assortiment.");    
     			                     preparedStatement.close();
     			                     result.close();
     			                     
         			}catch (SQLException e){
+        				
+        				logger.warn("SQL exception delete artikel(int bestelling_id, int artikel_id) methode");
         				e.printStackTrace();
         			}
     	   	         
     	   	         finally {
     					
     				}
+    	   	         logger.info("delete artikel(int bestelling_id, int artikel_id) methode eindigt");
     	   		               		            
     		  }
       
     @Override
     public void delete(Artikel artikel) {
 			
-        	
+        	logger.info("delete artikel(Artikel artikel) methode start");
         	
   	         try {	 
   	        	
@@ -444,18 +467,19 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 		                     } 
 		          
 		                  
-		                   
+		                   logger.info("delete artikel(Artikel artikel). Artikel met artikel_id: " + artikel.getArtikel_id() + " en naam: " + artikel.getArtikel_naam() + " is gewist uit het assortiment");
 		                     preparedStatement.close();
 		                     result.close();
 		                     
 			}catch (SQLException e){
+				logger.warn("SQL Exception delete Artikel(Artikel artikel) methode");
 				e.printStackTrace();
 			}
   	         
   	         finally {
 				
 			}
-  		               		            
+  		    logger.info("delete artikel(Artikel artikel) methode eindigt");           		            
 	  }
 
 
