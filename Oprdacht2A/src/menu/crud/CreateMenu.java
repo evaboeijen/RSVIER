@@ -8,7 +8,14 @@ import dao.*;
 import menu.*;
 import menu.klasseselectie.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 public class CreateMenu {
+	
+	private static final Logger logger = LoggerFactory.getLogger(CreateMenu.class);
+	
 	
 	List<Artikel> alleArtikelen = new ArrayList<>();
 	int gewensteArtikel_id = 0;
@@ -149,6 +156,7 @@ public class CreateMenu {
             		} 
             		
             		catch (SQLException e) {
+            			logger.warn("SQL error");
             			e.printStackTrace();
             		}
             		
@@ -178,6 +186,7 @@ public class CreateMenu {
                 	} 
                 		
                 	catch (SQLException e) {
+                		logger.warn("SQL error");
                 		e.printStackTrace();
                 	}
                          	                  			
@@ -222,6 +231,7 @@ public class CreateMenu {
             		}
             			
             		catch (SQLException e) {
+            			logger.warn("SQL error");
             			e.printStackTrace();
             		}
             			
@@ -281,6 +291,7 @@ public class CreateMenu {
                 	} 
                 		
                 	catch (SQLException e) {
+                		logger.warn("SQL error");
                 		e.printStackTrace();
                 	}     
                                                        			
@@ -318,6 +329,7 @@ public class CreateMenu {
                 	}
                 			
                 	catch (SQLException e) {
+                		logger.warn("SQL error");
                 		e.printStackTrace();
                 	}
                 			
