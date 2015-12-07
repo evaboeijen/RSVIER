@@ -13,9 +13,13 @@ import menu.*;
 import menu.klasseselectie.*;
 import business.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class UpdateMenu {
 	
-
+	private static final Logger logger = LoggerFactory.getLogger(CreateMenu.class);
+	
 	public void toonMenu() {
 	    System.out.println("\t----------");
 	    System.out.println("\tUpdate Menu");
@@ -34,6 +38,7 @@ public class UpdateMenu {
 	   Scanner input = new Scanner(System.in);		     
             
 			int keuze = input.nextInt();
+			logger.info("Gebruiker koos voor optie: " + keuze);
 		       
 			switch (keuze) {
             	case 1:
@@ -139,6 +144,7 @@ public class UpdateMenu {
             		} 
             		
             		catch (SQLException e) {
+            			logger.warn("SQL error");
             			e.printStackTrace();
             		}
             		
@@ -167,6 +173,7 @@ public class UpdateMenu {
                 	} 
                 		
                 	catch (SQLException e) {
+                		logger.warn("SQL error");
                 		e.printStackTrace();
                 	}                                                  			
 
@@ -212,6 +219,7 @@ public class UpdateMenu {
             		}
             			
             		catch (SQLException e) {
+            			logger.warn("SQL error");
             			e.printStackTrace();
             		}
             			
