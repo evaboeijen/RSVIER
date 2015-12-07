@@ -6,10 +6,16 @@ import java.util.*;
 import business.Klant;
 import menu.DBConnectivityManagement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+	
 
 
 public class KlantDaoImpl implements KlantDao {
 
+	
+	private static final Logger logger =  LoggerFactory.getLogger(KlantDaoImpl.class);
+	
 	public Connection connection = null;
 
 
@@ -45,7 +51,7 @@ public class KlantDaoImpl implements KlantDao {
    @Override
     public void create(Klant klant){
         
-	
+	logger.info("Create Klant methode start");
                    
         try {
         	   Connection connection = DBConnectivityManagement.getConnectionStatus();
@@ -64,18 +70,29 @@ public class KlantDaoImpl implements KlantDao {
             if (rowsInserted > 0) {
             System.out.println("Een nieuwe klant is succesvol toegevoegd aan de database");
         }
+            
+            logger.info("create Klant methode: een nieuwe klant " + klant.getVoornaam() +  
+            		" " + klant.getTussenvoegsel() + " " + klant.getAchternaam() + " " + klant.getEmail() + " is toegevoegd aan de database");   
+            logger.info("object klant", klant.getKlant_id());
+            
             preparedStatement.close();
+            
             
         } catch (SQLException e) {
             // TODO Auto-generated catch block
+        	logger.warn("SQL exception bij create klant methode");
             e.printStackTrace();
         }
+       
+        logger.info("Create klant methode eindigt");
     }
  
    @Override
     public List<Klant> read() {
-        List<Klant> klanten = new ArrayList<Klant>();
-         
+	   logger.info("read all Klanten methode start");
+	   
+        List<Klant> klanten = new ArrayList<Klant>();      
+        
         try {
                 Connection connection = DBConnectivityManagement.getConnectionStatus();
         		
@@ -102,12 +119,13 @@ public class KlantDaoImpl implements KlantDao {
             }
         
             System.out.println(klanten);
+            logger.info("read all Klanten methode eindigt");
             return klanten;
     }
     
     @Override
     public Klant readKlant(int klant_id) {
-	
+	logger.info("readKlant(int klant_id) methode start voor klant_id: " + klant_id);
         
         Klant klant = new Klant();
         ResultSet result;
@@ -133,16 +151,19 @@ public class KlantDaoImpl implements KlantDao {
              statement.close();
                      
         } catch (SQLException e){
+        	logger.warn("SQL Exception voor readKlant(int klant_id) methode"); 
             e.printStackTrace();
            
         }
        System.out.println(klant);
+       logger.info("readKlant(int klant_id) methode voor klant_id: " + klant_id + " is beeindigd");
        return klant;
 }
  
     @Override
  public Klant readKlant(String voornaam) {
-	
+    	logger.info("readKlant(String voornaam) methode start voor voornaam: " + voornaam);
+        
         Klant klant = null;
         ResultSet result;
                 
@@ -167,16 +188,18 @@ public class KlantDaoImpl implements KlantDao {
              statement.close();
              
         } catch (SQLException e){
+        	logger.info("SQL Exception voor readKlant(String voornaam)");
             e.printStackTrace();
            
         }
        System.out.println(klant);
+       logger.info("readKlant(String voornaam) methode start voor voornaam: " + voornaam);
        return klant;
 }
         
 	@Override
 	public void update(Klant klant) {
-		 
+		logger.info("update Klant methode start"); 
                                     
             try {
             	Connection connection = DBConnectivityManagement.getConnectionStatus();
@@ -193,17 +216,22 @@ public class KlantDaoImpl implements KlantDao {
                 if (rowsUpdated > 0) {
 	System.out.println("De gegevens van de bestaande klant zijn aangepast!");
 }
+             logger.info("update klant methode. De gegevens van de volgende klant id " + klant.getKlant_id() + " zijn geupdate naar naam:" + klant.getVoornaam() +  
+             		" " + klant.getTussenvoegsel() + " " + klant.getAchternaam() + " met email: " + klant.getEmail());   
              statement.close();
              
             } catch (SQLException e) {
+            	logger.warn("SQL Exception voor update Klant methode");
                 e.printStackTrace();
             } 
-            
+            logger.info("update Klant methode eindigt");
 	}
 
         @Override
 	public void delete(Klant klant) {
 		// TODO Auto-generated method stub
+    logger.info("delete Klant methode start");     	
+        	
             try{ 
             	   Connection connection = DBConnectivityManagement.getConnectionStatus();
                           
@@ -214,15 +242,19 @@ public class KlantDaoImpl implements KlantDao {
                 if (rowsDeleted > 0) {
 	System.out.println("De klant is gewist uit de database");
         }
+                logger.info("delete klant methode. De gegevens van de klant met klant id: " + klant.getKlant_id() + " zijn gewist uit de database");
                 statement.close();
                 
 	} catch (SQLException e) {
+			logger.warn("SQL Exception voor delete klant methode");
             e.printStackTrace();
         }
         }
 
     
     	public boolean checkKlant_id(int klant_id) {	
+    		logger.info("checkKlant_id methode start");
+    		
 			PreparedStatement preparedStatement;
 			ResultSet resultSet;
 			boolean result = false;
@@ -242,8 +274,10 @@ public class KlantDaoImpl implements KlantDao {
 				}
 
 			} catch (SQLException e) {
+				logger.warn("SQL Exception voor checkKlant_id methode");
 	                e.printStackTrace();	
 			}
+			logger.info("checkKlant_id methode eindigt");
 			return result;
 		}
     	
