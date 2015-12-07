@@ -1,12 +1,19 @@
 package menu.klasseselectie;
 
 import java.util.Scanner;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import business.Adres;
 import dao.AdresDaoImpl;
+import dao.ArtikelDaoImpl;
 import menu.*;
 
 public class AdresMenu {
 	AdresDaoImpl adresDaoImpl = new AdresDaoImpl();
+	private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.class);
+	int klant_id;
 
 	public Adres createAdresObject() {
 	    
@@ -15,7 +22,7 @@ public class AdresMenu {
 	    System.out.println("Klantnummer: ");
 			int klant_id = input.nextInt();
 				while (adresDaoImpl.checkKlant_id(klant_id)!= true){
-					System.out.println("Het desbetreffende klant nummer bevind zich niet in de database! \nKlantnummer: ");
+					System.out.println("Klantnummer: ");
 					klant_id = input.nextInt();
 				}
 		System.out.println("Straatnaam: ");
@@ -24,13 +31,13 @@ public class AdresMenu {
 				System.out.println("Een straatnaam mag niet meer dan 26 karakters bevatten! \nStraatnaam: ");
 					straatnaam = input.next();
 				}			
-		System.out.println("Postcode: 			( zonder spatie ) ");
+		System.out.println("Postcode:\t\t( zonder spatie ) ");
 			String postcode = input.next();
 				while (postcode.length() > 6){
 				System.out.println("Een postcode mag niet meer dan 6 karakters bevatten! \nPostcode: ");
 					straatnaam = input.next();
 				}
-		System.out.println("Toevoeging: 		( als geen toevoeging vul - in ) ");
+		System.out.println("Toevoeging:\t\t( als geen toevoeging vul - in ) ");
 			String toevoeging =  input.next();
 				while (toevoeging.length() > 6){
 				System.out.println("Een toevoeging mag niet meer dan 6 karakters bevatten! \nToevoeging: ");
@@ -49,6 +56,7 @@ public class AdresMenu {
 					straatnaam = input.next();
 				}		
 		Adres adres = new Adres(klant_id, straatnaam, postcode, toevoeging, huisnummer, woonplaats);
+		logger.debug("Het zojuist gecreëerde adres is: " + adres);
 		return adres;
 	    }	
 
@@ -63,8 +71,9 @@ public class AdresMenu {
 	    System.out.println("2. Read:        Lees alle adressen uit de tabel");
 	    System.out.println("3. Read:        Zoek op straatnaam");
 	    System.out.println("4. Read:        Zoek op de combinatie van postcode & huisnummer");
-	    System.out.println("5. Update:      Verander het adres van een bestaande klant");
-	    System.out.println("6. Delete:      Verwijder het adres van een bestaande klant\n");    
+	    System.out.println("5. Read:        Zoek op klantnummer");
+	    System.out.println("6. Update:      Verander het adres van een bestaande klant");
+	    System.out.println("7. Delete:      Verwijder het adres van een bestaande klant\n");    
 
 	    System.out.println("10. Terug naar het vorige menu"); 
 	    System.out.println("11. Terug naar het hoofdmenu"); 
@@ -119,16 +128,23 @@ public class AdresMenu {
             		toonMenu();
             		break;
             	
-            	case 5://Update --> adres
+            	case 5: //Read --> alle adressen bij klantnummer
+            		System.out.println("Voer klantnummer in waarvan u alle adressen wilt weergeven: ");
+            				klant_id = input.nextInt();            		
+            		adresDaoImpl.readAdressesFromKlant(klant_id);
+            		toonMenu();
+            		break;
+            		
+            	case 6://Update --> adres
             		System.out.println("Voer de gegevens in van het bij te werken adres ");
             			adres = createAdresObject();
             		adresDaoImpl.updateAdres(adres);
             		toonMenu();
             		break;
             	
-            	case 6://Delete --> adres
+            	case 7://Delete --> adres
             		System.out.println("Voer klantnummer van het te verwijderen adres in: ");
-            		int klant_id = input.nextInt();
+            			klant_id = input.nextInt();
             			adres = new Adres(klant_id, "-", "-", "-", 1, "-");
             		adresDaoImpl.deleteAdres(adres);	
             		toonMenu();

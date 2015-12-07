@@ -8,16 +8,22 @@ import java.sql.Statement;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import dao.ArtikelDaoImpl;
 import menu.crud.CrudMenu;
 import menu.klasseselectie.KlasseSelectieMenu;
 
-
+import com.mchange.v2.c3p0.*;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 public class DBConnectivityManagement {
-		
+		private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.class);
 		static Connection connection = null;
-	    Scanner input = new Scanner(System.in);
-	    
+		Scanner input = new Scanner(System.in);
+
 		public void toonMenu() {
 		    System.out.println("\t---------");
 		    System.out.println("\tInloggen");
@@ -29,8 +35,6 @@ public class DBConnectivityManagement {
 		    
 		    System.out.println("10. Stoppen");
 		    System.out.print("Voer optie in en druk op Enter:");
-
-		     
 	            
 				int keuze = input.nextInt();
 			       
@@ -74,13 +78,12 @@ public class DBConnectivityManagement {
 				}         
 							
 		}
-		
+
 		public static Connection getConnectionStatus() {
 			return connection;
 		}
-		
-		
-		public Connection connectToDBWithUserInput() {	
+
+		public Connection connectToDBWithUserInput() {
 				
 			try {
 				System.out.print("Voer database hostname in: ");
@@ -102,8 +105,9 @@ public class DBConnectivityManagement {
 					String username = dbUsername;
 					String password = dbPassword;				
 					connection = DriverManager.getConnection(dbURL, username, password);				
-					System.out.println("Database verbinding is gemaakt");
+					System.out.println("Database verbinding is gemaakt\n");
 				}
+				logger.info("Connectie status is: " + getConnectionStatus());
 			}	 	
 			
 			catch (ClassNotFoundException e) {		
@@ -120,9 +124,8 @@ public class DBConnectivityManagement {
 	
 				return connection;		 																	
 		} 
-	
 
-		public Connection connectToDBWithDefaultDataEva() {	
+		public Connection connectToDBWithDefaultDataEva() {
 								
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
@@ -133,8 +136,9 @@ public class DBConnectivityManagement {
 					String username = "root";
 					String password = "";
 					connection = DriverManager.getConnection(dbURL, username, password);	
-					System.out.println("Database verbinding is gemaakt");
-				}	 					
+					System.out.println("Database verbinding is gemaakt\n");
+				}
+				logger.info("Connectie is: " + connection);
 			}	 	
 						
 			catch (ClassNotFoundException e) {		
@@ -152,7 +156,7 @@ public class DBConnectivityManagement {
 			return connection;	 																	
 		} 
 
-		public Connection connectToDBWithDefaultDataJesse() {	
+		public Connection connectToDBWithDefaultDataJesse() {
 			
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
@@ -163,8 +167,9 @@ public class DBConnectivityManagement {
 					String username = "root";
 					String password = "JaRsvier15";
 					connection = DriverManager.getConnection(dbURL, username, password);	
-					System.out.println("Database verbinding is gemaakt");
-				}	 					
+					System.out.println("Database verbinding is gemaakt\n");
+				}
+				logger.info("Connectie is: " + connection);
 			}	 	
 						
 			catch (ClassNotFoundException e) {		
@@ -182,7 +187,7 @@ public class DBConnectivityManagement {
 			return connection;	 																	
 		} 
 
-		public Connection connectToDBWithDefaultDataAgung() {	
+		public Connection connectToDBWithDefaultDataAgung() {
 			
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
@@ -193,8 +198,9 @@ public class DBConnectivityManagement {
 					String username = "root";
 					String password = "mysql";
 					connection = DriverManager.getConnection(dbURL, username, password);	
-					System.out.println("Database verbinding is gemaakt");
-				}	 					
+					System.out.println("Database verbinding is gemaakt\n");
+				}
+				logger.info("Connectie is: " + connection);
 			}	 	
 						
 			catch (ClassNotFoundException e) {		
@@ -212,7 +218,6 @@ public class DBConnectivityManagement {
 			return connection;	 																	
 		} 
 
-	
 		public static Connection logOut(Connection connection) {
 			try {
 				if (connection != null) {
@@ -225,6 +230,7 @@ public class DBConnectivityManagement {
 				else {
 					System.out.println("\nYou are already logged out.\n");         	  
 				}
+				logger.info("Connectie is: " + connection);
 			}     
               	              
 			catch (Exception e) { 
@@ -233,5 +239,5 @@ public class DBConnectivityManagement {
 		 
 			return connection;
 		}  
-	
+
 }
