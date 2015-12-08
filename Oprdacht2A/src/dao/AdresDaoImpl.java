@@ -19,9 +19,12 @@ import javax.print.DocFlavor.INPUT_STREAM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.zaxxer.hikari.HikariDataSource;
+
 public class AdresDaoImpl implements AdresDao{
 	private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.class);
 	Connection connection = null;
+	
 	
 	public Connection getConnection(){
 

@@ -38,7 +38,7 @@ public class AdresMenu {
 					straatnaam = input.next();
 				}
 		System.out.println("Toevoeging:\t\t( als geen toevoeging vul - in ) ");
-			String toevoeging =  input.next();
+			String toevoeging = input.next();
 				while (toevoeging.length() > 6){
 				System.out.println("Een toevoeging mag niet meer dan 6 karakters bevatten! \nToevoeging: ");
 					straatnaam = input.next();

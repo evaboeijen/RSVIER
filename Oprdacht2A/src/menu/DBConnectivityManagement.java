@@ -6,24 +6,50 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.InputMismatchException;
+import java.util.Properties;
 import java.util.Scanner;
+
+import javax.security.auth.login.Configuration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.mchange.v2.c3p0.cfg.C3P0Config;
+import com.mchange.v2.c3p0.impl.C3P0PooledConnectionPool;
+import com.mchange.v2.c3p0.impl.C3P0PooledConnectionPoolManager;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 import dao.ArtikelDaoImpl;
 import menu.crud.CrudMenu;
 import menu.klasseselectie.KlasseSelectieMenu;
 
-import com.mchange.v2.c3p0.*;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 
 public class DBConnectivityManagement {
+		int keuzeCP = 0;  
+		HoofdMenu hoofdMenu = new HoofdMenu();
 		private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.class);
 		static Connection connection = null;
 		Scanner input = new Scanner(System.in);
-
+		static HikariDataSource ds = null;
+		static C3P0PooledConnectionPool C3POds = null;
+		
+		public HikariConfig setupHikariCP() {
+			HikariConfig config = new HikariConfig();
+				config.addDataSourceProperty("cachePrepStmts", "true");
+				config.addDataSourceProperty("prepStmtCacheSize", "250");
+				config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+			return config;
+}
+		public ComboPooledDataSource setupC3POCP() {
+			ComboPooledDataSource cpds = new ComboPooledDataSource();
+			cpds.setMinPoolSize(5);                                     
+			cpds.setAcquireIncrement(5);
+			cpds.setMaxPoolSize(20);
+			return cpds;
+		}
+		
 		public void toonMenu() {
 		    System.out.println("\t---------");
 		    System.out.println("\tInloggen");
@@ -37,34 +63,70 @@ public class DBConnectivityManagement {
 		    System.out.print("Voer optie in en druk op Enter:");
 	            
 				int keuze = input.nextInt();
-			       
+				 
 				switch (keuze) {
 	            	case 1:
-	            		connectToDBWithUserInput();	
-	            		//System.out.println("Connection status: " + this.getConnectionStatus());
-	            		HoofdMenu hoofdmenu = new HoofdMenu();					
-	            		hoofdmenu.toonMenu(); 
+	            		System.out.println("1. Log in op de Hikari Connection Pool\n2. Log in op de C3PO Connection Pool");
+	            		keuzeCP = input.nextInt();
+	            		switch (keuzeCP) {
+	            		case 1: 
+	            			HikariCPInput();
+	            			break;
+	            		case 2:
+	            			C3POCPInput();
+	            			break;
+	            		default:
+	            			HikariCPInput();
+	            		}
+	            		hoofdMenu.toonMenu(); 	            						
 	            		break;
 	                
 	            	case 2:
-	            		connectToDBWithDefaultDataEva();
-	            		//System.out.println("Connection status: " + this.getConnectionStatus());
-	            		HoofdMenu hoofdmenu2 = new HoofdMenu();					
-	            		hoofdmenu2.toonMenu(); 	            						
+	            		System.out.println("1. Log in op de Hikari Connection Pool\n2. Log in op de C3PO Connection Pool");
+	            		keuzeCP = input.nextInt();
+	            		switch (keuzeCP) {
+	            		case 1: 
+	            			HikariCPEva();
+	            			break;
+	            		case 2:
+	            			C3POCPEva();
+	            			break;
+	            		default:
+	            			HikariCPEva();
+	            		}
+	            		hoofdMenu.toonMenu(); 	            						
 	            		break;
 	            		
 	            	case 3:
-	            		connectToDBWithDefaultDataJesse();
-	            		//System.out.println("Connection status: " + this.getConnectionStatus());
-	            		HoofdMenu hoofdmenu3 = new HoofdMenu();					
-	            		hoofdmenu3.toonMenu(); 	            						
+	            		System.out.println("1. Log in op de Hikari Connection Pool\n2. Log in op de C3PO Connection Pool");
+	            		int keuzeCP = input.nextInt();
+	            		switch (keuzeCP) {
+	            		case 1: 
+	            			HikariCPJesse();
+	            			break;
+	            		case 2:
+	            			C3POCPJesse();
+	            			break;
+	            		default:
+	            			HikariCPJesse();
+	            		}
+	            		hoofdMenu.toonMenu(); 	            						
 	            		break;
 	            		
 	            	case 4:
-	            		connectToDBWithDefaultDataAgung();
-	            		//System.out.println("Connection status: " + this.getConnectionStatus());
-	            		HoofdMenu hoofdmenu4 = new HoofdMenu();					
-	            		hoofdmenu4.toonMenu(); 	            						
+	            		System.out.println("1. Log in op de Hikari Connection Pool\n2. Log in op de C3PO Connection Pool");
+	            		keuzeCP = input.nextInt();
+	            		switch (keuzeCP) {
+	            		case 1: 
+	            			HikariCPAgung();
+	            			break;
+	            		case 2:
+	            			C3POCPAgung();
+	            			break;
+	            		default:
+	            			HikariCPAgung();
+	            		}
+	            		hoofdMenu.toonMenu(); 	            						
 	            		break;
 	                               	
 	            	case 10:
@@ -83,7 +145,154 @@ public class DBConnectivityManagement {
 			return connection;
 		}
 
-		public Connection connectToDBWithUserInput() {
+		public Connection C3POCPInput() {
+			System.out.print("Voer database hostname in: ");
+			String dbHostName = input.next();
+			System.out.print("Database port: ");
+			int dbPort = input.nextInt();
+			input.nextLine();
+			System.out.print("Database gebruikersnaam: ");
+			String dbUsername = input.nextLine();
+			System.out.print("Wachtwoord: ");
+			String dbPassword = input.nextLine();
+			String dbURL = ("jdbc:mysql://localhost:" + dbPort + "/" + dbHostName);
+			ComboPooledDataSource cpds = setupC3POCP();
+			//cpds.setDriverClass( "org.postgresql.Driver" ); //loads the jdbc driver            
+			cpds.setJdbcUrl(dbURL);
+			cpds.setUser(dbUsername);                                  
+			cpds.setPassword(dbPassword);
+			
+			try{
+				connection = cpds.getConnection();
+			}catch (SQLException e) {
+					logger.warn("SQL exeption voor C3POCPInput methode");
+		            e.printStackTrace();
+			}
+			return connection;
+		}
+		
+		public Connection C3POCPEva() {
+			//cpds.setDriverClass( "org.postgresql.Driver" ); //loads the jdbc driver            
+			ComboPooledDataSource cpds = setupC3POCP();
+			cpds.setJdbcUrl("jdbc:mysql://localhost:3306/opdracht1");
+			cpds.setUser("root");                                  
+			cpds.setPassword("");
+			
+			try{
+				connection = cpds.getConnection();
+			}catch (SQLException e) {
+					logger.warn("SQL exeption voor C3POCPEva methode");
+		            e.printStackTrace();
+			}
+			return connection;
+		}
+		
+		public Connection C3POCPAgung() {
+			//cpds.setDriverClass( "org.postgresql.Driver" ); //loads the jdbc driver            
+			ComboPooledDataSource cpds = setupC3POCP();
+			cpds.setJdbcUrl("jdbc:mysql://localhost:3306/opdracht1");
+			cpds.setUser("root");                                  
+			cpds.setPassword("mysql");
+			
+			try{
+				connection = cpds.getConnection();
+			}catch (SQLException e) {
+					logger.warn("SQL exeption voor C3POCAgung methode");
+		            e.printStackTrace();
+			}
+			return connection;
+		}
+		
+		public Connection C3POCPJesse() {
+			//cpds.setDriverClass( "org.postgresql.Driver" ); //loads the jdbc driver            
+			ComboPooledDataSource cpds = setupC3POCP();
+			cpds.setJdbcUrl("jdbc:mysql://localhost:3308/opdracht1");
+			cpds.setUser("root");                                  
+			cpds.setPassword("JaRsvier15");
+			
+			try{
+				connection = cpds.getConnection();
+			}catch (SQLException e) {
+					logger.warn("SQL exeption voor C3POCJesse methode");
+		            e.printStackTrace();
+			}
+			return connection;
+		}
+		
+		public Connection HikariCPInput(){
+			System.out.print("Voer database hostname in: ");
+			String dbHostName = input.next();
+			System.out.print("Database port: ");
+			int dbPort = input.nextInt();
+			input.nextLine();
+			System.out.print("Database gebruikersnaam: ");
+			String dbUsername = input.nextLine();
+			System.out.print("Wachtwoord: ");
+			String dbPassword = input.nextLine();
+			String dbURL = ("jdbc:mysql://localhost:" + dbPort + "/" + dbHostName);
+			
+			HikariConfig config = setupHikariCP();
+			config.setJdbcUrl(dbURL);
+			config.setUsername(dbUsername);
+			config.setPassword(dbPassword);
+			HikariDataSource ds = new HikariDataSource(config);
+			try{
+				connection = ds.getConnection();
+			}catch (SQLException e) {
+					logger.warn("SQL exeption voor HikariCPEva methode");
+		            e.printStackTrace();
+			}
+			return connection;
+		}
+		
+		public Connection HikariCPEva(){
+			HikariConfig config = setupHikariCP();
+			config.setJdbcUrl("jdbc:mysql://localhost:3306/opdracht1");
+			config.setUsername("root");
+			config.setPassword("");
+			HikariDataSource ds = new HikariDataSource(config);
+			try{
+				connection = ds.getConnection();
+			}catch (SQLException e) {
+					logger.warn("SQL exeption voor HikariCPEva methode");
+		            e.printStackTrace();
+			}
+			return connection;
+		}
+		
+		public Connection HikariCPAgung(){
+			HikariConfig config = setupHikariCP();
+			config.setJdbcUrl("jdbc:mysql://localhost:3306/opdracht1");
+			config.setUsername("root");
+			config.setPassword("mysql");
+			HikariDataSource ds = new HikariDataSource(config);
+			try{
+				connection = ds.getConnection();
+			}catch (SQLException e) {
+					logger.warn("SQL exeption voor HikariCPAgung methode");
+		            e.printStackTrace();
+			}
+			return connection;
+		}
+		
+		public Connection HikariCPJesse(){
+			HikariConfig config = setupHikariCP();
+			config.setJdbcUrl("jdbc:mysql://localhost:3308/opdracht1");
+			config.setUsername("root");
+			config.setPassword("JaRsvier15");
+			HikariDataSource ds = new HikariDataSource(config);
+			try{
+				connection = ds.getConnection();
+			}catch (SQLException e) {
+					logger.warn("SQL exeption voor HikariCPJesse methode");
+		            e.printStackTrace();
+			}
+			return connection;
+		}
+		
+		/* Oude inlog methoden
+		 * public Connection connectToDBWithUserInput() {
+		 
 				
 			try {
 				System.out.print("Voer database hostname in: ");
@@ -96,7 +305,6 @@ public class DBConnectivityManagement {
 				System.out.print("Wachtwoord: ");
 				String dbPassword = input.nextLine();
 				
-		
 				Class.forName("com.mysql.jdbc.Driver");
 				System.out.println("Database driver is geladen	");
 
@@ -216,7 +424,7 @@ public class DBConnectivityManagement {
 			} 
 	
 			return connection;	 																	
-		} 
+		} */
 
 		public static Connection logOut(Connection connection) {
 			try {
