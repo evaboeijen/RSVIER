@@ -4,58 +4,59 @@ import dao.*;
 import java.util.Scanner;
 import menu.*;
 import menu.klasseselectie.KlasseSelectieMenu;
+import service.Check;
 
 public class ReadMenu {
+	Scanner input = new Scanner(System.in);
+	int klant_id;
 
 	public void toonMenu() {
-	    System.out.println("\n\t---------");
-	    System.out.println("\tRead Menu");
-	    System.out.println("\t---------\n");
+		System.out.println("\n\t---------");
+		System.out.println("\tRead Menu");
+		System.out.println("\t---------\n");
 
-	    System.out.println("1. Read:   Klant        Volledige tabel");
-	    System.out.println("2. Read:   Klant            Zoeken op klantnummer");
-	    System.out.println("3. Read:   Klant            Zoeken op voornaam");
-	    System.out.println("4. Read:   Adres        Volledige tabel");
-	    System.out.println("5. Read:   Adres            Zoeken op straatnaam");
-	    System.out.println("6. Read:   Adres            Zoeken op de combinatie van postcode & huisnummer");
-	    System.out.println("7. Read:   Artikel      Volledige tabel");
-	    System.out.println("8. Read:   Artikel          Zoeken op de combinatie van bestellingnummer & artikelnummer");
-	    System.out.println("9. Read:   Bestelling   Volledige tabel\n");
-	    
-	    System.out.println("10. Terug naar het vorige menu"); 
-	    System.out.println("11. Terug naar het hoofdmenu"); 
-	    System.out.println("12. Stoppen\n"); 
+		System.out.println("1. Read:   Klant        Volledige tabel");
+		System.out.println("2. Read:   Klant            Zoeken op klantnummer");
+		System.out.println("3. Read:   Klant            Zoeken op voornaam");
+		System.out.println("4. Read:   Adres        Volledige tabel");
+		System.out.println("5. Read:   Adres            Zoeken op straatnaam");
+		System.out.println("6. Read:   Adres            Zoeken op de combinatie van postcode & huisnummer");
+		System.out.println("7. Read:   Artikel      Volledige tabel");
+		System.out.println("8. Read:   Artikel          Zoeken op de combinatie van bestellingnummer & artikelnummer");
+		System.out.println("9. Read:   Bestelling   Volledige tabel\n");
 
-	    System.out.print("Voer optie in en druk op Enter:");
-	    
-	    Scanner input = new Scanner(System.in);
-	    
-	    try {		     
+		System.out.println("10. Terug naar het vorige menu"); 
+		System.out.println("11. Terug naar het hoofdmenu"); 
+		System.out.println("12. Stoppen\n"); 
+
+		System.out.print("Voer optie in en druk op Enter:");
+
+		try {		     
             KlantDaoImpl klantDaoImpl = new KlantDaoImpl();
 	    	AdresDaoImpl adresDaoImpl = new AdresDaoImpl();
 	    	ArtikelDaoImpl artikelDaoImpl = new ArtikelDaoImpl();
 	    	BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
-	    	
-			int keuze = input.nextInt();
-		    int klant_id;
-			
+	    	Check check = new Check();
+
+	    	int keuze = input.nextInt();
+
 			switch (keuze) {
             	case 1://klant --> voledige tabel
             		klantDaoImpl.read();
             		toonMenu();
             		break;
-                
+
             	case 2://Klant --> klantnummer 
             		System.out.println("Voer het klantnummer in waarop u de tabel klant wilt doorzoeken: ");
             		klant_id = input.nextInt();
-            			while (adresDaoImpl.checkKlant_id(klant_id)!= true){ 
-            				System.out.println("Het desbetreffende klantnummer bevind zich niet in de database! \nKlantnummer: ");
-        					klant_id = input.nextInt();
+            		while (!check.checkKlant_id(klant_id)){
+            			System.out.println("Het desbetreffende klantnummer bevind zich niet in de database! \nKlantnummer: ");
+        				klant_id = input.nextInt();
             			}            				
             		klantDaoImpl.readKlant(klant_id);
-            		toonMenu();            		
+            		toonMenu();
             		break;
-                
+
             	case 3://Klant --> voornaam
             		System.out.println("Voer de voornaam in waarop u de tabel klant wilt doorzoeken: ");
             		String voornaam = input.next();
@@ -66,7 +67,7 @@ public class ReadMenu {
             		klantDaoImpl.readKlant(voornaam);
             		toonMenu();
             		break;
-                	
+
             	case 4://Adres --> voledige tabel
             		adresDaoImpl.readAllAdresses();
             		toonMenu();
@@ -82,7 +83,7 @@ public class ReadMenu {
         		adresDaoImpl.searchAdres(straatnaam);
         		toonMenu();
         			break;
-            	
+
             	case 6://Adres --> postcode & huisnummer
             		System.out.println("Voer de postcode in, zonder spatie: ");
         			String postcode = input.next();
@@ -94,20 +95,20 @@ public class ReadMenu {
         				int huisnummer = input.nextInt();
         					while (Integer.toString(huisnummer).length() > 6){
         						System.out.println("Een huisnummer mag niet meer dan 6 karakters bevatten! \nHuisnummer: ");
-        						huisnummer = input.nextInt();				
+        						huisnummer = input.nextInt();
         					}
         			adresDaoImpl.searchAdres(postcode, huisnummer);	
         			toonMenu();
         			break;
-        			
+
             	case 7://Artikel --> voledige tabel
             		System.out.println(artikelDaoImpl.read());
             		toonMenu();
             		break;
-            		
+
             	case 8://Artikel --> artikelnummer & bestellingnummer
             		System.out.println("Voer het artikelnummer in: ");
-            		int artikel_id = input.nextInt();								// controle geldig artikel id dmv methode
+            		int artikel_id = input.nextInt();										// controle geldig artikel id dmv methode
             		System.out.println("Voer het bestellingnummer in ");
             		int bestelling_id = input.nextInt();
             		System.out.println(artikelDaoImpl.readArtikel(bestelling_id, artikel_id));
@@ -118,19 +119,19 @@ public class ReadMenu {
             		System.out.println(bestellingDaoImpl.read());
             		toonMenu();
             		break;
-            	
-            	
-            	
+
+
+
             	case 10://Terug naar het vorige menu
             		KlasseSelectieMenu klasseSelectieMenu = new KlasseSelectieMenu();
             		klasseSelectieMenu.toonMenu();
             		break;
-            		
+
             	case 11://Hoofdmenu
             		HoofdMenu hoofdMenu =  new HoofdMenu();
             		hoofdMenu.toonMenu();
             		break;
-            		
+
             	case 12://Stoppen
             		System.out.println("\nTot de volgende keer...");
             		System.exit(1);
@@ -143,6 +144,6 @@ public class ReadMenu {
 		}
 		finally {
 			System.out.println("---Uw keuze is uitgevoerd---");
-		}	
-		}	
+		}
+		}
 	}

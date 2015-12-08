@@ -3,10 +3,6 @@ package dao;
 import java.util.List;
 import business.*;
 
-
-
-
-	
 public interface AdresDao {
 
 		public void insert(Adres adres);
@@ -20,7 +16,5 @@ public interface AdresDao {
 		public void updateAdres(Adres adres);
 
 		public void deleteAdres(Adres adres);
-		
-		public boolean checkKlant_id(int klant_id);		
 }
 

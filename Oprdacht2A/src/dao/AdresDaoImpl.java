@@ -1,9 +1,9 @@
 package dao;
 
 import java.sql.DriverManager;
+import service.Check;
 import business.Adres;
 import menu.DBConnectivityManagement;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
@@ -13,18 +13,16 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
-
 import javax.print.DocFlavor.INPUT_STREAM;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.zaxxer.hikari.HikariDataSource;
 
 public class AdresDaoImpl implements AdresDao{
 	private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.class);
 	Connection connection = null;
-	
+	Check check = new Check();
+	Scanner input =  new Scanner(System.in);
 	
 	public Connection getConnection(){
 
@@ -74,8 +72,8 @@ public class AdresDaoImpl implements AdresDao{
 				ResultSet resultSetAdresReedsInDB = null;
 				ResultSet resultSetInsertAdres = null;
 				
-				if (checkKlant_id(klant_id)) { /*Adres kan alleen toegevoegd worden voor een bestaande klant --> Adres al in DB ?*/
-					PreparedStatement searchAdresStatement = connection.prepareStatement("SELECT adres_id FROM adres WHERE straatnaam=?" + 
+				if (check.checkKlant_id(klant_id)) { /*Adres kan alleen toegevoegd worden voor een bestaande klant --> Adres al in DB ?*/
+					PreparedStatement searchAdresStatement = connection.prepareStatement("SELECT adres_id FROM adres WHERE straatnaam=?" +
 							"AND postcode=? AND toevoeging=? AND huisnummer=? AND woonplaats=?");
 					searchAdresStatement.setString(1, adres.getStraatnaam());
 					searchAdresStatement.setString(2, adres.getPostcode());
@@ -83,16 +81,16 @@ public class AdresDaoImpl implements AdresDao{
 					searchAdresStatement.setInt(4, adres.getHuisnummer());
 					searchAdresStatement.setString(5, adres.getWoonplaats());
 					
-					resultSetAdresReedsInDB = searchAdresStatement.executeQuery();					
+					resultSetAdresReedsInDB = searchAdresStatement.executeQuery();
 						if (resultSetAdresReedsInDB.next()) {
 							adres.setAdres_id(resultSetAdresReedsInDB.getInt("adres_id"));
 						}else { /*Adres toevoegen als nog niet in DB*/
-						PreparedStatement insertAdresStatement = connection.prepareStatement("INSERT INTO adres" + 
+						PreparedStatement insertAdresStatement = connection.prepareStatement("INSERT INTO adres" +
 								"(straatnaam, postcode , toevoeging , huisnummer , woonplaats) VALUES (?,?,?,?,?)");
 						insertAdresStatement.setString(1, adres.getStraatnaam());
 						insertAdresStatement.setString(2, adres.getPostcode());
 						insertAdresStatement.setString(3, adres.getToevoeging());
-						insertAdresStatement.setInt(4, adres.getHuisnummer());					
+						insertAdresStatement.setInt(4, adres.getHuisnummer());	
 						insertAdresStatement.setString(5, adres.getWoonplaats());
 
 						insertAdresStatement.executeUpdate();
@@ -133,14 +131,13 @@ public class AdresDaoImpl implements AdresDao{
 	@Override
 	public void updateAdres(Adres adres) { 
 		int klant_id = adres.getKlant_id();
-		Scanner input =  new Scanner(System.in);
+		
 		logger.info("Update adres methode begint");
 		
-		if (checkKlant_id(klant_id)){ 
+		if (check.checkKlant_id(klant_id)){ 
 			try {
 				Connection connection = DBConnectivityManagement.getConnectionStatus();
 				readAdressesFromKlant(klant_id);
-				
 				System.out.println("Voer het adres_id in van het adres dat u wil updaten: ");
 				int adres_id = input.nextInt();
 				logger.info("adres_id = " + adres_id);
@@ -165,10 +162,9 @@ public class AdresDaoImpl implements AdresDao{
 	@Override
 	public void deleteAdres(Adres adres) {
 		int klant_id = adres.getKlant_id(); 
-		Scanner input =  new Scanner(System.in);
 		logger.info("Delete adres methode begint");
 		
-		if (checkKlant_id(klant_id)){
+		if (check.checkKlant_id(klant_id)){
 			try{ 
 				Connection connection = DBConnectivityManagement.getConnectionStatus();
 				
@@ -347,59 +343,5 @@ public class AdresDaoImpl implements AdresDao{
 		System.out.println(adressenStraatnaam);
 		return adressenStraatnaam;
 	}
-	
-	@Override
-	public boolean checkKlant_id(int klant_id) {
-		PreparedStatement preparedStatement;
-		ResultSet resultSet;
-		boolean result = false;
-		logger.info("Check klantnummer methode begint");
-		logger.debug("Klantnummer is : "+ klant_id);
-		
-		try {
-			Connection connection = DBConnectivityManagement.getConnectionStatus();
-			preparedStatement = connection.prepareStatement("SELECT * FROM klant WHERE klant_id=?");
-			preparedStatement.setInt(1, klant_id);
-			resultSet = preparedStatement.executeQuery(); 	// preparedStatement.close(); uitgecomment op 21/11/15 AU 	-->		Staat nu zowel bij if als else 23-11-2015 EB
-logger.debug("SQL query is: "+ preparedStatement);
-			if (resultSet.next()){
-				result = true;
-				preparedStatement.close();
-			} else {
-				System.out.println("Het opgegeven klant_id bevindt zich niet in de database...");
-				preparedStatement.close();
-			}
-			logger.info("Check klantnummer methode eindigt");
-		} catch (SQLException e) {
-			logger.warn("SQL exeption voor checkKlant_id methode");
-			e.printStackTrace();	
-		}
-		return result;
-	}
-
-	public boolean checkMeerderePersAdres(int adres_id) {
-		boolean checkPersonen = false;
-		logger.info("Check meerdere personen op adres methode begint");
-		
-		try {
-			Connection connection = DBConnectivityManagement.getConnectionStatus();
-			PreparedStatement checkMeerPersOpAdresStatement = connection.prepareStatement("SELECT COUNT(klant_id) as klantenOpAdres FROM klant_adres WHERE adres_id=? ");
-			checkMeerPersOpAdresStatement.setInt(1, adres_id);
-			ResultSet meerPersOpAdres = checkMeerPersOpAdresStatement.executeQuery(); 
-			while (meerPersOpAdres.next()){
-				int count = meerPersOpAdres.getInt("klantenOpAdres");
-					if (count > 1) {
-						checkPersonen = true;
-					}
-			}		
-			meerPersOpAdres.close();
-			checkMeerPersOpAdresStatement.close();	
-			logger.info("Check meerdere personen op adres methode eindigt");
-		}catch (SQLException e){
-			logger.warn("SQL exeption voor check meerdere personen op adres methode");
-			e.printStackTrace();
-		}
-		return checkPersonen;
-	}	
 
 }

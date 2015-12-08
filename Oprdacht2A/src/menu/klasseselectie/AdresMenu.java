@@ -1,64 +1,17 @@
 package menu.klasseselectie;
 
 import java.util.Scanner;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import business.Adres;
 import dao.AdresDaoImpl;
-import dao.ArtikelDaoImpl;
 import menu.*;
+import service.*;
 
 public class AdresMenu {
 	AdresDaoImpl adresDaoImpl = new AdresDaoImpl();
-	private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.class);
+	Check check = new Check();
+	DTO dto = new DTO();
 	int klant_id;
-
-	public Adres createAdresObject() {
-	    
-		Scanner input = new Scanner(System.in);					// NULPOINTER???
-		
-	    System.out.println("Klantnummer: ");
-			int klant_id = input.nextInt();
-				while (adresDaoImpl.checkKlant_id(klant_id)!= true){
-					System.out.println("Klantnummer: ");
-					klant_id = input.nextInt();
-				}
-		System.out.println("Straatnaam: ");
-			String straatnaam = input.next();
-				while (straatnaam.length() > 26){
-				System.out.println("Een straatnaam mag niet meer dan 26 karakters bevatten! \nStraatnaam: ");
-					straatnaam = input.next();
-				}			
-		System.out.println("Postcode:\t\t( zonder spatie ) ");
-			String postcode = input.next();
-				while (postcode.length() > 6){
-				System.out.println("Een postcode mag niet meer dan 6 karakters bevatten! \nPostcode: ");
-					straatnaam = input.next();
-				}
-		System.out.println("Toevoeging:\t\t( als geen toevoeging vul - in ) ");
-			String toevoeging = input.next();
-				while (toevoeging.length() > 6){
-				System.out.println("Een toevoeging mag niet meer dan 6 karakters bevatten! \nToevoeging: ");
-					straatnaam = input.next();
-				}
-		System.out.println("Huisnummer: ");
-			int huisnummer = input.nextInt();
-				while (Integer.toString(huisnummer).length() > 6){
-				System.out.println("Een huisnummer mag niet meer dan 6 karakters bevatten! \nHuisnummer: ");
-					huisnummer = input.nextInt();				
-				}
-		System.out.println("Woonplaats: ");
-			String woonplaats = input.next();
-				while (woonplaats.length() > 26){
-				System.out.println("Een woonplaats mag niet meer dan 26 karakters bevatten! \nWoonplaats: ");
-					straatnaam = input.next();
-				}		
-		Adres adres = new Adres(klant_id, straatnaam, postcode, toevoeging, huisnummer, woonplaats);
-		logger.debug("Het zojuist gecreëerde adres is: " + adres);
-		return adres;
-	    }	
+	Scanner input = new Scanner(System.in);
 
 	public void toonMenu() {
 		Adres adres = null;
@@ -81,16 +34,13 @@ public class AdresMenu {
 
 	    System.out.println("Voer optie in en druk op Enter:");
 
-	    Scanner input = new Scanner(System.in);
+	    try {
+	    	int keuze = input.nextInt();
 
-	    try {		     
-
-			int keuze = input.nextInt();
-		       
 			switch (keuze) {
             	case 1://Create --> adres
             		System.out.println("Voer het nieuw toetevoegen adres in: ");
-            			adres = createAdresObject();
+            			adres = dto.createAdresObject();
             		adresDaoImpl.insert(adres);
             		toonMenu();
             		break;
@@ -137,7 +87,7 @@ public class AdresMenu {
             		
             	case 6://Update --> adres
             		System.out.println("Voer de gegevens in van het bij te werken adres ");
-            			adres = createAdresObject();
+            			adres = dto.createAdresObject();
             		adresDaoImpl.updateAdres(adres);
             		toonMenu();
             		break;
