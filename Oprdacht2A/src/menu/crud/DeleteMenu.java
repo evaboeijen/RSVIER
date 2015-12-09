@@ -12,6 +12,7 @@ import dao.*;
 import menu.*;
 import menu.klasseselectie.BestellingMenu;
 import business.*;
+import service.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,7 @@ public class DeleteMenu  {
 	int gewensteAantal = 0;
 	Artikel artikel = new Artikel(); 
 	List<Artikel> alleArtikelen = null;
+	Check check = new Check();
 	
 	
 	public void toonMenu() {
@@ -88,7 +90,7 @@ public class DeleteMenu  {
             	gewensteKlant_id = input.nextInt();
             				
             	
-            	while (adresDaoImpl.checkKlant_id(gewensteKlant_id)!= true) { 
+            	while (check.checkKlant_id(gewensteKlant_id)!= true) { 
             		System.out.print("\nVoer een ander klantnummer in: ");
                 	gewensteKlant_id = input.nextInt();
                 	System.out.println();
@@ -345,7 +347,7 @@ public class DeleteMenu  {
             
             	int gewensteKlant_id = input.nextInt();
             				
-            	while (adresDaoImpl.checkKlant_id(gewensteKlant_id)!= true) { 
+            	while (check.checkKlant_id(gewensteKlant_id)!= true) { 
                 	System.out.print("\nVoer een ander klantnummer in: ");
                 	gewensteKlant_id = input.nextInt();
                 	System.out.println();
