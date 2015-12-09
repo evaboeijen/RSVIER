@@ -4,6 +4,7 @@ import java.util.*;
 import business.*;
 import dao.*;
 import menu.*;
+import service.DTO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,29 +13,10 @@ public class ArtikelMenu {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ArtikelMenu.class);
 	
-public Artikel createArtikelObject(){
-	
-		logger.info("createArtikelObject methode voor gebruiker input in ArtikelMenu start");
-	
-			Scanner input = new Scanner(System.in);	
-		
-			Artikel artikel = new Artikel();
-			
-			
-			System.out.println("Vul de naam van het artikel in: ");
-			String artikel_naam = input.nextLine(); 
-			
-			System.out.println("Wat is de prijs van het artikel: ");
-			double artikel_prijs = input.nextDouble();
-
-		
-			artikel.setArtikel_naam(artikel_naam);
-			artikel.setArtikel_prijs(artikel_prijs);
-			
-			logger.info("createArtikelObject methode input eindigt");
-			
-			return artikel;
-		}
+	ArtikelDaoImpl artikelDaoImpl = new ArtikelDaoImpl();
+	Artikel artikel = new Artikel();
+	DTO dto = new DTO();
+	int artikel_id = 0;
 	
 public void toonMenu() {
 		
@@ -67,11 +49,8 @@ public void toonMenu() {
 		       
 			switch (keuze) {
             	case 1:
-            		
-            		
-            		ArtikelDaoImpl createArtikelDaoImpl = new ArtikelDaoImpl();
-            		Artikel createArtikel = createArtikelObject();
-            		createArtikelDaoImpl.create(createArtikel);
+            		artikel = dto.createArtikelObject();
+            		artikelDaoImpl.create(artikel);
             		
             		
             		toonMenu(); 	   			  		          		
@@ -79,12 +58,9 @@ public void toonMenu() {
             		
     
             	case 2:
-            		
-            		          		
-            		ArtikelDaoImpl leesArtikelDaoImpl = new ArtikelDaoImpl();
             		            		
             		System.out.println("De volgende artikellen zitten in het assortiment: ");
-            		leesArtikelDaoImpl.read();
+            		artikelDaoImpl.read();
             		
             		toonMenu();
             		break;
@@ -93,13 +69,13 @@ public void toonMenu() {
             	case 3:
             		   		
             		System.out.println("U kunt de artikelgegevens wijzigen. Voer het artikelnummer in, en druk op enter");
-            		int updateArtikel_id = input.nextInt();
+            		artikel_id = input.nextInt();
             		
-            		ArtikelDaoImpl updateArtikelDaoImpl = new ArtikelDaoImpl();
-            		Artikel updateArtikel = createArtikelObject();
-            		updateArtikel.setArtikel_id(updateArtikel_id);
+            	
+            		artikel = dto.createArtikelObject();
+            		artikel.setArtikel_id(artikel_id);
             		
-            		updateArtikelDaoImpl.update(updateArtikel);
+            		artikelDaoImpl.update(artikel);
             		
             		System.out.println("De artikel gegevens zijn aangepast");
             		
@@ -110,12 +86,10 @@ public void toonMenu() {
             	case 4:
             		
             		System.out.println("Voer het artikelnummer in, en druk op enter");
-            		int deleteArtikel_id = input.nextInt();
-            		Artikel deleteArtikel = new Artikel();
-            		deleteArtikel.setArtikel_id(deleteArtikel_id);
+            		artikel_id = input.nextInt();
+            		artikel.setArtikel_id(artikel_id);
             	           		
-            		ArtikelDaoImpl deleteArtikelDaoImpl = new ArtikelDaoImpl();
-            		deleteArtikelDaoImpl.delete(deleteArtikel);
+            		artikelDaoImpl.delete(artikel);
 
             		toonMenu();
             		break;

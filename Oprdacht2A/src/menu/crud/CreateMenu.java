@@ -7,6 +7,7 @@ import business.*;
 import dao.*;
 import menu.*;
 import menu.klasseselectie.*;
+import service.DTO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,11 +35,10 @@ public class CreateMenu {
 	double gewensteArtikelPrijs = 0;
 	
 	
-	
 	public void addKlantToDatabase(){
 		KlantDaoImpl nieuweKlantDaoImpl = new KlantDaoImpl();
-		KlantMenu nieuweKlantMenu = new KlantMenu();
-		Klant nieuweKlant = nieuweKlantMenu.createKlantObject();
+		DTO dto = new DTO();
+		Klant nieuweKlant = dto.createKlantObject();
 		
 		nieuweKlantDaoImpl.create(nieuweKlant);
 		System.out.println();
@@ -48,8 +48,8 @@ public class CreateMenu {
 	
 	public void addAdresToDatabase(){
 		AdresDaoImpl updateAdresDaoImpl = new AdresDaoImpl();
-		AdresMenu nieuwAdresKlant = new AdresMenu();
-		Adres nieuwAdres = nieuwAdresKlant.createAdresObject();
+		DTO dto = new DTO();
+		Adres nieuwAdres = dto.createAdresObject();
 		updateAdresDaoImpl.insert(nieuwAdres);
 		
 		System.out.println("Adres is toegevoegd aan klantgegevens");

@@ -11,6 +11,7 @@ import java.util.Scanner;
 import dao.*;
 import menu.*;
 import menu.klasseselectie.*;
+import service.DTO;
 import business.*;
 
 import org.slf4j.Logger;
@@ -58,8 +59,8 @@ public class UpdateMenu {
     					System.out.println();
         			}            		
 				
-    				KlantMenu klantMenu = new KlantMenu();            				
-    			    Klant updateKlant = klantMenu.createKlantObject();
+    			    DTO dto = new DTO(); 				
+    			    Klant updateKlant = dto.createKlantObject();
     				updateKlant.setKlant_id(huidige_klant_id);
     				updateKlantDaoImpl.update(updateKlant);
     				
@@ -72,9 +73,10 @@ public class UpdateMenu {
             	case 2:
             	
             		AdresDaoImpl updateAdresDaoImpl = new AdresDaoImpl();
-            		AdresMenu adresMenu = new AdresMenu();
             		System.out.println("Voer de gegevens in van het bij te werken adres ");
-        			Adres updateAdres = adresMenu.createAdresObject();
+            		
+            		dto = new DTO();
+        			Adres updateAdres = dto.createAdresObject();
         			updateAdresDaoImpl.updateAdres(updateAdres);
         			toonMenu();
         		
@@ -235,8 +237,8 @@ public class UpdateMenu {
             		int updateArtikel_id = input.nextInt();
             		
             		ArtikelDaoImpl updateArtikelDaoImpl = new ArtikelDaoImpl();
-            		ArtikelMenu artikelMenu = new ArtikelMenu();
-            		Artikel updateArtikel = artikelMenu.createArtikelObject();
+            		dto = new DTO();
+            		Artikel updateArtikel = dto.createArtikelObject();
             		updateArtikel.setArtikel_id(updateArtikel_id);
             		
             		updateArtikelDaoImpl.update(updateArtikel);
