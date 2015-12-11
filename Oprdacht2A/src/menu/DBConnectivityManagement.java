@@ -62,18 +62,19 @@ public class DBConnectivityManagement {
 	            		case 1: 
 	            			if(DBKeuzeMenu.getDBKeuze()==1){
 	            				connection = mySQL.HikariCPInput();
-	            			}else{
+	            			}else if(DBKeuzeMenu.getDBKeuze()==2){
 	            				connection = fireBird.HikariCPInput();
 	            			}
 	            			break;
 	            		case 2:
 	            			if(DBKeuzeMenu.getDBKeuze()==1){
 	            				connection = mySQL.C3POCPInput();
-	            			}else{
+	            			}else if(DBKeuzeMenu.getDBKeuze()==2){
 	            				connection = fireBird.C3POCPInput();
 	            			}
 	            			break;
 	            		default:
+	            			System.out.println("MySQL met Hikari wordt default gebruikt");
 	            			connection = mySQL.HikariCPInput();
 	            		}
 	            		hoofdMenu.toonMenu(); 	            						
@@ -86,18 +87,19 @@ public class DBConnectivityManagement {
 	            		case 1: 
 	            			if(DBKeuzeMenu.getDBKeuze()==1){
 	            				connection = mySQL.HikariCPEva();
-	            			}else{
+	            			}else if(DBKeuzeMenu.getDBKeuze()==2){
 	            				connection = fireBird.HikariCPEva();
 	            			}
 	            			break;
 	            		case 2:
 	            			if(DBKeuzeMenu.getDBKeuze()==1){
 	            				connection = mySQL.C3POCPEva();
-	            			}else{
+	            			}else if(DBKeuzeMenu.getDBKeuze()==2){
 	            				connection = fireBird.C3POCPEva();
 	            			}
 	            			break;
 	            		default:
+	            			System.out.println("MySQL met Hikari wordt default gebruikt");
 	            			connection = mySQL.HikariCPEva();
 	            		}
 	            		hoofdMenu.toonMenu(); 	            						
@@ -110,18 +112,19 @@ public class DBConnectivityManagement {
 	            		case 1: 
 	            			if(DBKeuzeMenu.getDBKeuze()==1){
 	            				connection = mySQL.HikariCPJesse();
-	            			}else{
+	            			}else if (DBKeuzeMenu.getDBKeuze()==2){
 	            				connection = fireBird.HikariCPJesse();
 	            			}
 	            			break;
 	            		case 2:
 	            			if(DBKeuzeMenu.getDBKeuze()==1){
 	            				connection = mySQL.C3POCPJesse();
-	            			}else{
+	            			}else if (DBKeuzeMenu.getDBKeuze()==2){
 	            				connection = fireBird.C3POCPJesse();
 	            			}
 	            			break;
 	            		default:
+	            			System.out.println("MySQL met Hikari wordt default gebruikt");
 	            			connection = mySQL.HikariCPJesse();
 	            		}
 	            		hoofdMenu.toonMenu(); 	            						
@@ -134,18 +137,19 @@ public class DBConnectivityManagement {
 	            		case 1: 
 	            			if(DBKeuzeMenu.getDBKeuze()==1){
 	            				connection = mySQL.HikariCPAgung();
-	            			}else{
+	            			}else if (DBKeuzeMenu.getDBKeuze()==2){
 	            				connection = fireBird.HikariCPAgung();
 	            			}
 	            			break;
 	            		case 2:
 	            			if(DBKeuzeMenu.getDBKeuze()==1){
 	            				connection = mySQL.C3POCPAgung();
-	            			}else{
+	            			}else if (DBKeuzeMenu.getDBKeuze()==2){
 	            				connection = fireBird.C3POCPAgung();
 	            			}
 	            			break;
 	            		default:
+	            			System.out.println("MySQL met Hikari wordt default gebruikt");
 	            			connection = mySQL.HikariCPAgung();
 	            		}
 	            		hoofdMenu.toonMenu(); 	            						
