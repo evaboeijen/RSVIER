@@ -19,10 +19,11 @@ public class TestFirebird {
  
         try {
             Class.forName("org.firebirdsql.jdbc.FBDriver");
-            connection = DriverManager
-                    .getConnection(
-                            "jdbc:firebirdsql://localhost:3050/C:/Users/kuija/Dropbox/Java/Praktijk gedeelte/Firebird/RSVIER.FDB",
-                            "SYSDBA", "masterkey");
+	            connection = DriverManager
+	                    .getConnection(
+	                            //"jdbc:firebirdsql://localhost:3050/C:/Users/kuija/Dropbox/Java/Praktijk gedeelte/Firebird/RSVIER.FDB",
+	                    		"jdbc:firebirdsql://localhost:3050/C:/Users/kuija/Dropbox/Java/Praktijk gedeelte/Firebird/eva/RSVIER",
+	                    		"SYSDBA", "masterkey");
             
             logger.info("connection: " + connection);
             

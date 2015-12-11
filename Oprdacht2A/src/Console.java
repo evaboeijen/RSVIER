@@ -6,9 +6,12 @@ import dao.*;
 public class Console {
 
 	public static void main(String[] args) throws IOException {
-							
-		DBConnectivityManagement inloggen = new DBConnectivityManagement();
-		inloggen.toonMenu();
+		
+		
+		DBKeuzeMenu dBKeuzeMenu = new DBKeuzeMenu();
+		dBKeuzeMenu.toonMenu();
+		//DBConnectivityManagement inloggen = new DBConnectivityManagement();
+		//inloggen.toonMenu();
 		
 	} 
 	

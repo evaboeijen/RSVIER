@@ -21,6 +21,8 @@ import com.mchange.v2.c3p0.impl.C3P0PooledConnectionPoolManager;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import connectivity.FireBirdConnectionSetup;
+import connectivity.MySQLConnectionSetup;
 import dao.ArtikelDaoImpl;
 import menu.crud.CrudMenu;
 import menu.klasseselectie.KlasseSelectieMenu;
@@ -29,10 +31,14 @@ public class DBConnectivityManagement {
 		int keuzeCP = 0;  
 		HoofdMenu hoofdMenu = new HoofdMenu();
 		Scanner input = new Scanner(System.in);
-		private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.class);
+		private static final Logger logger =  LoggerFactory.getLogger(DBConnectivityManagement.class);
 		static Connection connection = null;
 		static HikariDataSource ds = null;
 		static C3P0PooledConnectionPool C3POds = null;
+		//DBKeuzeMenu dBKeuzeMenu  = new DBKeuzeMenu();
+		MySQLConnectionSetup mySQL = new MySQLConnectionSetup();
+		FireBirdConnectionSetup fireBird = new FireBirdConnectionSetup();
+		
 
 		public void toonMenu() {
 		    System.out.println("\t---------");
@@ -49,18 +55,26 @@ public class DBConnectivityManagement {
 				int keuze = input.nextInt();
 				 
 				switch (keuze) {
-	            	case 1:
+	            	case 1:	            		
 	            		System.out.println("1. Log in op de Hikari Connection Pool\n2. Log in op de C3PO Connection Pool");
 	            		keuzeCP = input.nextInt();
 	            		switch (keuzeCP) {
 	            		case 1: 
-	            			HikariCPInput();
+	            			if(DBKeuzeMenu.getDBKeuze()==1){
+	            				connection = mySQL.HikariCPInput();
+	            			}else{
+	            				connection = fireBird.HikariCPInput();
+	            			}
 	            			break;
 	            		case 2:
-	            			C3POCPInput();
+	            			if(DBKeuzeMenu.getDBKeuze()==1){
+	            				connection = mySQL.C3POCPInput();
+	            			}else{
+	            				connection = fireBird.C3POCPInput();
+	            			}
 	            			break;
 	            		default:
-	            			HikariCPInput();
+	            			connection = mySQL.HikariCPInput();
 	            		}
 	            		hoofdMenu.toonMenu(); 	            						
 	            		break;
@@ -70,13 +84,21 @@ public class DBConnectivityManagement {
 	            		keuzeCP = input.nextInt();
 	            		switch (keuzeCP) {
 	            		case 1: 
-	            			HikariCPEva();
+	            			if(DBKeuzeMenu.getDBKeuze()==1){
+	            				connection = mySQL.HikariCPEva();
+	            			}else{
+	            				connection = fireBird.HikariCPEva();
+	            			}
 	            			break;
 	            		case 2:
-	            			C3POCPEva();
+	            			if(DBKeuzeMenu.getDBKeuze()==1){
+	            				connection = mySQL.C3POCPEva();
+	            			}else{
+	            				connection = fireBird.C3POCPEva();
+	            			}
 	            			break;
 	            		default:
-	            			HikariCPEva();
+	            			connection = mySQL.HikariCPEva();
 	            		}
 	            		hoofdMenu.toonMenu(); 	            						
 	            		break;
@@ -86,13 +108,21 @@ public class DBConnectivityManagement {
 	            		int keuzeCP = input.nextInt();
 	            		switch (keuzeCP) {
 	            		case 1: 
-	            			HikariCPJesse();
+	            			if(DBKeuzeMenu.getDBKeuze()==1){
+	            				connection = mySQL.HikariCPJesse();
+	            			}else{
+	            				connection = fireBird.HikariCPJesse();
+	            			}
 	            			break;
 	            		case 2:
-	            			C3POCPJesse();
+	            			if(DBKeuzeMenu.getDBKeuze()==1){
+	            				connection = mySQL.C3POCPJesse();
+	            			}else{
+	            				connection = fireBird.C3POCPJesse();
+	            			}
 	            			break;
 	            		default:
-	            			HikariCPJesse();
+	            			connection = mySQL.HikariCPJesse();
 	            		}
 	            		hoofdMenu.toonMenu(); 	            						
 	            		break;
@@ -102,16 +132,25 @@ public class DBConnectivityManagement {
 	            		keuzeCP = input.nextInt();
 	            		switch (keuzeCP) {
 	            		case 1: 
-	            			HikariCPAgung();
+	            			if(DBKeuzeMenu.getDBKeuze()==1){
+	            				connection = mySQL.HikariCPAgung();
+	            			}else{
+	            				connection = fireBird.HikariCPAgung();
+	            			}
 	            			break;
 	            		case 2:
-	            			C3POCPAgung();
+	            			if(DBKeuzeMenu.getDBKeuze()==1){
+	            				connection = mySQL.C3POCPAgung();
+	            			}else{
+	            				connection = fireBird.C3POCPAgung();
+	            			}
 	            			break;
 	            		default:
-	            			HikariCPAgung();
+	            			connection = mySQL.HikariCPAgung();
 	            		}
 	            		hoofdMenu.toonMenu(); 	            						
 	            		break;
+
 	                               	
 	            	case 10:
 	            		System.out.println("\nTot de volgende keer...");
@@ -121,14 +160,42 @@ public class DBConnectivityManagement {
 	            	default:
 	            		System.out.println("\n! Ongeldige optie, probeer het nogmaals !\n");
 	            		this.toonMenu();  			            		
-				}         
-							
+				}   
 		}
+		
+				
+				public static Connection logOut(Connection connection) {
+					try {
+						if (connection != null) {
+							System.out.println("\nLogging out...\n");
+							connection.close();
+							connection = null;
+		          			DBConnectivityManagement inloggen = new DBConnectivityManagement();
+		          			inloggen.toonMenu();
+						}
+						else {
+							System.out.println("\nYou are already logged out.\n");         	  
+						}
+						logger.info("Connectie is: " + connection);
+					}     
+		              	              
+					catch (Exception e) { 
+		            	e.printStackTrace();
+					}
+				 
+					return connection;
+				} 
+		
+							
+		
 
-		public static Connection getConnectionStatus() {
+			public static Connection getConnectionStatus() {
 			return connection;
 		}
-
+			
+			
+			
+			/*
 		public ComboPooledDataSource setupC3POCP() {
 			ComboPooledDataSource cpds = new ComboPooledDataSource();
 			cpds.setMinPoolSize(5);                                     
@@ -138,10 +205,14 @@ public class DBConnectivityManagement {
 		}
 
 			public Connection C3POCPInput() {
+				String dbHostname = null;
+				int dbPort = 0;
+				
+				
 				System.out.print("Voer database hostname in: ");
 				String dbHostName = input.next();
 				System.out.print("Database port: ");
-				int dbPort = input.nextInt();
+				dbPort = input.nextInt();
 				input.nextLine();
 				System.out.print("Database gebruikersnaam: ");
 				String dbUsername = input.nextLine();
@@ -290,29 +361,9 @@ public class DBConnectivityManagement {
 				return connection;
 			}
 
-		public static Connection logOut(Connection connection) {
-			try {
-				if (connection != null) {
-					System.out.println("\nLogging out...\n");
-					connection.close();
-					connection = null;
-          			DBConnectivityManagement inloggen = new DBConnectivityManagement();
-          			inloggen.toonMenu();
-				}
-				else {
-					System.out.println("\nYou are already logged out.\n");         	  
-				}
-				logger.info("Connectie is: " + connection);
-			}     
-              	              
-			catch (Exception e) { 
-            	e.printStackTrace();
-			}
-		 
-			return connection;
-		} 
 
-		/* Oude inlog methoden
+		
+	 Oude inlog methoden
 		public Connection connectToDBWithUserInput() {
 		 
 				
@@ -447,4 +498,4 @@ public class DBConnectivityManagement {
 	
 			return connection;	 																	
 		} */
-}
+	}
