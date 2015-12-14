@@ -4,10 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import business.Bestelling;
 import dao.ArtikelDaoImpl;
 import menu.DBConnectivityManagement;
 
@@ -51,9 +53,8 @@ public class Check {
 		logger.info("Check Artikelnummer methode begint");
 		
 		try {
-			
-        	Connection connection = DBConnectivityManagement.getConnectionStatus();
-        	logger.info("Content of connection object is : " + connection);
+			Connection connection = DBConnectivityManagement.getConnectionStatus();
+			logger.info("Content of connection object is : " + connection);       
 			
 			// uitgecomment tbv opdracht 5 || AU 26/11/15 : preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE (artikel1_id=? OR artikel2_id=? OR artikel3_id=?)");
 			
@@ -71,7 +72,7 @@ public class Check {
 			}
 
 		} catch (SQLException e) {
-			logger.warn("SQL exception voor BestellingDaoImpl.checkArtikel_id() methode");
+			logger.warn("SQL exception voor checkArtikel_id() methode");
                 e.printStackTrace();	
 		}
 		return result;
@@ -88,7 +89,7 @@ public class Check {
 		try {
 			
         	Connection connection = DBConnectivityManagement.getConnectionStatus();
-        	logger.info("Content of connection object is : " + connection); 
+        	logger.info("Content of connection object is : " + connection);       	
 			
 			preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE bestelling_id=?");
 			preparedStatement.setInt(1, bestelling_id);
@@ -101,9 +102,80 @@ public class Check {
 			}
 
 		} catch (SQLException e) {
-			logger.warn("SQL exception voor BestellingDaoImpl.checkBestelling_id() methode");
+			logger.warn("SQL exception voor checkBestelling_id() methode");
                 e.printStackTrace();	
 		}
 		return result;
 	}
+	
+	
+	
+	
+	
+	
+	public int checkHoogste_Bestelling_id() {	// toegevoegd 21/11/15 AU
+        
+		int maxBestellingId = 0;
+		
+		try {
+            
+			Connection connection = DBConnectivityManagement.getConnectionStatus();
+			logger.info("Content of connection object is : " + connection);      
+            
+    	 	Statement statement = connection.createStatement();	               
+            ResultSet resultSet = statement.executeQuery("SELECT MAX(Bestelling_id) FROM bestelling");
+                  
+            while(resultSet.next()){
+                maxBestellingId = resultSet.getInt("max(bestelling_id)");
+               
+            }
+            
+            resultSet.close();
+            statement.close();
+             
+        } catch (SQLException e) {
+        	logger.warn("SQL exception voor BestellingDaoImpl.checkHoogste_Bestelling_id() methode");
+            e.printStackTrace();
+        }
+        return maxBestellingId;
+        
+			
+	}
+	
+	
+	public boolean checkArtikelAlAanwezigInBestelling(int bestelling_id, int artikel_id) {		// toegevoegd 28/11/15 AU
+	
+		
+			// System.out.println("checkArtikelAlAanwezigInBestelling wordt uitgevoerd"); debugstatement
+		
+			PreparedStatement preparedStatement;
+			ResultSet resultSet;
+			boolean result = false;
+			
+			try {
+				Connection connection = DBConnectivityManagement.getConnectionStatus();
+	        	logger.info("Content of connection object is : " + connection);
+				
+				// uitgecomment tbv opdracht 5 || AU 26/11/15 : preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE (artikel1_id=? OR artikel2_id=? OR artikel3_id=?)");
+				
+				// nieuw tbv opdracht 5 || AU 26/11/15
+				preparedStatement = connection.prepareStatement("select * from Bestelling_Artikel where bestelling_id = ? AND artikel_id = ?");
+				preparedStatement.setInt(1, bestelling_id);
+				preparedStatement.setInt(2, artikel_id);
+				// preparedStatement.setInt(3, artikel_id);
+				resultSet = preparedStatement.executeQuery(); 
+				
+				if (resultSet.next()){
+					result = true;				
+				} 
+
+			} catch (SQLException e) {
+				logger.warn("SQL exception voor BestellingDaoImpl.checkArtikelAlAanwezigInBestelling() methode");
+	                e.printStackTrace();	
+			}
+			return result;
+		}
+	
+	
+	
 }

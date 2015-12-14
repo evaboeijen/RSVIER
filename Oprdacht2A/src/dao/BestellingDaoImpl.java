@@ -9,13 +9,23 @@ import org.slf4j.LoggerFactory;
 import business.Bestelling;
 import menu.DBConnectivityManagement;
 
-public class BestellingDaoImpl implements BestellingDao {
+public abstract class BestellingDaoImpl implements BestellingDao {
 	
 	private static final Logger logger =  LoggerFactory.getLogger(BestellingDaoImpl.class);
 	
 	public Connection connection = null;
+	
+	String queryBestellingToevoegen1 = null;
+	String queryBestellingToevoegen2 = null;
+	String queryToonAlleBestellingen = null;
+	String queryUpdateBestelling1 = null;
+	String queryUpdateBestelling2 = null;
+	String queryDeleteBestelling = null;
+	String queryDeleteArtikelFromBestelling = null;
+	String queryUpdateAantallen = null;
+	
 		 
-	public void initializeDB() {
+	/* public void initializeDB() {			oude methode die niet meer gebruikt wordt 
 			
 		
 	
@@ -44,7 +54,7 @@ public class BestellingDaoImpl implements BestellingDao {
 	            e.printStackTrace();
 	             
 	        }
-	    }
+	    } */
 	    
 	@Override
 	public int create(Bestelling bestelling){
@@ -61,8 +71,7 @@ public class BestellingDaoImpl implements BestellingDao {
 	        String sql = "insert into Bestelling (bestelling_id, klant_id, artikel1_id, artikel1_naam, artikel1_aantal, artikel1_prijs, artikel2_id, artikel2_naam, artikel2_aantal, artikel2_prijs, artikel3_id, artikel3_naam, artikel3_aantal, artikel3_prijs) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			*/
 	        // toegevoegd tbv opdracht 5 || 26/11/15 AU
-	        String sql1 = "insert into Bestelling (bestelling_id, klant_id) values (?, ?)";
-	        String sql2 = "insert into Bestelling_Artikel (bestelling_id, artikel_id, artikel_aantal) values (?, ?, ?)";
+	        	        
 	        
 	        try {
 	                 
@@ -70,7 +79,7 @@ public class BestellingDaoImpl implements BestellingDao {
 	        	
 	        	logger.info("Content of connection object is : " + connection);
 	        	           
-	            preparedStatement1 = connection.prepareStatement(sql1);
+	            preparedStatement1 = connection.prepareStatement(queryBestellingToevoegen1);
 	            preparedStatement1.setInt(1, bestelling.getBestelling_id());
 	            preparedStatement1.setInt(2, bestelling.getKlant_id());
 	            
@@ -96,7 +105,7 @@ public class BestellingDaoImpl implements BestellingDao {
 	            */
 	            
 	            // toegevoegd tbv opdracht 5 || 26/11/15 AU
-	            preparedStatement2 = connection.prepareStatement(sql2);
+	            preparedStatement2 = connection.prepareStatement(queryBestellingToevoegen2);
 	            preparedStatement2.setInt(1, bestelling.getBestelling_id());
 	            preparedStatement2.setInt(2, bestelling.getArtikel_id());
 	            preparedStatement2.setInt(3, bestelling.getArtikel_aantal());
@@ -147,10 +156,8 @@ public class BestellingDaoImpl implements BestellingDao {
 	        	 	Statement statement = connection.createStatement();	               
 	                // oude query : ResultSet resultSet = statement.executeQuery("SELECT * FROM bestelling");
 	                // nieuwe query tbv opdracht 5 :
-	        	 	ResultSet resultSet = statement.executeQuery("SELECT * FROM bestelling JOIN bestelling_artikel JOIN artikel WHERE (bestelling.bestelling_id = bestelling_artikel.bestelling_id AND bestelling_artikel.artikel_id = artikel.artikel_id)");
-	        	 	
-	        	 	
-	        	 	
+	        	 	ResultSet resultSet = statement.executeQuery(queryToonAlleBestellingen);
+	        	 	    	 	
 	                Bestelling bestelling;
 	                while(resultSet.next()){
 	                    bestelling = new Bestelling();
@@ -208,14 +215,14 @@ public class BestellingDaoImpl implements BestellingDao {
         //int rowsUpdated3 = 0;
 					
 		PreparedStatement preparedStatement ;
-					String sql = "SELECT * FROM bestelling JOIN bestelling_artikel JOIN artikel WHERE (bestelling.bestelling_id = ? AND bestelling.bestelling_id = bestelling_artikel.bestelling_id AND bestelling_artikel.artikel_id = artikel.artikel_id)";
+					
 	    	        
 	   	         try {	  
 	   	        	 	logger.info("Content of connection object is : " + connection);
 	   	        	 	Connection connection = DBConnectivityManagement.getConnectionStatus();
 	   	        	 	logger.info("Content of connection object is : " + connection);
 	   	        	 
-	   		            preparedStatement = connection.prepareStatement(sql);	   		            	   		            
+	   		            preparedStatement = connection.prepareStatement(queryUpdateBestelling1);	   		            	   		            
 	   		            preparedStatement.setInt(1, bestelling_id);	   		                   	            
 	   		            ResultSet rset = preparedStatement.executeQuery();
 	   		           		            
@@ -278,9 +285,9 @@ public class BestellingDaoImpl implements BestellingDao {
 		                    
 	   		            	  		            	
 	   		            // nieuw tbv opdracht 5 - 27/11/15 - AU	
-	   		            	String sql2 = "insert into Bestelling_Artikel (bestelling_id, artikel_id, artikel_aantal) values (?, ?, ?)";
+	   		            	
 			            				            	                               
-			 	                 PreparedStatement statement1 = connection.prepareStatement(sql2);
+			 	                 PreparedStatement statement1 = connection.prepareStatement(queryUpdateBestelling2);
 			 	                 statement1.setInt(1, bestelling_id);
 			 	                 statement1.setInt(2, new_artikel_id);
 			            		 statement1.setInt(3, new_artikel_aantal);
@@ -317,238 +324,8 @@ public class BestellingDaoImpl implements BestellingDao {
 	   	      return rowsUpdated;
 	   		  
 	}
-		
-	            	 
-            	
-	           	
-		@Override
-	public int delete(Bestelling bestelling) {
-			
-			int bestelling_id = bestelling.getBestelling_id(); 
-			int rowsDeleted = 0;
-			
-			try {
-
-	        	 logger.info("Content of connection object is : " + connection);
-	        	 Connection connection = DBConnectivityManagement.getConnectionStatus();
-	        	 logger.info("Content of connection object is : " + connection);
-					
-				PreparedStatement statement = connection.prepareStatement("DELETE FROM bestelling WHERE bestelling_id = ?");
-				statement.setInt(1, bestelling_id);
-
-				rowsDeleted = statement.executeUpdate();
-				if (rowsDeleted > 0) {
-					System.out.println();
-					System.out.println("De bestelling met ordernummer " + bestelling_id + " is gewist uit de database.");													
-				}
-				else {
-					System.out.println();
-					System.out.println("De bestelling met ordernummer " + bestelling_id + " bestaat niet.");	
-				}
-									
-			} 
-			
-			catch (SQLException e) {
-				logger.warn("SQL exception voor BestellingDaoImpl.delete() methode");
-				e.printStackTrace();	
-			}
-		
-			System.out.println("Ordernummer / bestelling ID: " + bestelling_id + ". Aantal rijen verwijderd : " + rowsDeleted);			
-			return rowsDeleted;
-		
-		}
-
-	 
-		@Override
-	public int deleteArtikelFromBestelling(Bestelling bestelling) {
-			
-			int bestelling_id = bestelling.getBestelling_id(); 
-			int artikel_id = bestelling.getArtikel_id();
-			int rowsDeleted = 0;
-			
-			try {
-
-	        	logger.info("Content of connection object is : " + connection);
-	        	Connection connection = DBConnectivityManagement.getConnectionStatus();
-	        	logger.info("Content of connection object is : " + connection);
-					
-				PreparedStatement statement = connection.prepareStatement("DELETE bestelling_artikel FROM bestelling_artikel WHERE bestelling_artikel.artikel_id = ? AND bestelling_artikel.bestelling_id = ?");
-				statement.setInt(1, artikel_id);
-				statement.setInt(2, bestelling_id);
-
-				rowsDeleted = statement.executeUpdate();
-				if (rowsDeleted > 0) {
-					System.out.println();
-					System.out.println("Artikel " + artikel_id + " is gewist van bestelling " + bestelling_id + ".");													
-				}
-				else {
-					System.out.println();
-					System.out.println("Artikel " + artikel_id + " bestaat niet in bestelling " + bestelling_id + ".");	
-				}
-									
-			} 
-			
-			catch (SQLException e) {
-				logger.warn("SQL exception voor BestellingDaoImpl.deleteARtikelFromBestelling() methode");
-				e.printStackTrace();	
-			}
-		
-			System.out.println("Aantal rijen verwijderd : " + rowsDeleted);			
-			return rowsDeleted;
-		
-		}
-
-		
-		
-	     
-	 public void closeDBConnection(){
-	        try {
-	        		Connection connection = DBConnectivityManagement.getConnectionStatus();
-	        	
-	              if (connection != null) {
-	                  connection.close();
-	              }
-	        } 
-	        catch (Exception e) { 
-	        	logger.warn("SQL exception voor BestellingDaoImpl.closeDBConnection() methode");
-	            	e.printStackTrace();
-	        }
-	        
-	        
-	 }
-	 
-	@Override
-	public boolean checkBestelling_id(int bestelling_id) {	// toegevoegd 21/11/15 AU
-			PreparedStatement preparedStatement;
-			ResultSet resultSet;
-			boolean result = false;
-			
-			try {
-				
-	        	logger.info("Content of connection object is : " + connection);
-	        	Connection connection = DBConnectivityManagement.getConnectionStatus();
-	        	logger.info("Content of connection object is : " + connection); 
-				
-				preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE bestelling_id=?");
-				preparedStatement.setInt(1, bestelling_id);
-				resultSet = preparedStatement.executeQuery(); 
-				
-				if (resultSet.next()){
-					result = true;
-				} else {
-					System.out.println("Het opgegeven bestelling_id bevindt zich niet in de database...");
-				}
-
-			} catch (SQLException e) {
-				logger.warn("SQL exception voor BestellingDaoImpl.checkBestelling_id() methode");
-	                e.printStackTrace();	
-			}
-			return result;
-		}
 	
-	@Override
-	public boolean checkArtikel_id(int artikel_id) {		// toegevoegd 21/11/15 AU
-			PreparedStatement preparedStatement;
-			ResultSet resultSet;
-			boolean result = false;
-			
-			try {
-				
-	        	logger.info("Content of connection object is : " + connection);
-	        	Connection connection = DBConnectivityManagement.getConnectionStatus();
-	        	logger.info("Content of connection object is : " + connection);
-				
-				// uitgecomment tbv opdracht 5 || AU 26/11/15 : preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE (artikel1_id=? OR artikel2_id=? OR artikel3_id=?)");
-				
-				// nieuw tbv opdracht 5 || AU 26/11/15
-				preparedStatement = connection.prepareStatement("SELECT * FROM artikel WHERE artikel_id=?");
-				preparedStatement.setInt(1, artikel_id);
-				// preparedStatement.setInt(2, artikel_id);
-				// preparedStatement.setInt(3, artikel_id);
-				resultSet = preparedStatement.executeQuery(); 
-				
-				if (resultSet.next()){
-					result = true;
-				} else {
-					System.out.println("Het opgegeven artikelnummer bevindt zich niet in de database...");
-				}
-
-			} catch (SQLException e) {
-				logger.warn("SQL exception voor BestellingDaoImpl.checkArtikel_id() methode");
-	                e.printStackTrace();	
-			}
-			return result;
-		}
-	
-	@Override
-	public int checkHoogste_Bestelling_id() {	// toegevoegd 21/11/15 AU
-        
-		int maxBestellingId = 0;
-		
-		try {
-            
-        	logger.info("Content of connection object is : " + connection);
-        	Connection connection = DBConnectivityManagement.getConnectionStatus();
-        	logger.info("Content of connection object is : " + connection);          
-            
-    	 	Statement statement = connection.createStatement();	               
-            ResultSet resultSet = statement.executeQuery("SELECT MAX(Bestelling_id) FROM bestelling");
-                  
-            while(resultSet.next()){
-                maxBestellingId = resultSet.getInt("max(bestelling_id)");
-               
-            }
-            
-            resultSet.close();
-            statement.close();
-             
-        } catch (SQLException e) {
-        	logger.warn("SQL exception voor BestellingDaoImpl.checkHoogste_Bestelling_id() methode");
-            e.printStackTrace();
-        }
-        return maxBestellingId;
-        
-			
-	}
-	
-	@Override	
-	public boolean checkArtikelAlAanwezigInBestelling(int bestelling_id, int artikel_id) {		// toegevoegd 28/11/15 AU
-	
-		
-			// System.out.println("checkArtikelAlAanwezigInBestelling wordt uitgevoerd"); debugstatement
-		
-			PreparedStatement preparedStatement;
-			ResultSet resultSet;
-			boolean result = false;
-			
-			try {
-				
-	        	logger.info("Content of connection object is : " + connection);
-	        	Connection connection = DBConnectivityManagement.getConnectionStatus();
-	        	logger.info("Content of connection object is : " + connection);
-				
-				// uitgecomment tbv opdracht 5 || AU 26/11/15 : preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE (artikel1_id=? OR artikel2_id=? OR artikel3_id=?)");
-				
-				// nieuw tbv opdracht 5 || AU 26/11/15
-				preparedStatement = connection.prepareStatement("select * from Bestelling_Artikel where bestelling_id = ? AND artikel_id = ?");
-				preparedStatement.setInt(1, bestelling_id);
-				preparedStatement.setInt(2, artikel_id);
-				// preparedStatement.setInt(3, artikel_id);
-				resultSet = preparedStatement.executeQuery(); 
-				
-				if (resultSet.next()){
-					result = true;				
-				} 
-
-			} catch (SQLException e) {
-				logger.warn("SQL exception voor BestellingDaoImpl.checkArtikelAlAanwezigInBestelling() methode");
-	                e.printStackTrace();	
-			}
-			return result;
-		}
-	
-	
-	public int updateAantallen(Bestelling bestelling) {		// added 29-11-15 AU
+public int updateAantallen(Bestelling bestelling) {		// added 29-11-15 AU
 		
 		
 		int bestelling_id = bestelling.getBestelling_id();       
@@ -561,14 +338,12 @@ public class BestellingDaoImpl implements BestellingDao {
         int rowsUpdated = 0;
   				
 		PreparedStatement preparedStatement ;
-					String sql = "SELECT * FROM bestelling JOIN bestelling_artikel JOIN artikel WHERE (bestelling.bestelling_id = ? AND bestelling.bestelling_id = bestelling_artikel.bestelling_id AND bestelling_artikel.artikel_id = artikel.artikel_id)";
-	    	        
-	   	         try {	  
+					
+	   	         try {	
+	   	        	Connection connection = DBConnectivityManagement.getConnectionStatus(); 
 	 	        	logger.info("Content of connection object is : " + connection);
-		        	Connection connection = DBConnectivityManagement.getConnectionStatus();
-		        	logger.info("Content of connection object is : " + connection);
-	   	        	 
-	   		            preparedStatement = connection.prepareStatement(sql);	   		            	   		            
+
+	   	        		preparedStatement = connection.prepareStatement(queryUpdateAantallen);	   		            	   		            
 	   		            preparedStatement.setInt(1, bestelling_id);	   		                   	            
 	   		            ResultSet rset = preparedStatement.executeQuery();
 	   		           		            
@@ -628,8 +403,107 @@ public class BestellingDaoImpl implements BestellingDao {
 	   	   // opdracht 5 - 27/11/15 - AU : 
 	   	      return rowsUpdated;
 	   		  
-	}
+	}		
 	
+	
+	            	           		           	
+		@Override
+	public int delete(Bestelling bestelling) {
+			
+			int bestelling_id = bestelling.getBestelling_id(); 
+			int rowsDeleted = 0;
+			
+			try {
+
+	        	 logger.info("Content of connection object is : " + connection);
+	        	 Connection connection = DBConnectivityManagement.getConnectionStatus();
+	        	 logger.info("Content of connection object is : " + connection);
+					
+				PreparedStatement statement = connection.prepareStatement(queryDeleteBestelling);
+				
+				statement.setInt(1, bestelling_id);
+
+				rowsDeleted = statement.executeUpdate();
+				if (rowsDeleted > 0) {
+					System.out.println();
+					System.out.println("De bestelling met ordernummer " + bestelling_id + " is gewist uit de database.");													
+				}
+				else {
+					System.out.println();
+					System.out.println("De bestelling met ordernummer " + bestelling_id + " bestaat niet.");	
+				}
+									
+			} 
+			
+			catch (SQLException e) {
+				logger.warn("SQL exception voor BestellingDaoImpl.delete() methode");
+				e.printStackTrace();	
+			}
+		
+			System.out.println("Ordernummer / bestelling ID: " + bestelling_id + ". Aantal rijen verwijderd : " + rowsDeleted);			
+			return rowsDeleted;
+		
+		}
+
+	 
+		@Override
+	public int deleteArtikelFromBestelling(Bestelling bestelling) {
+			
+			int bestelling_id = bestelling.getBestelling_id(); 
+			int artikel_id = bestelling.getArtikel_id();
+			int rowsDeleted = 0;
+			
+			try {
+
+	        	logger.info("Content of connection object is : " + connection);
+	        	Connection connection = DBConnectivityManagement.getConnectionStatus();
+	        	logger.info("Content of connection object is : " + connection);
+					
+				PreparedStatement statement = connection.prepareStatement(queryDeleteArtikelFromBestelling);
+				statement.setInt(1, artikel_id);
+				statement.setInt(2, bestelling_id);
+
+				rowsDeleted = statement.executeUpdate();
+				if (rowsDeleted > 0) {
+					System.out.println();
+					System.out.println("Artikel " + artikel_id + " is gewist van bestelling " + bestelling_id + ".");													
+				}
+				else {
+					System.out.println();
+					System.out.println("Artikel " + artikel_id + " bestaat niet in bestelling " + bestelling_id + ".");	
+				}
+									
+			} 
+			
+			catch (SQLException e) {
+				logger.warn("SQL exception voor BestellingDaoImpl.deleteARtikelFromBestelling() methode");
+				e.printStackTrace();	
+			}
+		
+			System.out.println("Aantal rijen verwijderd : " + rowsDeleted);			
+			return rowsDeleted;
+		
+		}
+
+		
+		
+	     
+	 /* public void closeDBConnection(){
+	        try {
+	        		Connection connection = DBConnectivityManagement.getConnectionStatus();
+	        	
+	              if (connection != null) {
+	                  connection.close();
+	              }
+	        } 
+	        catch (Exception e) { 
+	        	logger.warn("SQL exception voor BestellingDaoImpl.closeDBConnection() methode");
+	            	e.printStackTrace();
+	        }
+	        
+	        
+	 } 	oude methode die niet meer gebruikt wordt - 14/12/15 AU */ 
+	 
 	 
 }
 	
