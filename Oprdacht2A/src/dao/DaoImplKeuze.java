@@ -1,12 +1,7 @@
 package dao;
 
 import menu.DBKeuzeMenu;
-import menu.crud.FireBirdArtikelImpl;
-import menu.crud.FireBirdBestellingDaoIMpl;
-import menu.crud.FireBirdKlantDaoImpl;
-import menu.crud.MySQLArtikelImpl;
-import menu.crud.MySQLBestellingDaoIMpl;
-import menu.crud.MySQLKlantDaoImpl;
+
 
 public class DaoImplKeuze {
 
