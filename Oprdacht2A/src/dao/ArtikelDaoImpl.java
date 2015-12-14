@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 	
 import business.*;
 import menu.*;
+import service.Check;
 
 public class ArtikelDaoImpl implements ArtikelDao {
 	
@@ -280,24 +281,21 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
     
    @Override
   public void update(Artikel artikel) {         
-					
+		
+		int artikel_id = artikel.getArtikel_id();
+		
+		
 	    	logger.info("Update Artikel methode start");
 	    	
 	   	         try {	
+	   	        	 
 	   	      	Connection connection = DBConnectivityManagement.getConnectionStatus(); 
    	        	
 	   	      		PreparedStatement preparedStatement = connection.prepareStatement("select * from Artikel where artikel_id=?");	   		            	   		            
-		            preparedStatement.setInt(1, artikel.getArtikel_id());	   		                   	            
+		            preparedStatement.setInt(1, artikel_id);	   		                   	            
 		            ResultSet result = preparedStatement.executeQuery();
-		           		            
 		            
-		            if (!result.next()) {
-		            	System.out.println();
-		            	System.out.println("Het opgegeven artikel ID " + artikel.getArtikel_id() + " bestaat niet");	   		      
-		            	return;
-		            }
 		            
-		            result.beforeFirst();
 		            
 		            System.out.println();
 		            System.out.println("Het opgegeven artikel ID luidt: " + artikel.getArtikel_id());
@@ -305,11 +303,11 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 		            preparedStatement = connection.prepareStatement("update artikel set artikel_naam=?, artikel_prijs=? where artikel_id=?");
 		            preparedStatement.setString(1, artikel.getArtikel_naam());
 		            preparedStatement.setDouble(2, artikel.getArtikel_prijs());
-		            preparedStatement.setInt(3, artikel.getArtikel_id());	
+		            preparedStatement.setInt(3, artikel_id);	
 		            
 		            int rowsUpdated = preparedStatement.executeUpdate();
 			                 if (rowsUpdated > 0) {
-			                 System.out.println("Bij Artikel_id: " + artikel.getArtikel_id() + " hoort nu de volgende naam: " + artikel.getArtikel_naam() + " en prijs: " + artikel.getArtikel_prijs());
+			                 System.out.println("Bij Artikel_id: " + artikel_id + " hoort nu de volgende naam: " + artikel.getArtikel_naam() + " en prijs: " + artikel.getArtikel_prijs());
 			    
 			                 }
 			                 
@@ -365,7 +363,7 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 			            //	 }
 		               
 	   		            //}
-	   		            logger.info("Update artikel methode. Het volgende artikelnr is geupdate: " + artikel.getArtikel_id() + " naar " + artikel.getArtikel_prijs() + " met prijs"  + artikel.getArtikel_prijs());
+	   		            logger.info("Update artikel methode. Het volgende artikelnr is geupdate: " + artikel.getArtikel_id() + " naar " + artikel.getArtikel_naam() + " met prijs"  + artikel.getArtikel_prijs());
 			                 
 		                result.close();
 		                preparedStatement.close();
@@ -383,6 +381,8 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 
         @Override
 	public void delete(int bestelling_id, int artikel_id) {
+			Check check = new Check();
+			Scanner input = new Scanner(System.in);
 			
         	logger.info("delete artikel(int bestelling_id, int artikel_id) methode start");
         	
@@ -393,15 +393,6 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
     	   	        	PreparedStatement preparedStatement = connection.prepareStatement("select * from bestelling_artikel where bestelling_id=?");	   		            	   		            
 	   		            preparedStatement.setInt(1, bestelling_id);	   		                   	            
 	   		            ResultSet result = preparedStatement.executeQuery();
-	   		           		            
-	   		            
-	   		            if (!result.next()) {
-	   		            	System.out.println();
-	   		            	System.out.println("Het opgegeven bestelling ID " + bestelling_id + " bestaat niet");	   		      
-	   		            	return;
-	   		            }
-	   		            
-	   		            result.beforeFirst();
 	   		            
 	   		            System.out.println();
 	   		            System.out.println("Het opgegeven bestelling ID luidt: " + artikel_id);
@@ -435,6 +426,7 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
       
     @Override
     public void delete(Artikel artikel) {
+			int artikel_id = artikel.getArtikel_id();
 			
         	logger.info("delete artikel(Artikel artikel) methode start");
         	
@@ -443,23 +435,15 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
   	        	Connection connection = DBConnectivityManagement.getConnectionStatus(); 
   	        	
   	        	PreparedStatement preparedStatement = connection.prepareStatement("select * from Artikel where artikel_id=?");	   		            	   		            
-		            preparedStatement.setInt(1, artikel.getArtikel_id());	   		                   	            
+		            preparedStatement.setInt(1, artikel_id);	   		                   	            
 		            ResultSet result = preparedStatement.executeQuery();
-		           		            
 		            
-		            if (!result.next()) {
-		            	System.out.println();
-		            	System.out.println("Het opgegeven artikel ID " + artikel.getArtikel_id() + " bestaat niet");	   		      
-		            	return;
-		            }
-		            
-		            result.beforeFirst();
 		            
 		            System.out.println();
-		            System.out.println("Het opgegeven artikel ID luidt: " + artikel.getArtikel_id());
+		            System.out.println("Het opgegeven artikel ID luidt: " + artikel_id);
   	        	 
   	        	              preparedStatement = connection.prepareStatement("delete from Artikel where artikel_id=?");
-		            		 preparedStatement.setInt(1, artikel.getArtikel_id());
+		            		 preparedStatement.setInt(1, artikel_id);
 		            		 
 		            		 int rowsDeleted = preparedStatement.executeUpdate();
 		                     if (rowsDeleted > 0) {
@@ -467,7 +451,7 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 		                     } 
 		          
 		                  
-		                   logger.info("delete artikel(Artikel artikel). Artikel met artikel_id: " + artikel.getArtikel_id() + " en naam: " + artikel.getArtikel_naam() + " is gewist uit het assortiment");
+		                   logger.info("delete artikel(Artikel artikel). Artikel met artikel_id: " + artikel_id + " en naam: " + artikel.getArtikel_naam() + " is gewist uit het assortiment");
 		                     preparedStatement.close();
 		                     result.close();
 		                     

@@ -42,4 +42,68 @@ public class Check {
 		return result;
 	}
 
+	
+	public boolean checkArtikel_id(int artikel_id) {		// toegevoegd 21/11/15 AU
+		PreparedStatement preparedStatement;
+		ResultSet resultSet;
+		boolean result = false;
+		
+		logger.info("Check Artikelnummer methode begint");
+		
+		try {
+			
+        	Connection connection = DBConnectivityManagement.getConnectionStatus();
+        	logger.info("Content of connection object is : " + connection);
+			
+			// uitgecomment tbv opdracht 5 || AU 26/11/15 : preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE (artikel1_id=? OR artikel2_id=? OR artikel3_id=?)");
+			
+			// nieuw tbv opdracht 5 || AU 26/11/15
+			preparedStatement = connection.prepareStatement("SELECT * FROM artikel WHERE artikel_id=?");
+			preparedStatement.setInt(1, artikel_id);
+			// preparedStatement.setInt(2, artikel_id);
+			// preparedStatement.setInt(3, artikel_id);
+			resultSet = preparedStatement.executeQuery(); 
+			
+			if (resultSet.next()){
+				result = true;
+			} else {
+				System.out.println("Het opgegeven artikelnummer bevindt zich niet in de database...");
+			}
+
+		} catch (SQLException e) {
+			logger.warn("SQL exception voor BestellingDaoImpl.checkArtikel_id() methode");
+                e.printStackTrace();	
+		}
+		return result;
+	}
+	
+	
+	public boolean checkBestelling_id(int bestelling_id) {	// toegevoegd 21/11/15 AU
+		PreparedStatement preparedStatement;
+		ResultSet resultSet;
+		boolean result = false;
+		
+		logger.info("Check Bestellingnummer methode begint");
+		
+		try {
+			
+        	Connection connection = DBConnectivityManagement.getConnectionStatus();
+        	logger.info("Content of connection object is : " + connection); 
+			
+			preparedStatement = connection.prepareStatement("SELECT * FROM bestelling WHERE bestelling_id=?");
+			preparedStatement.setInt(1, bestelling_id);
+			resultSet = preparedStatement.executeQuery(); 
+			
+			if (resultSet.next()){
+				result = true;
+			} else {
+				System.out.println("Het opgegeven bestelling_id bevindt zich niet in de database...");
+			}
+
+		} catch (SQLException e) {
+			logger.warn("SQL exception voor BestellingDaoImpl.checkBestelling_id() methode");
+                e.printStackTrace();	
+		}
+		return result;
+	}
 }

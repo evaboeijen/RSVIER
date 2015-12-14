@@ -4,6 +4,7 @@ import java.util.*;
 import business.*;
 import dao.*;
 import menu.*;
+import service.Check;
 import service.DTO;
 
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ public class ArtikelMenu {
 	
 	ArtikelDaoImpl artikelDaoImpl = new ArtikelDaoImpl();
 	Artikel artikel = new Artikel();
+	Check check = new Check();
 	DTO dto = new DTO();
 	int artikel_id = 0;
 	
@@ -71,6 +73,11 @@ public void toonMenu() {
             		System.out.println("U kunt de artikelgegevens wijzigen. Voer het artikelnummer in, en druk op enter");
             		artikel_id = input.nextInt();
             		
+            		while (check.checkArtikel_id(artikel_id)!= true){
+	  					System.out.println("Voer het artikelnummer opnieuw in: ");
+	  					
+	  					artikel_id = input.nextInt();
+	  				}
             	
             		artikel = dto.createArtikelObject();
             		artikel.setArtikel_id(artikel_id);
@@ -87,6 +94,13 @@ public void toonMenu() {
             		
             		System.out.println("Voer het artikelnummer in, en druk op enter");
             		artikel_id = input.nextInt();
+            		
+            		while (check.checkArtikel_id(artikel_id)!= true){
+	  					System.out.println("Voer het artikelnummer opnieuw in: ");
+	  					
+	  					artikel_id = input.nextInt();
+	  				}
+            		
             		artikel.setArtikel_id(artikel_id);
             	           		
             		artikelDaoImpl.delete(artikel);
