@@ -21,8 +21,10 @@ import com.mchange.v2.c3p0.impl.C3P0PooledConnectionPoolManager;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import connectivity.DBConnectionMethods;
 import connectivity.FireBirdConnectionSetup;
 import connectivity.MySQLConnectionSetup;
+import dao.AdresDaoImpl;
 import dao.ArtikelDaoImpl;
 import menu.crud.CrudMenu;
 import menu.klasseselectie.KlasseSelectieMenu;
@@ -35,10 +37,7 @@ public class DBConnectivityManagement {
 		static Connection connection = null;
 		static HikariDataSource ds = null;
 		static C3P0PooledConnectionPool C3POds = null;
-		//DBKeuzeMenu dBKeuzeMenu  = new DBKeuzeMenu();
-		MySQLConnectionSetup mySQL = new MySQLConnectionSetup();
-		FireBirdConnectionSetup fireBird = new FireBirdConnectionSetup();
-		
+		DBConnectionMethods connectionSetup = (DBConnectionMethods) new Object();
 
 		public void toonMenu() {
 		    System.out.println("\t---------");
@@ -52,6 +51,12 @@ public class DBConnectivityManagement {
 		    System.out.println("10. Stoppen");
 		    System.out.print("Voer optie in en druk op Enter:");
 	            
+		    if(DBKeuzeMenu.getDBKeuze()==1){
+				connectionSetup = new MySQLConnectionSetup();
+			}else if(DBKeuzeMenu.getDBKeuze()==2){
+				connectionSetup = new FireBirdConnectionSetup();
+			}
+		    
 				int keuze = input.nextInt();
 				 
 				switch (keuze) {
@@ -60,22 +65,14 @@ public class DBConnectivityManagement {
 	            		keuzeCP = input.nextInt();
 	            		switch (keuzeCP) {
 	            		case 1: 
-	            			if(DBKeuzeMenu.getDBKeuze()==1){
-	            				connection = mySQL.HikariCPInput();
-	            			}else if(DBKeuzeMenu.getDBKeuze()==2){
-	            				connection = fireBird.HikariCPInput();
-	            			}
+	            			connection = connectionSetup.HikariCPInput();
 	            			break;
 	            		case 2:
-	            			if(DBKeuzeMenu.getDBKeuze()==1){
-	            				connection = mySQL.C3POCPInput();
-	            			}else if(DBKeuzeMenu.getDBKeuze()==2){
-	            				connection = fireBird.C3POCPInput();
-	            			}
+	            			connection = connectionSetup.C3POCPInput();
 	            			break;
 	            		default:
 	            			System.out.println("MySQL met Hikari wordt default gebruikt");
-	            			connection = mySQL.HikariCPInput();
+	            			connection = connectionSetup.HikariCPInput();
 	            		}
 	            		hoofdMenu.toonMenu(); 	            						
 	            		break;
@@ -85,22 +82,14 @@ public class DBConnectivityManagement {
 	            		keuzeCP = input.nextInt();
 	            		switch (keuzeCP) {
 	            		case 1: 
-	            			if(DBKeuzeMenu.getDBKeuze()==1){
-	            				connection = mySQL.HikariCPEva();
-	            			}else if(DBKeuzeMenu.getDBKeuze()==2){
-	            				connection = fireBird.HikariCPEva();
-	            			}
+	            			connection = connectionSetup.HikariCPEva();
 	            			break;
 	            		case 2:
-	            			if(DBKeuzeMenu.getDBKeuze()==1){
-	            				connection = mySQL.C3POCPEva();
-	            			}else if(DBKeuzeMenu.getDBKeuze()==2){
-	            				connection = fireBird.C3POCPEva();
-	            			}
+	            			connection = connectionSetup.C3POCPEva();
 	            			break;
 	            		default:
 	            			System.out.println("MySQL met Hikari wordt default gebruikt");
-	            			connection = mySQL.HikariCPEva();
+	            			connection = connectionSetup.HikariCPEva();
 	            		}
 	            		hoofdMenu.toonMenu(); 	            						
 	            		break;
@@ -109,23 +98,15 @@ public class DBConnectivityManagement {
 	            		System.out.println("1. Log in op de Hikari Connection Pool\n2. Log in op de C3PO Connection Pool");
 	            		int keuzeCP = input.nextInt();
 	            		switch (keuzeCP) {
-	            		case 1: 
-	            			if(DBKeuzeMenu.getDBKeuze()==1){
-	            				connection = mySQL.HikariCPJesse();
-	            			}else if (DBKeuzeMenu.getDBKeuze()==2){
-	            				connection = fireBird.HikariCPJesse();
-	            			}
+	            		case 1:
+	            			connection = connectionSetup.HikariCPJesse();
 	            			break;
 	            		case 2:
-	            			if(DBKeuzeMenu.getDBKeuze()==1){
-	            				connection = mySQL.C3POCPJesse();
-	            			}else if (DBKeuzeMenu.getDBKeuze()==2){
-	            				connection = fireBird.C3POCPJesse();
-	            			}
+	            			connection = connectionSetup.C3POCPJesse();
 	            			break;
 	            		default:
 	            			System.out.println("MySQL met Hikari wordt default gebruikt");
-	            			connection = mySQL.HikariCPJesse();
+	            			connection = connectionSetup.HikariCPJesse();
 	            		}
 	            		hoofdMenu.toonMenu(); 	            						
 	            		break;
@@ -135,22 +116,14 @@ public class DBConnectivityManagement {
 	            		keuzeCP = input.nextInt();
 	            		switch (keuzeCP) {
 	            		case 1: 
-	            			if(DBKeuzeMenu.getDBKeuze()==1){
-	            				connection = mySQL.HikariCPAgung();
-	            			}else if (DBKeuzeMenu.getDBKeuze()==2){
-	            				connection = fireBird.HikariCPAgung();
-	            			}
+	            			connection = connectionSetup.HikariCPAgung();
 	            			break;
 	            		case 2:
-	            			if(DBKeuzeMenu.getDBKeuze()==1){
-	            				connection = mySQL.C3POCPAgung();
-	            			}else if (DBKeuzeMenu.getDBKeuze()==2){
-	            				connection = fireBird.C3POCPAgung();
-	            			}
+	            			connection = connectionSetup.C3POCPAgung();
 	            			break;
 	            		default:
 	            			System.out.println("MySQL met Hikari wordt default gebruikt");
-	            			connection = mySQL.HikariCPAgung();
+	            			connection = connectionSetup.HikariCPAgung();
 	            		}
 	            		hoofdMenu.toonMenu(); 	            						
 	            		break;
