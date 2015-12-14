@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Scanner;
 import dao.*;
 import menu.HoofdMenu;
+import service.Check;
 import menu.DBConnectivityManagement;
+import menu.DBKeuzeMenu;
 import business.*;
 
 import org.slf4j.Logger;
@@ -27,18 +29,22 @@ public class BestellingMenu  {
 	List<Artikel> alleArtikelen = new ArrayList<>();
 	int gewensteArtikel_id = 0;
 	int gewensteAantal = 0;
-	BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
+	//BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
 	int gewensteBestelling_id = 0;
 	List<Bestelling> lijst = null;
 	KlantDaoImpl klantDaoImpl = new KlantDaoImpl();
 	List <Klant> alleKlanten = null;            	              			
 	Bestelling nieuweBestelling = new Bestelling();
-	AdresDaoImpl adresDaoImpl = new AdresDaoImpl();
+	//AdresDaoImpl adresDaoImpl = new AdresDaoImpl();
 	Artikel artikel = new Artikel(); 
 	Bestelling teverwijderenBestelling = new Bestelling();
 	String gewensteArtikelNaam = null;
 	int gewensteKlantID = 0;
 	double gewensteArtikelPrijs = 0;
+	
+	MySQLBestellingDaoImpl mySQLBestellingDaoImpl = new MySQLBestellingDaoImpl();
+	FireBirdBestellingDaoImpl fireBirdBestellingDaoImpl = new FireBirdBestellingDaoImpl();
+	Check check = new Check();
 	
 	
 	public void toonMenu() {
@@ -59,9 +65,21 @@ public class BestellingMenu  {
 	    System.out.println("12. Stoppen"); 
 	    System.out.println();
 	    System.out.print("Voer optie in en druk op Enter:");
-	            
+	    
+	    try {
+	    	int keuze = input.nextInt();
+	    	DaoImplKeuze daoKeuze = new DaoImplKeuze();
+	    	BestellingDaoImpl dbBestelling = daoKeuze.BestellingDaoImplKeuze();
+
+	    	if(DBKeuzeMenu.getDBKeuze() == 1) {
+				dbBestelling = new MySQLBestellingDaoImpl();
+			}
+	    	
+	    	else if(DBKeuzeMenu.getDBKeuze() == 2) {
+				dbBestelling = new FireBirdBestellingDaoImpl();
+			}
             	    	    	
-			int keuze = input.nextInt();
+			
 			
 			logger.info("content of variable 'keuze' is : " + keuze);
 		       
@@ -80,14 +98,14 @@ public class BestellingMenu  {
             			                      	            
             		int gewensteKlant_id = input.nextInt();
             				          		
-                	while (klantDaoImpl.checkKlant_id(gewensteKlant_id)!= true) { 
+                	while (check.checkKlant_id(gewensteKlant_id)!= true) { 
                 		System.out.print("\nVoer een ander klantnummer in: ");
                 		gewensteKlant_id = input.nextInt();
                 		System.out.println();
                 	}    
             		    
                 	nieuweBestelling.setKlant_id(gewensteKlant_id);
-                	nieuweBestelling.setBestelling_id(bestellingDaoImpl.checkHoogste_Bestelling_id() + 1);
+                	nieuweBestelling.setBestelling_id(check.checkHoogste_Bestelling_id() + 1);
             			
                 	System.out.println("Welk artikel wil je in de bestelling plaatsen?");
                 	System.out.println("Hieronder een overzicht van het hele assortiment: ");
@@ -141,7 +159,7 @@ public class BestellingMenu  {
                 	System.out.print("\nVoer het artikel ID in dat je in de bestelling wil plaatsen: ");
                 	System.out.println(); 
                 	int gewensteArtikel_id = input.nextInt();
-                	while (bestellingDaoImpl.checkArtikel_id(gewensteArtikel_id)!= true) { 
+                	while (check.checkArtikel_id(gewensteArtikel_id)!= true) { 
                 		System.out.print("\nVoer een ander artikelnummer in: ");
                 		gewensteArtikel_id = input.nextInt();
                 		System.out.println();
@@ -173,7 +191,7 @@ public class BestellingMenu  {
                         
                 		// System.out.println(nieuweBestelling.getArtikel1_id() + " " + nieuweBestelling.getArtikel1_naam() + " " + nieuweBestelling.getArtikel1_prijs());
                		                	
-                		bestellingDaoImpl.create(nieuweBestelling);  
+                		dbBestelling.create(nieuweBestelling);  
                 	}
                 			
                 	catch (SQLException e) {
@@ -190,7 +208,7 @@ public class BestellingMenu  {
                 	
             		          			           		          		            
             	case 2:         		        			
-            		lijst = bestellingDaoImpl.read();	// lees en toon alle bestellingen uit de Bestelling tabel
+            		lijst = dbBestelling.read();	// lees en toon alle bestellingen uit de Bestelling tabel
             		
             		System.out.println();
             		System.out.println();	
@@ -217,7 +235,7 @@ public class BestellingMenu  {
             		System.out.println("Je kan hier artikelen toevoegen aan een bestaande bestelling.");
             		System.out.println("Hieronder een overzicht van alle bestellingen: ");
             		               		       			
-            		lijst = bestellingDaoImpl.read();	// lees en toon alle bestellingen uit de Bestelling tabel
+            		lijst = dbBestelling.read();	// lees en toon alle bestellingen uit de Bestelling tabel
             		
             		System.out.println();
             		System.out.println();	
@@ -242,7 +260,7 @@ public class BestellingMenu  {
         			gewensteBestelling_id = input.nextInt();
         				
 
-            		while (bestellingDaoImpl.checkBestelling_id(gewensteBestelling_id)!= true) { 
+            		while (check.checkBestelling_id(gewensteBestelling_id)!= true) { 
             			System.out.print("\nVoer een ander bestellingnummer in: ");
             			gewensteBestelling_id = input.nextInt();
             			System.out.println();
@@ -327,8 +345,8 @@ public class BestellingMenu  {
             		System.out.println(); 
             		gewensteArtikel_id = input.nextInt();
             		
-            		while (bestellingDaoImpl.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) == true || bestellingDaoImpl.checkArtikel_id(gewensteArtikel_id)!= true) {
-            			if (bestellingDaoImpl.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) == true) {          	
+            		while (check.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) == true || check.checkArtikel_id(gewensteArtikel_id)!= true) {
+            			if (check.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) == true) {          	
             				System.out.print("\nHet opgegeven artikelnummer zit al in deze bestelling. ");
             			}     
             			System.out.println("Voer een ander artikelnummer in: ");
@@ -385,7 +403,7 @@ public class BestellingMenu  {
             			// System.out.println("UPDATE METHODE WORDT AANGEROEPEN"); debug statements
 
             			          		
-            			bestellingDaoImpl.update(aantepassenBestelling);  
+            			dbBestelling.update(aantepassenBestelling);  
             		}
             			
             		catch (SQLException e) {
@@ -406,7 +424,7 @@ public class BestellingMenu  {
             		System.out.println("Je kan hier het aantal van een bepaald artikel in een bestaande bestelling wijzigen.");
             		System.out.println("Hieronder een overzicht van alle bestellingen: ");
             		               		       			
-            		lijst = bestellingDaoImpl.read();	// lees en toon alle bestellingen uit de Bestelling tabel
+            		lijst = dbBestelling.read();	// lees en toon alle bestellingen uit de Bestelling tabel
             		
             		System.out.println();
             		System.out.println();	
@@ -431,7 +449,7 @@ public class BestellingMenu  {
         			gewensteBestelling_id = input.nextInt();
         				
 
-            		while (bestellingDaoImpl.checkBestelling_id(gewensteBestelling_id)!= true) { 
+            		while (check.checkBestelling_id(gewensteBestelling_id)!= true) { 
             			System.out.print("\nVoer een ander bestellingnummer in: ");
             			gewensteBestelling_id = input.nextInt();
             			System.out.println();
@@ -464,7 +482,7 @@ public class BestellingMenu  {
             		System.out.println(); 
             		gewensteArtikel_id = input.nextInt();
             		
-            		while (bestellingDaoImpl.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) != true) {
+            		while (check.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) != true) {
             			System.out.print("\nHet artikel zit niet in de desbetreffende bestelling. \nVoer een ander artikelnummer in: ");
                     	gewensteArtikel_id = input.nextInt();
                     	if (gewensteArtikel_id == 0) {
@@ -507,7 +525,7 @@ public class BestellingMenu  {
             			// System.out.println("UPDATE METHODE WORDT AANGEROEPEN"); debug statements
 
             			          		
-            			bestellingDaoImpl.updateAantallen(aantepassenBestelling);  
+            			dbBestelling.updateAantallen(aantepassenBestelling);  
             		}
             			
             		catch (SQLException e) {
@@ -530,7 +548,7 @@ public class BestellingMenu  {
             		System.out.println("Je kan hier complete bestellingen verwijderen");
             		System.out.println("Hieronder een overzicht van alle bestellingen: ");
                 			
-            		lijst = bestellingDaoImpl.read();	// lees en toon alle bestellingen uit de Bestelling tabel
+            		lijst = dbBestelling.read();	// lees en toon alle bestellingen uit de Bestelling tabel
             		
             		System.out.println();
             		System.out.println();	
@@ -554,14 +572,14 @@ public class BestellingMenu  {
             		
         			gewensteBestelling_id = input.nextInt();
         				
-            		while (bestellingDaoImpl.checkBestelling_id(gewensteBestelling_id)!= true) { 
+            		while (check.checkBestelling_id(gewensteBestelling_id)!= true) { 
             			System.out.print("\nVoer een ander bestellingnummer in: ");
             			gewensteBestelling_id = input.nextInt();
             			System.out.println();
             		}            		        
             			          			            			
             		teverwijderenBestelling.setBestelling_id(gewensteBestelling_id);            		
-            		bestellingDaoImpl.delete(teverwijderenBestelling);
+            		dbBestelling.delete(teverwijderenBestelling);
             		
             		toonMenu(); 	   			  		          		
             		break; 
@@ -572,7 +590,7 @@ public class BestellingMenu  {
             		System.out.println("Je kan hier artikelen verwijderen van een bestaande bestelling.");
             		System.out.println("Hieronder een overzicht van alle bestellingen en hun artikelen: ");
             		               		       			
-            		lijst = bestellingDaoImpl.read();	// lees en toon alle bestellingen uit de Bestelling tabel
+            		lijst = dbBestelling.read();	// lees en toon alle bestellingen uit de Bestelling tabel
             		
             		System.out.println();
             		System.out.println();	
@@ -597,7 +615,7 @@ public class BestellingMenu  {
         			gewensteBestelling_id = input.nextInt();
         				
 
-            		while (bestellingDaoImpl.checkBestelling_id(gewensteBestelling_id)!= true) { 
+            		while (check.checkBestelling_id(gewensteBestelling_id)!= true) { 
             			System.out.print("\nVoer een ander bestellingnummer in: ");
             			gewensteBestelling_id = input.nextInt();
             			System.out.println();
@@ -628,7 +646,7 @@ public class BestellingMenu  {
             		System.out.println(); 
             		gewensteArtikel_id = input.nextInt();
             		
-            		while (bestellingDaoImpl.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) != true) {
+            		while (check.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) != true) {
             			System.out.print("\nArtikelnummer niet gevonden in desbetreffende bestelling. Voer een ander artikelnummer in: ");
                     	gewensteArtikel_id = input.nextInt();
                     	if (gewensteArtikel_id == 0) {
@@ -677,7 +695,7 @@ public class BestellingMenu  {
             			// System.out.println("UPDATE METHODE WORDT AANGEROEPEN"); debug statements
 
             			          		
-            			bestellingDaoImpl.deleteArtikelFromBestelling(aantepassenBestelling);  
+            			dbBestelling.deleteArtikelFromBestelling(aantepassenBestelling);  
             		}
             			
             		catch (SQLException e) {
@@ -711,6 +729,12 @@ public class BestellingMenu  {
             		System.out.println("\n! Ongeldige optie, probeer het nogmaals !\n");
             		
 		} // dit sluit de switch
+			
+	    }
+		
+	    finally {
+			System.out.println("---Uw keuze is uitgevoerd---");		
+		}	
 			      
 	}	// dit sluit de toonMenu() methode
 	
