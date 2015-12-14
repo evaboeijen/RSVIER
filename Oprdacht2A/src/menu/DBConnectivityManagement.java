@@ -147,8 +147,8 @@ public class DBConnectivityManagement {
 							System.out.println("\nLogging out...\n");
 							connection.close();
 							connection = null;
-		          			DBConnectivityManagement inloggen = new DBConnectivityManagement();
-		          			inloggen.toonMenu();
+							DBKeuzeMenu dBKeuzeMenu = new DBKeuzeMenu();
+							dBKeuzeMenu.toonMenu();
 						}
 						else {
 							System.out.println("\nYou are already logged out.\n");         	  
