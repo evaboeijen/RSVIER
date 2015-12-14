@@ -30,9 +30,9 @@ public class DeleteMenu  {
 	Scanner input = new Scanner(System.in);
 	List <Klant> alleKlanten = null;
 	int gewensteKlant_id = 0;
-	AdresDaoImpl adresDaoImpl = new AdresDaoImpl();
+	//AdresDaoImpl adresDaoImpl = new AdresDaoImpl();
 	Adres teWissenAdres = new Adres();
-	BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
+	//BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
 	List<Bestelling> lijst = null;
 	KlantDaoImpl klantDaoImpl = new KlantDaoImpl();
 	int gewensteBestelling_id = 0;
@@ -45,9 +45,8 @@ public class DeleteMenu  {
 	int gewensteAantal = 0;
 	Artikel artikel = new Artikel(); 
 	List<Artikel> alleArtikelen = null;
-	Check check = new Check();
 	
-	
+
 	public void toonMenu() {
 	    System.out.println("\t-------------");
 	    System.out.println("\tDelete  Menu");
@@ -63,23 +62,32 @@ public class DeleteMenu  {
 	    System.out.println("12. Stoppen"); 
 	    System.out.println();
 	    System.out.print("Voer optie in en druk op Enter:");
-	       
+		
+	    
+	    try {
+			DaoImplKeuze daoKeuze = new DaoImplKeuze();
+			AdresDaoImpl dbAdres = daoKeuze.AdresDaoImplKeuze();
+			KlantDaoImpl dbKlant = daoKeuze.KlantDaoImplKeuze();
+			ArtikelDaoImpl dbArtikel = daoKeuze.ArtikelDaoImplKeuze();
+			BestellingDaoImpl dbBestelling = daoKeuze.BestellingDaoImplKeuze();
+			
+			Check check = new Check();   
             
-		int keuze = input.nextInt();
+			int keuze = input.nextInt();
 		       
-		logger.info("content of variable 'keuze' is : " + keuze);
+			logger.info("content of variable 'keuze' is : " + keuze);
 		
 		
-		switch (keuze) {
+			switch (keuze) {
 		
-        	case 1:
+        		case 1:
 
         		System.out.println();
             	
             	System.out.println("Je kan hier het adres van een bestaande klant wissen.");
             	System.out.println("Hieronder een overzicht van alle klanten: ");
             		
-            	alleKlanten = klantDaoImpl.read();
+            	alleKlanten = dbKlant.read();
                		          		
             	System.out.println();          		
             	System.out.println("Van welke klant wil je het adres wissen?");
@@ -103,19 +111,19 @@ public class DeleteMenu  {
             	teWissenAdres.setToevoeging("-");
             	teWissenAdres.setWoonplaats("-");
                 	               			
-                adresDaoImpl.deleteAdres(teWissenAdres);
+                dbAdres.deleteAdres(teWissenAdres);
             
             	toonMenu();
             	break;
             			           		          		
                 
-            case 2:          		
+        		case 2:          		
             		       			
             	System.out.println();           		
         		System.out.println("Je kan hier artikelen verwijderen van een bestaande bestelling.");
         		System.out.println("Hieronder een overzicht van alle bestellingen en hun artikelen: ");
         		               		       			
-        		lijst = bestellingDaoImpl.read();	// lees en toon alle bestellingen uit de Bestelling tabel
+        		lijst = dbBestelling.read();	// lees en toon alle bestellingen uit de Bestelling tabel
         		
         		System.out.println();
         		System.out.println();	
@@ -140,7 +148,7 @@ public class DeleteMenu  {
     			gewensteBestelling_id = input.nextInt();
     				
 
-        		while (bestellingDaoImpl.checkBestelling_id(gewensteBestelling_id)!= true) { 
+        		while (check.checkBestelling_id(gewensteBestelling_id)!= true) { 
         			System.out.print("\nVoer een ander bestellingnummer in: ");
         			gewensteBestelling_id = input.nextInt();
         			System.out.println();
@@ -172,7 +180,7 @@ public class DeleteMenu  {
         		System.out.println(); 
         		gewensteArtikel_id = input.nextInt();
         		
-        		while (bestellingDaoImpl.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) != true) {
+        		while (check.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) != true) {
         			System.out.print("\nArtikelnummer niet gevonden in desbetreffende bestelling. Voer een ander artikelnummer in: ");
                 	gewensteArtikel_id = input.nextInt();
                 	if (gewensteArtikel_id == 0) {
@@ -226,7 +234,7 @@ public class DeleteMenu  {
         			// System.out.println("UPDATE METHODE WORDT AANGEROEPEN"); debug statements
 
         			          		
-        			bestellingDaoImpl.deleteArtikelFromBestelling(aantepassenBestelling);  
+        			dbBestelling.deleteArtikelFromBestelling(aantepassenBestelling);  
         		}
         			
         		catch (SQLException e) {
@@ -243,13 +251,13 @@ public class DeleteMenu  {
             		
             	
          
-            case 3:
+        		case 3:
             	
             	System.out.println();           		
             	System.out.println("Je kan hier complete bestellingen verwijderen");
             	System.out.println("Hieronder een overzicht van alle bestellingen: ");
             		
-            	lijst = bestellingDaoImpl.read();	// lees en toon alle bestellingen uit de Bestelling tabel
+            	lijst = dbBestelling.read();	// lees en toon alle bestellingen uit de Bestelling tabel
             		
             	System.out.println();
             	System.out.println();	
@@ -274,7 +282,7 @@ public class DeleteMenu  {
             	int gewensteBestelling_id = input.nextInt();
         				
         	
-            	while (bestellingDaoImpl.checkBestelling_id(gewensteBestelling_id)!= true) { 
+            	while (check.checkBestelling_id(gewensteBestelling_id)!= true) { 
             		System.out.print("\nVoer een ander bestellingnummer in: ");
             		gewensteBestelling_id = input.nextInt();
             		System.out.println();
@@ -282,12 +290,13 @@ public class DeleteMenu  {
             			          			
             	Bestelling teverwijderenBestelling = new Bestelling();
             	teverwijderenBestelling.setBestelling_id(gewensteBestelling_id);         		
-            	bestellingDaoImpl.delete(teverwijderenBestelling);
+            	dbBestelling.delete(teverwijderenBestelling);
             
             	toonMenu();
             	break; 
                 	
-            case 4:	
+        		case 4:	
+        			
         		System.out.println();
         		System.out.println("Hieronder een overzicht van alle artikelen uit het assortiment: ");
                 
@@ -323,19 +332,20 @@ public class DeleteMenu  {
             	System.out.print("\nVoer het artikel ID in van het artikel dat je wil verwijderen uit het assortiment: ");
             	System.out.println(); 
             	int gewensteArtikel_id = input.nextInt();
-            	while (bestellingDaoImpl.checkArtikel_id(gewensteArtikel_id)!= true) { 
+            	while (check.checkArtikel_id(gewensteArtikel_id)!= true) { 
             		System.out.print("\nVoer een ander artikelnummer in: ");
             		gewensteArtikel_id = input.nextInt();
             		System.out.println();	
             	}    
             	
             	artikel.setArtikel_id(gewensteArtikel_id);
-            	artikelDaoImpl.delete(artikel);
+            	dbArtikel.delete(artikel);
             	
             	toonMenu();
             	break; 
             	
-            case 5:           		
+        		case 5: 
+        			
             	System.out.println();          
             	System.out.println("Hieronder een overzicht van alle klanten: ");
             		
@@ -352,40 +362,43 @@ public class DeleteMenu  {
                 	gewensteKlant_id = input.nextInt();
                 	System.out.println();
                 }    
-                			
-                KlantDaoImpl klantDaoImpl = new KlantDaoImpl();
-                
+                			               
                 teWissenKlant.setKlant_id(gewensteKlant_id);
-                klantDaoImpl.delete(teWissenKlant);
+                dbKlant.delete(teWissenKlant);
        
                 toonMenu();
                 break;
             		            
             		
-            case 10:
+        		case 10:
             	CrudMenu crudmenu = new CrudMenu();
             	crudmenu.toonMenu();
             	break;
             		
-            case 11:
+        		case 11:
             	HoofdMenu hoofdmenu = new HoofdMenu();					
             	hoofdmenu.toonMenu(); 
             	break;
             		
-            case 12:
+        		case 12:
             	System.out.println("\nTot de volgende keer...");
             	System.exit(1);
             	break;
             		
             		
-            default:
+        		default:
             	System.out.println("\n! Ongeldige optie, probeer het nogmaals !\n");
         		DeleteMenu deletemenu = new DeleteMenu();
             	deletemenu.toonMenu();
 	
 		} // end of switch
 		
- 
+	    }
+		
+	    finally {
+			System.out.println("---Uw keuze is uitgevoerd---");		
+		}	
+			
 	} // end of toonMenu() method
 		
 } // end of DeleteMenu class
