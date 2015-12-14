@@ -32,151 +32,119 @@ public class ReadMenu {
 		System.out.print("Voer optie in en druk op Enter:");
 
 		try {		     
-            MySQLKlantDaoImpl mySQLKlantDaoImpl = new MySQLKlantDaoImpl();
-            FireBirdKlantDaoImpl fireBirdKlantDaoImpl = new FireBirdKlantDaoImpl();
-	    	
-            MySQLAdresDaoImpl mySQLAdresDaoImpl = new MySQLAdresDaoImpl();
-	    	FireBirdAdresDaoImpl fireBirdAdresDaoImpl = new FireBirdAdresDaoImpl();
-	    	
-	    	MySQLArtikelDaoImpl mySQLArtikelDaoImpl = new MySQLArtikelDaoImpl();
-	    	FireBirdArtikelDaoImpl fireBirdArtikelDaoImpl = new FireBirdArtikelDaoImpl();
-	    	
-	    	MySQLBestellingDaoImpl mySQLBestellingDaoImpl = new MySQLBestellingDaoImpl();
-	    	FireBirdBestellingDaoImpl fireBirdBestellingDaoImpl = new FireBirdBestellingDaoImpl();
-	    	
-	    	Check check = new Check();
+			AdresDaoImpl dbAdres = (AdresDaoImpl) new Object();
+			KlantDaoImpl dbKlant = (KlantDaoImpl) new Object();
+			ArtikelDaoImpl dbArtikel = (ArtikelDaoImpl) new Object();
+			BestellingDaoImpl dbBestelling = (BestellingDaoImpl) new Object();
+			
+			if(DBKeuzeMenu.getDBKeuze()==1){
+				dbAdres = new MySQLAdresDaoImpl();
+				dbKlant = new MySQLKlantDaoImpl();
+				dbArtikel = new MySQLArtikelImpl();
+				dbBestelling = new MySQLBestellingDaoIMpl();
+			}else if(DBKeuzeMenu.getDBKeuze()==2){
+				dbAdres = new FireBirdAdresDaoImpl();
+				dbKlant = new FireBirdKlantDaoImpl();
+				dbArtikel = new FireBirdArtikelImpl();
+				dbBestelling = new FireBirdBestellingDaoIMpl();
+			}
+			Check check = new Check();
 
 	    	int keuze = input.nextInt();
 
 			switch (keuze) {
-            	case 1://klant --> voledige tabel
-            		if(DBKeuzeMenu.getDBKeuze()==1){
-            			mySQLKlantDaoImpl.read();
-        			}else if(DBKeuzeMenu.getDBKeuze()==2){
-        				fireBirdKlantDaoImpl.read();
-        			}
+            	case 1:/*klant --> voledige tabel*/
+            		dbKlant.read();
             		toonMenu();
             		break;
 
-            	case 2://Klant --> klantnummer 
+            	case 2:/*Klant --> klantnummer*/
             		System.out.println("Voer het klantnummer in waarop u de tabel klant wilt doorzoeken: ");
             		klant_id = input.nextInt();
             		while (!check.checkKlant_id(klant_id)){
             			System.out.println("Het desbetreffende klantnummer bevind zich niet in de database! \nKlantnummer: ");
         				klant_id = input.nextInt();
-            			}            				
-            		if(DBKeuzeMenu.getDBKeuze()==1){
-            			mySQLKlantDaoImpl.readKlant(klant_id);
-        			}else if(DBKeuzeMenu.getDBKeuze()==2){
-        				fireBirdKlantDaoImpl.readKlant(klant_id);
-        			}
+            		}
+            		dbKlant.readKlant(klant_id);
             		toonMenu();
             		break;
 
-            	case 3://Klant --> voornaam
+            	case 3:/*Klant --> voornaam*/
             		System.out.println("Voer de voornaam in waarop u de tabel klant wilt doorzoeken: ");
             		String voornaam = input.next();
             			while (voornaam.length() > 50){
             			System.out.println("Een voornaam mag niet meer dan 50 karakters bevatten! \nVoornaam: ");
             			voornaam = input.next();
             			}
-            			if(DBKeuzeMenu.getDBKeuze()==1){
-                			mySQLKlantDaoImpl.readKlant(voornaam);
-            			}else if(DBKeuzeMenu.getDBKeuze()==2){
-            				fireBirdKlantDaoImpl.readKlant(voornaam);
-            			}
+            		dbKlant.readKlant(voornaam);
             		toonMenu();
             		break;
 
-            	case 4://Adres --> voledige tabel
-            		if(DBKeuzeMenu.getDBKeuze()==1){
-        				mySQLAdresDaoImpl.readAllAdresses();
-        			}else if(DBKeuzeMenu.getDBKeuze()==2){
-        				fireBirdAdresDaoImpl.readAllAdresses();
-        			}
+            	case 4:/*Adres --> voledige tabel*/
+        			dbAdres.readAllAdresses();
             		toonMenu();
             		break;
-            	
-            	case 5://Adres --> straatnaam
+            		
+            	case 5:/*Adres --> straatnaam*/
             		System.out.println("Voer de straatnaam in waarop u de tabel wilt doorzoeken: ");
         			String straatnaam = input.next();
         			while (straatnaam.length() > 26){
         				System.out.println("Een straatnaam mag niet meer dan 26 karakters bevatten! \nStraatnaam: ");
         					straatnaam = input.next();
         			}
-        				if(DBKeuzeMenu.getDBKeuze()==1){
-        					mySQLAdresDaoImpl.searchAdres(straatnaam);
-        				}else if(DBKeuzeMenu.getDBKeuze()==2){
-        					fireBirdAdresDaoImpl.searchAdres(straatnaam);
-        				}
+        			dbAdres.searchAdres(straatnaam);
         			toonMenu();
         			break;
 
-            	case 6://Adres --> postcode & huisnummer
+            	case 6:/*Adres --> postcode & huisnummer*/
             		System.out.println("Voer de postcode in, zonder spatie: ");
         			String postcode = input.next();
         			while (postcode.length() > 6){
         				System.out.println("Een postcode mag niet meer dan 6 karakters bevatten! \nPostcode: ");
         					straatnaam = input.next();
-        				}
+        			}
         			System.out.println("Voer het huisnummer in: ");
         				int huisnummer = input.nextInt();
-        				while (Integer.toString(huisnummer).length() > 6){
+        			while (Integer.toString(huisnummer).length() > 6){
         					System.out.println("Een huisnummer mag niet meer dan 6 karakters bevatten! \nHuisnummer: ");
         					huisnummer = input.nextInt();
-        					}
-        					if(DBKeuzeMenu.getDBKeuze()==1){
-                				mySQLAdresDaoImpl.searchAdres(postcode, huisnummer);
-                			}else if(DBKeuzeMenu.getDBKeuze()==2){
-                				fireBirdAdresDaoImpl.searchAdres(postcode, huisnummer);
-                			}	
+        			}
+        			dbAdres.searchAdres(postcode, huisnummer);
         			toonMenu();
         			break;
 
-            	case 7://Artikel --> voledige tabel
-            		if(DBKeuzeMenu.getDBKeuze()==1){
-            			System.out.println(mySQLArtikelDaoImpl.read());
-        			}else if(DBKeuzeMenu.getDBKeuze()==2){
-        				System.out.println(fireBirdKlantDaoImpl.read());
-        			}
-            		toonMenu();
-            		break;
+            	case 7:/*Artikel --> voledige tabel*/
+        			System.out.println(dbArtikel.read());
+        			toonMenu();
+        			break;
 
-            	case 8://Artikel --> artikelnummer & bestellingnummer
+            	case 8:/*Artikel --> artikelnummer & bestellingnummer*/
             		System.out.println("Voer het artikelnummer in: ");
             		int artikel_id = input.nextInt();										// controle geldig artikel id dmv methode
             		System.out.println("Voer het bestellingnummer in ");
             		int bestelling_id = input.nextInt();
-            			if(DBKeuzeMenu.getDBKeuze()==1){
-            				System.out.println(mySQLArtikelDaoImpl.readArtikel(bestelling_id, artikel_id));
-            			}else if(DBKeuzeMenu.getDBKeuze()==2){
-            				System.out.println(fireBirdKlantDaoImpl.readArtikel(bestelling_id, artikel_id));
-            			}
+            			System.out.println(dbArtikel.readArtikel(bestelling_id, artikel_id));
             		toonMenu();
             		break;
             		
-            	case 9://Bestelling --> voledige tabel
-            		if(DBKeuzeMenu.getDBKeuze()==1){
-        				System.out.println(mySQLBestellingDaoImpl.read());
-        			}else if(DBKeuzeMenu.getDBKeuze()==2){
-        				System.out.println(fireBirdBestellingDaoImpl.read());
-        			}
+            	case 9:/*Bestelling --> voledige tabel*/
+            		System.out.println(dbBestelling.read());
             		toonMenu();
             		break;
 
 
 
-            	case 10://Terug naar het vorige menu
+            	case 10:/*Terug naar het vorige menu*/
             		KlasseSelectieMenu klasseSelectieMenu = new KlasseSelectieMenu();
             		klasseSelectieMenu.toonMenu();
             		break;
 
-            	case 11://Hoofdmenu
-            		HoofdMenu hoofdMenu =  new HoofdMenu();
+            	case 11:/*Hoofdmenu*/
+            		HoofdMenu hoofdMenu = new HoofdMenu();
             		hoofdMenu.toonMenu();
             		break;
 
-            	case 12://Stoppen
+            	case 12:/*Stoppen*/
             		System.out.println("\nTot de volgende keer...");
             		System.exit(1);
             		break;

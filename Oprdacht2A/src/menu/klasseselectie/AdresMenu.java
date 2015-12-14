@@ -39,25 +39,24 @@ public class AdresMenu {
 
 	    try {
 	    	int keuze = input.nextInt();
+	    	AdresDaoImpl dbAdres = (AdresDaoImpl) new Object();
 
+	    	if(DBKeuzeMenu.getDBKeuze()==1){
+				dbAdres = new MySQLAdresDaoImpl();
+			}else if(DBKeuzeMenu.getDBKeuze()==2){
+				dbAdres = new FireBirdAdresDaoImpl();
+			}
+	    	
 			switch (keuze) {
             	case 1://Create --> adres
             		System.out.println("Voer het nieuw toetevoegen adres in: ");
             			adres = dto.createAdresObject();
-            				if(DBKeuzeMenu.getDBKeuze()==1){
-            					mySQLAdresDaoImpl.insert(adres);
-            				}else if(DBKeuzeMenu.getDBKeuze()==2){
-            					fireBirdAdresDaoImpl.insert(adres);
-            				}
+            				 dbAdres.insert(adres);
             		toonMenu();
             		break;
                 
             	case 2://Read --> alle adresen
-            		if(DBKeuzeMenu.getDBKeuze()==1){
-    					mySQLAdresDaoImpl.readAllAdresses();
-    				}else if(DBKeuzeMenu.getDBKeuze()==2){
-    					fireBirdAdresDaoImpl.readAllAdresses();
-    				}
+            		dbAdres.readAllAdresses();
             		toonMenu();
             		break;
                 
@@ -67,12 +66,8 @@ public class AdresMenu {
             			while (straatnaam.length() > 26){
             				System.out.println("Een straatnaam mag niet meer dan 26 karakters bevatten! \nStraatnaam: ");
             					straatnaam = input.next();
-            				}
-            			if(DBKeuzeMenu.getDBKeuze()==1){
-        					mySQLAdresDaoImpl.searchAdres(straatnaam);
-        				}else if(DBKeuzeMenu.getDBKeuze()==2){
-        					fireBirdAdresDaoImpl.searchAdres(straatnaam);
-        				}
+            			}
+            			dbAdres.searchAdres(straatnaam);
             		toonMenu();
             		break;
                 	
@@ -89,33 +84,21 @@ public class AdresMenu {
             				System.out.println("Een huisnummer mag niet meer dan 6 karakters bevatten! \nHuisnummer: ");
             					huisnummer = input.nextInt();
             			}
-            			if(DBKeuzeMenu.getDBKeuze()==1){
-        					mySQLAdresDaoImpl.searchAdres(postcode, huisnummer);
-        				}else if(DBKeuzeMenu.getDBKeuze()==2){
-        					fireBirdAdresDaoImpl.searchAdres(postcode, huisnummer);
-        				}
+            			dbAdres.searchAdres(postcode, huisnummer);
             		toonMenu();
             		break;
             	
             	case 5: //Read --> alle adressen bij klantnummer
             		System.out.println("Voer klantnummer in waarvan u alle adressen wilt weergeven: ");
             				klant_id = input.nextInt();            		
-            				if(DBKeuzeMenu.getDBKeuze()==1){
-            					mySQLAdresDaoImpl.readAdressesFromKlant(klant_id);
-            				}else if(DBKeuzeMenu.getDBKeuze()==2){
-            					fireBirdAdresDaoImpl.readAdressesFromKlant(klant_id);
-            				}
+            				dbAdres.readAdressesFromKlant(klant_id);
             		toonMenu();
             		break;
             		
             	case 6://Update --> adres
             		System.out.println("Voer de gegevens in van het bij te werken adres ");
             			adres = dto.createAdresObject();
-            			if(DBKeuzeMenu.getDBKeuze()==1){
-        					mySQLAdresDaoImpl.updateAdres(adres);
-        				}else if(DBKeuzeMenu.getDBKeuze()==2){
-        					fireBirdAdresDaoImpl.updateAdres(adres);
-        				}
+            			dbAdres.updateAdres(adres);
             		toonMenu();
             		break;
             	
@@ -123,11 +106,7 @@ public class AdresMenu {
             		System.out.println("Voer klantnummer van het te verwijderen adres in: ");
             			klant_id = input.nextInt();
             			adres = new Adres(klant_id, "-", "-", "-", 1, "-");
-            			if(DBKeuzeMenu.getDBKeuze()==1){
-        					mySQLAdresDaoImpl.deleteAdres(adres);
-        				}else if(DBKeuzeMenu.getDBKeuze()==2){
-        					fireBirdAdresDaoImpl.deleteAdres(adres);
-        				}	
+            			dbAdres.deleteAdres(adres);
             		toonMenu();
             		break;
             	
