@@ -3,11 +3,14 @@ package menu.klasseselectie;
 import java.util.Scanner;
 import business.Adres;
 import dao.AdresDaoImpl;
+import dao.FireBirdAdresDaoImpl;
+import dao.MySQLAdresDaoImpl;
 import menu.*;
 import service.*;
 
 public class AdresMenu {
-	AdresDaoImpl adresDaoImpl = new AdresDaoImpl();
+	MySQLAdresDaoImpl mySQLAdresDaoImpl = new MySQLAdresDaoImpl();
+	FireBirdAdresDaoImpl fireBirdAdresDaoImpl = new FireBirdAdresDaoImpl();
 	Check check = new Check();
 	DTO dto = new DTO();
 	int klant_id;
@@ -41,12 +44,20 @@ public class AdresMenu {
             	case 1://Create --> adres
             		System.out.println("Voer het nieuw toetevoegen adres in: ");
             			adres = dto.createAdresObject();
-            		adresDaoImpl.insert(adres);
+            				if(DBKeuzeMenu.getDBKeuze()==1){
+            					mySQLAdresDaoImpl.insert(adres);
+            				}else if(DBKeuzeMenu.getDBKeuze()==2){
+            					fireBirdAdresDaoImpl.insert(adres);
+            				}
             		toonMenu();
             		break;
                 
             	case 2://Read --> alle adresen
-            		adresDaoImpl.readAllAdresses();
+            		if(DBKeuzeMenu.getDBKeuze()==1){
+    					mySQLAdresDaoImpl.readAllAdresses();
+    				}else if(DBKeuzeMenu.getDBKeuze()==2){
+    					fireBirdAdresDaoImpl.readAllAdresses();
+    				}
             		toonMenu();
             		break;
                 
@@ -57,7 +68,11 @@ public class AdresMenu {
             				System.out.println("Een straatnaam mag niet meer dan 26 karakters bevatten! \nStraatnaam: ");
             					straatnaam = input.next();
             				}
-            		adresDaoImpl.searchAdres(straatnaam);
+            			if(DBKeuzeMenu.getDBKeuze()==1){
+        					mySQLAdresDaoImpl.searchAdres(straatnaam);
+        				}else if(DBKeuzeMenu.getDBKeuze()==2){
+        					fireBirdAdresDaoImpl.searchAdres(straatnaam);
+        				}
             		toonMenu();
             		break;
                 	
@@ -72,23 +87,35 @@ public class AdresMenu {
             			int huisnummer = input.nextInt();
             			while (Integer.toString(huisnummer).length() > 6){
             				System.out.println("Een huisnummer mag niet meer dan 6 karakters bevatten! \nHuisnummer: ");
-            					huisnummer = input.nextInt();				
+            					huisnummer = input.nextInt();
             			}
-            		adresDaoImpl.searchAdres(postcode, huisnummer);	
+            			if(DBKeuzeMenu.getDBKeuze()==1){
+        					mySQLAdresDaoImpl.searchAdres(postcode, huisnummer);
+        				}else if(DBKeuzeMenu.getDBKeuze()==2){
+        					fireBirdAdresDaoImpl.searchAdres(postcode, huisnummer);
+        				}
             		toonMenu();
             		break;
             	
             	case 5: //Read --> alle adressen bij klantnummer
             		System.out.println("Voer klantnummer in waarvan u alle adressen wilt weergeven: ");
             				klant_id = input.nextInt();            		
-            		adresDaoImpl.readAdressesFromKlant(klant_id);
+            				if(DBKeuzeMenu.getDBKeuze()==1){
+            					mySQLAdresDaoImpl.readAdressesFromKlant(klant_id);
+            				}else if(DBKeuzeMenu.getDBKeuze()==2){
+            					fireBirdAdresDaoImpl.readAdressesFromKlant(klant_id);
+            				}
             		toonMenu();
             		break;
             		
             	case 6://Update --> adres
             		System.out.println("Voer de gegevens in van het bij te werken adres ");
             			adres = dto.createAdresObject();
-            		adresDaoImpl.updateAdres(adres);
+            			if(DBKeuzeMenu.getDBKeuze()==1){
+        					mySQLAdresDaoImpl.updateAdres(adres);
+        				}else if(DBKeuzeMenu.getDBKeuze()==2){
+        					fireBirdAdresDaoImpl.updateAdres(adres);
+        				}
             		toonMenu();
             		break;
             	
@@ -96,7 +123,11 @@ public class AdresMenu {
             		System.out.println("Voer klantnummer van het te verwijderen adres in: ");
             			klant_id = input.nextInt();
             			adres = new Adres(klant_id, "-", "-", "-", 1, "-");
-            		adresDaoImpl.deleteAdres(adres);	
+            			if(DBKeuzeMenu.getDBKeuze()==1){
+        					mySQLAdresDaoImpl.deleteAdres(adres);
+        				}else if(DBKeuzeMenu.getDBKeuze()==2){
+        					fireBirdAdresDaoImpl.deleteAdres(adres);
+        				}	
             		toonMenu();
             		break;
             	
