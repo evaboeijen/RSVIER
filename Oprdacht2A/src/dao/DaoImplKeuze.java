@@ -35,7 +35,8 @@ public class DaoImplKeuze {
 	}
 	
 	public BestellingDaoImpl BestellingDaoImplKeuze() {
-		BestellingDaoImpl dbBestelling = (BestellingDaoImpl) new Object();
+		//BestellingDaoImpl dbBestelling = (BestellingDaoImpl) new Object();
+		BestellingDaoImpl dbBestelling = null;
 		if(DBKeuzeMenu.getDBKeuze()==1){
 			dbBestelling = new MySQLBestellingDaoImpl();
 		}else if(DBKeuzeMenu.getDBKeuze()==2){
