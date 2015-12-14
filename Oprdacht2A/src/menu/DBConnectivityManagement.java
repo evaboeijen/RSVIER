@@ -37,7 +37,7 @@ public class DBConnectivityManagement {
 		static Connection connection = null;
 		static HikariDataSource ds = null;
 		static C3P0PooledConnectionPool C3POds = null;
-		DBConnectionMethods connectionSetup = (DBConnectionMethods) new Object();
+		DBConnectionMethods connectionSetup = null;
 
 		public void toonMenu() {
 		    System.out.println("\t---------");

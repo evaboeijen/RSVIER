@@ -2,11 +2,10 @@ package dao;
 
 import menu.DBKeuzeMenu;
 
-
 public class DaoImplKeuze {
 
 	public AdresDaoImpl AdresDaoImplKeuze() {
-		AdresDaoImpl dbAdres = (AdresDaoImpl) new Object();
+		AdresDaoImpl dbAdres = null;
 		if(DBKeuzeMenu.getDBKeuze()==1){
 			dbAdres = new MySQLAdresDaoImpl();
 		}else if(DBKeuzeMenu.getDBKeuze()==2){
@@ -15,7 +14,7 @@ public class DaoImplKeuze {
 		return dbAdres;
 	}
 	public KlantDaoImpl KlantDaoImplKeuze() {
-		KlantDaoImpl dbKlant = (KlantDaoImpl) new Object();
+		KlantDaoImpl dbKlant = null;
 		if(DBKeuzeMenu.getDBKeuze()==1){
 			dbKlant = new MySQLKlantDaoImpl();
 		}else if(DBKeuzeMenu.getDBKeuze()==2){
@@ -25,7 +24,7 @@ public class DaoImplKeuze {
 	}
 	
 	public ArtikelDaoImpl ArtikelDaoImplKeuze() {
-		ArtikelDaoImpl dbArtikel = (ArtikelDaoImpl) new Object();
+		ArtikelDaoImpl dbArtikel = null;
 		if(DBKeuzeMenu.getDBKeuze()==1){
 			dbArtikel = new MySQLArtikelDaoImpl();
 		}else if(DBKeuzeMenu.getDBKeuze()==2){
