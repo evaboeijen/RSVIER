@@ -31,23 +31,13 @@ public class ReadMenu {
 
 		System.out.print("Voer optie in en druk op Enter:");
 
-		try {		     
-			AdresDaoImpl dbAdres = (AdresDaoImpl) new Object();
-			KlantDaoImpl dbKlant = (KlantDaoImpl) new Object();
-			ArtikelDaoImpl dbArtikel = (ArtikelDaoImpl) new Object();
-			BestellingDaoImpl dbBestelling = (BestellingDaoImpl) new Object();
+		try {
+			DaoImplKeuze daoKeuze = new DaoImplKeuze();
+			AdresDaoImpl dbAdres = daoKeuze.AdresDaoImplKeuze();
+			KlantDaoImpl dbKlant = daoKeuze.KlantDaoImplKeuze();
+			ArtikelDaoImpl dbArtikel = daoKeuze.ArtikelDaoImplKeuze();
+			BestellingDaoImpl dbBestelling = daoKeuze.BestellingDaoImplKeuze();
 			
-			if(DBKeuzeMenu.getDBKeuze()==1){
-				dbAdres = new MySQLAdresDaoImpl();
-				dbKlant = new MySQLKlantDaoImpl();
-				dbArtikel = new MySQLArtikelImpl();
-				dbBestelling = new MySQLBestellingDaoIMpl();
-			}else if(DBKeuzeMenu.getDBKeuze()==2){
-				dbAdres = new FireBirdAdresDaoImpl();
-				dbKlant = new FireBirdKlantDaoImpl();
-				dbArtikel = new FireBirdArtikelImpl();
-				dbBestelling = new FireBirdBestellingDaoIMpl();
-			}
 			Check check = new Check();
 
 	    	int keuze = input.nextInt();

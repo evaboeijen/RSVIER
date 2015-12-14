@@ -3,6 +3,7 @@ package menu.klasseselectie;
 import java.util.Scanner;
 import business.Adres;
 import dao.AdresDaoImpl;
+import dao.DaoImplKeuze;
 import dao.FireBirdAdresDaoImpl;
 import dao.MySQLAdresDaoImpl;
 import menu.*;
@@ -39,7 +40,8 @@ public class AdresMenu {
 
 	    try {
 	    	int keuze = input.nextInt();
-	    	AdresDaoImpl dbAdres = (AdresDaoImpl) new Object();
+	    	DaoImplKeuze daoKeuze = new DaoImplKeuze();
+	    	AdresDaoImpl dbAdres = daoKeuze.AdresDaoImplKeuze();
 
 	    	if(DBKeuzeMenu.getDBKeuze()==1){
 				dbAdres = new MySQLAdresDaoImpl();
