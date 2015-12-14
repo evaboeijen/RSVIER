@@ -18,63 +18,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.zaxxer.hikari.HikariDataSource;
 
-public class AdresDaoImpl implements AdresDao{
+public abstract class AdresDaoImpl implements AdresDao{
 	private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.class);
 	Connection connection = null;
 	Check check = new Check();
 	Scanner input =  new Scanner(System.in);
 	
-	public Connection getConnection(){
-
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            System.out.println("Driver is geladen ");
-           
-            if(connection == null){ 
-                String dbURL = "jdbc:mysql://localhost:3306/opdracht1";
-                String username = "root";
-                String password = "";
-
-                connection = DriverManager.getConnection(dbURL, username, password);
-                System.out.println("Verbinding is gemaakt");
-            }
- 
-        } catch (ClassNotFoundException e) {
- 
-            e.printStackTrace();
-             
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-        }
-        
-        return connection;
-	}
-
-	public void closeConnection() {
-		try {
-            if (connection != null) {
-                connection.close();
-                System.out.println("Verbinding is gesloten");
-            }
-          } catch (Exception e) { 
-          }
-	}
-
 	@Override
 	public void insert(Adres adres) {
 		int klant_id = adres.getKlant_id(); 
 		logger.info("Insert adres methode begint");
 		logger.debug("klant_id is : " + klant_id);
-		
+		String queryBestaandeKlant = null;
+		String queryAdresToevoegen = null;
+		String queryAdres_Id = null;
+		String queryAdres_IdKoppeling = null;		
 		try {
 				Connection connection = DBConnectivityManagement.getConnectionStatus();
 				ResultSet resultSetAdresReedsInDB = null;
 				ResultSet resultSetInsertAdres = null;
 				
 				if (check.checkKlant_id(klant_id)) { /*Adres kan alleen toegevoegd worden voor een bestaande klant --> Adres al in DB ?*/
-					PreparedStatement searchAdresStatement = connection.prepareStatement("SELECT adres_id FROM adres WHERE straatnaam=?" +
-							"AND postcode=? AND toevoeging=? AND huisnummer=? AND woonplaats=?");
+					PreparedStatement searchAdresStatement = connection.prepareStatement(queryBestaandeKlant);
 					searchAdresStatement.setString(1, adres.getStraatnaam());
 					searchAdresStatement.setString(2, adres.getPostcode());
 					searchAdresStatement.setString(3, adres.getToevoeging());
@@ -85,8 +50,7 @@ public class AdresDaoImpl implements AdresDao{
 						if (resultSetAdresReedsInDB.next()) {
 							adres.setAdres_id(resultSetAdresReedsInDB.getInt("adres_id"));
 						}else { /*Adres toevoegen als nog niet in DB*/
-						PreparedStatement insertAdresStatement = connection.prepareStatement("INSERT INTO adres" +
-								"(straatnaam, postcode , toevoeging , huisnummer , woonplaats) VALUES (?,?,?,?,?)");
+						PreparedStatement insertAdresStatement = connection.prepareStatement(queryAdresToevoegen);
 						insertAdresStatement.setString(1, adres.getStraatnaam());
 						insertAdresStatement.setString(2, adres.getPostcode());
 						insertAdresStatement.setString(3, adres.getToevoeging());
@@ -94,9 +58,8 @@ public class AdresDaoImpl implements AdresDao{
 						insertAdresStatement.setString(5, adres.getWoonplaats());
 
 						insertAdresStatement.executeUpdate();
-						
-						PreparedStatement searchAdres_IdStatement = connection.prepareStatement("SELECT adres_id FROM adres WHERE straatnaam=?" + 
-								"AND postcode=? AND toevoeging=? AND huisnummer=? AND woonplaats=?");
+						/* Adres_id van nieuwe adres opvragen*/
+						PreparedStatement searchAdres_IdStatement = connection.prepareStatement(queryAdres_Id);
 						searchAdres_IdStatement.setString(1, adres.getStraatnaam());
 						searchAdres_IdStatement.setString(2, adres.getPostcode());
 						searchAdres_IdStatement.setString(3, adres.getToevoeging());
@@ -111,7 +74,7 @@ public class AdresDaoImpl implements AdresDao{
 						insertAdresStatement.close();
 						}
 					/*klant_-d & adres_id invoegen in klant_adres tabel*/
-					PreparedStatement adresBijKlantStatement = connection.prepareStatement("INSERT INTO klant_adres (klant_id, adres_id) VALUES (?,?) ");
+					PreparedStatement adresBijKlantStatement = connection.prepareStatement(queryAdres_IdKoppeling);
 					adresBijKlantStatement.setInt(1, adres.getKlant_id());
 					adresBijKlantStatement.setInt(2, adres.getAdres_id());
 					adresBijKlantStatement.executeUpdate();
@@ -129,9 +92,9 @@ public class AdresDaoImpl implements AdresDao{
     }
 
 	@Override
-	public void updateAdres(Adres adres) { 
+	public void updateAdres(Adres adres) {
 		int klant_id = adres.getKlant_id();
-		
+		String queryDeletefromKlant_Adres = null;		
 		logger.info("Update adres methode begint");
 		
 		if (check.checkKlant_id(klant_id)){ 
@@ -141,7 +104,7 @@ public class AdresDaoImpl implements AdresDao{
 				System.out.println("Voer het adres_id in van het adres dat u wil updaten: ");
 				int adres_id = input.nextInt();
 				logger.info("adres_id = " + adres_id);
-					PreparedStatement verwijderKlantBijAdresStatement = connection.prepareStatement("DELETE FROM klant_adres WHERE klant_id=? AND adres_id=?");
+					PreparedStatement verwijderKlantBijAdresStatement = connection.prepareStatement(queryDeletefromKlant_Adres);
 					System.out.println(klant_id);
 					System.out.println(adres_id);
 					verwijderKlantBijAdresStatement.setInt(1, klant_id);
@@ -162,6 +125,7 @@ public class AdresDaoImpl implements AdresDao{
 	@Override
 	public void deleteAdres(Adres adres) {
 		int klant_id = adres.getKlant_id(); 
+		String queryDeleteFromKlant_Adres = null;
 		logger.info("Delete adres methode begint");
 		
 		if (check.checkKlant_id(klant_id)){
@@ -172,7 +136,7 @@ public class AdresDaoImpl implements AdresDao{
 				System.out.println("Voer het adres_id in van het adres dat u wil updaten: ");
 				int adres_id = input.nextInt();
 				
-				PreparedStatement verwijderKlantBijAdresStatement = connection.prepareStatement("DELETE FROM klant_adres WHERE klant_id=? AND adres_id=?");
+				PreparedStatement verwijderKlantBijAdresStatement = connection.prepareStatement(queryDeleteFromKlant_Adres);
 				System.out.println(klant_id);
 				System.out.println(adres_id);
 				verwijderKlantBijAdresStatement.setInt(1, klant_id);
@@ -192,12 +156,13 @@ public class AdresDaoImpl implements AdresDao{
 	@Override
 	public List<Adres> readAllAdresses() {
 		List<Adres> adressen = new ArrayList<Adres>();
+		String queryAll = null;
 		logger.info("Read all adresses methode begint");
 			
 			try {
 				Connection connection = DBConnectivityManagement.getConnectionStatus();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM adres"); 
+				ResultSet resultSet = statement.executeQuery(queryAll); 
 
 					Adres adres;
 					while(resultSet.next()){
@@ -229,12 +194,13 @@ public class AdresDaoImpl implements AdresDao{
 		List<Adres> adressenStraatnaam = new LinkedList<Adres>();
 		PreparedStatement preparedStatement;
 		ResultSet resultSet;
+		String queryStraatnaam = null;
 		logger.info("Read adres straatnaam methode begint");
 		logger.debug("Straatnaam is: " + straatnaam);
 		
 		try {
 			Connection connection = DBConnectivityManagement.getConnectionStatus();
-			preparedStatement = connection.prepareStatement("SELECT * FROM adres WHERE straatnaam=?");
+			preparedStatement = connection.prepareStatement(queryStraatnaam);
 			preparedStatement.setString(1, straatnaam);
 			resultSet = preparedStatement.executeQuery(); 
 			Adres adres;
@@ -269,12 +235,13 @@ public class AdresDaoImpl implements AdresDao{
 		List<Adres> adressenPostcodeAndHuisnummer = new LinkedList<Adres>();
 		ResultSet resultSet;
 		PreparedStatement preparedStatement;
+		String queryPostcodeHuisnummer = null;
 		logger.info("Read adres postcode & huisnummer methode begint ");
 		logger.debug("Postcode is: " + postcode + "\nHuisnummer is: " + huisnummer);
 		
 		try {
 			Connection connection = DBConnectivityManagement.getConnectionStatus();
-			preparedStatement = connection.prepareStatement("SELECT * FROM adres WHERE postcode=? AND huisnummer=? ");
+			preparedStatement = connection.prepareStatement(queryPostcodeHuisnummer);
 			preparedStatement.setString(1, postcode);
 			preparedStatement.setInt(2,  huisnummer);
 			resultSet = preparedStatement.executeQuery(); 
@@ -309,12 +276,13 @@ public class AdresDaoImpl implements AdresDao{
 		List<Adres> adressenStraatnaam = new LinkedList<Adres>();
 		PreparedStatement preparedStatement;
 		ResultSet resultSet;
+		String queryAdressesKlant = null;
 		logger.info("Read adressen klantnummer methode begint");
 		logger.debug("Klantnummer is: " + klant_id );
 		
 		try {
 			Connection connection = DBConnectivityManagement.getConnectionStatus();
-			preparedStatement = connection.prepareStatement("SELECT klant_adres.adres_id, straatnaam, huisnummer, woonplaats FROM adres JOIN klant_adres WHERE klant_adres.klant_id = ? AND klant_adres.adres_id = adres.adres_id");
+			preparedStatement = connection.prepareStatement(queryAdressesKlant);
 			preparedStatement.setInt(1, klant_id);
 			resultSet = preparedStatement.executeQuery(); 
 			Adres adres;
