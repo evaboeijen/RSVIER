@@ -38,11 +38,12 @@ public class DBConnectivityManagement {
 		static HikariDataSource ds = null;
 		static C3P0PooledConnectionPool C3POds = null;
 		DBConnectionMethods connectionSetup = null;
-
+		String CPKeuze = 	"\t---------------\n\tConnection Pool\n\t---------------\n1. Log in op de Hikari Connection Pool\n2. Log in op de C3PO Connection Pool";
+		
 		public void toonMenu() {
-		    System.out.println("\t---------");
+		    System.out.println("\t--------");
 		    System.out.println("\tInloggen");
-		    System.out.println("\t---------");
+		    System.out.println("\t--------");
 		    System.out.println("1. Zelf databasegegevens invoeren");
 		    System.out.println("2. Log in met Eva's databasegegevens");
 		    System.out.println("3. Log in met Jesse's databasegegevens");
@@ -61,7 +62,7 @@ public class DBConnectivityManagement {
 				 
 				switch (keuze) {
 	            	case 1:	            		
-	            		System.out.println("1. Log in op de Hikari Connection Pool\n2. Log in op de C3PO Connection Pool");
+	            		System.out.println(CPKeuze);
 	            		keuzeCP = input.nextInt();
 	            		switch (keuzeCP) {
 	            		case 1: 
@@ -78,7 +79,7 @@ public class DBConnectivityManagement {
 	            		break;
 	                
 	            	case 2:
-	            		System.out.println("1. Log in op de Hikari Connection Pool\n2. Log in op de C3PO Connection Pool");
+	            		System.out.println(CPKeuze);
 	            		keuzeCP = input.nextInt();
 	            		switch (keuzeCP) {
 	            		case 1: 
@@ -95,7 +96,7 @@ public class DBConnectivityManagement {
 	            		break;
 	            		
 	            	case 3:
-	            		System.out.println("1. Log in op de Hikari Connection Pool\n2. Log in op de C3PO Connection Pool");
+	            		System.out.println(CPKeuze);
 	            		int keuzeCP = input.nextInt();
 	            		switch (keuzeCP) {
 	            		case 1:
@@ -112,7 +113,7 @@ public class DBConnectivityManagement {
 	            		break;
 	            		
 	            	case 4:
-	            		System.out.println("1. Log in op de Hikari Connection Pool\n2. Log in op de C3PO Connection Pool");
+	            		System.out.println(CPKeuze);
 	            		keuzeCP = input.nextInt();
 	            		switch (keuzeCP) {
 	            		case 1: 

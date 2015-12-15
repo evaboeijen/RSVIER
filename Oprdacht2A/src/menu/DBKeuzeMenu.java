@@ -14,9 +14,9 @@ public class DBKeuzeMenu {
 	}
 	
 	public void toonMenu() {
-	    System.out.println("\t------------");
+	    System.out.println("\t-------------");
 	    System.out.println("\tDatabasekeuze");
-	    System.out.println("\t------------");
+	    System.out.println("\t-------------");
 	    System.out.println("1. MySQL");
 	    System.out.println("2. Firebird");
 	    

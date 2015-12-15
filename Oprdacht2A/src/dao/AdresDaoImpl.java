@@ -23,16 +23,22 @@ public abstract class AdresDaoImpl implements AdresDao{
 	Connection connection = null;
 	Check check = new Check();
 	Scanner input =  new Scanner(System.in);
+	String queryBestaandeKlant = null;//Insert
+	String queryAdresToevoegen = null;
+	String queryAdres_Id = null;
+	String queryAdres_IdKoppeling = null;
+	String queryDeleteFromKlant_Adres = null;//Update & Delete
+	String queryAll = null;//ReadAllAdresses
+	String queryStraatnaam = null;//Search Straatnaam
+	String queryPostcodeHuisnummer = null;//Search Postcode & Huisnummer
+	String queryAdressesKlant = null;//Search klant_id
 	
 	@Override
 	public void insert(Adres adres) {
 		int klant_id = adres.getKlant_id(); 
 		logger.info("Insert adres methode begint");
 		logger.debug("klant_id is : " + klant_id);
-		String queryBestaandeKlant = null;
-		String queryAdresToevoegen = null;
-		String queryAdres_Id = null;
-		String queryAdres_IdKoppeling = null;		
+				
 		try {
 				Connection connection = DBConnectivityManagement.getConnectionStatus();
 				ResultSet resultSetAdresReedsInDB = null;
@@ -93,8 +99,7 @@ public abstract class AdresDaoImpl implements AdresDao{
 
 	@Override
 	public void updateAdres(Adres adres) {
-		int klant_id = adres.getKlant_id();
-		String queryDeletefromKlant_Adres = null;		
+		int klant_id = adres.getKlant_id();		
 		logger.info("Update adres methode begint");
 		
 		if (check.checkKlant_id(klant_id)){ 
@@ -104,7 +109,7 @@ public abstract class AdresDaoImpl implements AdresDao{
 				System.out.println("Voer het adres_id in van het adres dat u wil updaten: ");
 				int adres_id = input.nextInt();
 				logger.info("adres_id = " + adres_id);
-					PreparedStatement verwijderKlantBijAdresStatement = connection.prepareStatement(queryDeletefromKlant_Adres);
+					PreparedStatement verwijderKlantBijAdresStatement = connection.prepareStatement(queryDeleteFromKlant_Adres);
 					System.out.println(klant_id);
 					System.out.println(adres_id);
 					verwijderKlantBijAdresStatement.setInt(1, klant_id);
@@ -125,7 +130,6 @@ public abstract class AdresDaoImpl implements AdresDao{
 	@Override
 	public void deleteAdres(Adres adres) {
 		int klant_id = adres.getKlant_id(); 
-		String queryDeleteFromKlant_Adres = null;
 		logger.info("Delete adres methode begint");
 		
 		if (check.checkKlant_id(klant_id)){
@@ -156,7 +160,6 @@ public abstract class AdresDaoImpl implements AdresDao{
 	@Override
 	public List<Adres> readAllAdresses() {
 		List<Adres> adressen = new ArrayList<Adres>();
-		String queryAll = null;
 		logger.info("Read all adresses methode begint");
 			
 			try {
@@ -194,7 +197,6 @@ public abstract class AdresDaoImpl implements AdresDao{
 		List<Adres> adressenStraatnaam = new LinkedList<Adres>();
 		PreparedStatement preparedStatement;
 		ResultSet resultSet;
-		String queryStraatnaam = null;
 		logger.info("Read adres straatnaam methode begint");
 		logger.debug("Straatnaam is: " + straatnaam);
 		
@@ -235,7 +237,6 @@ public abstract class AdresDaoImpl implements AdresDao{
 		List<Adres> adressenPostcodeAndHuisnummer = new LinkedList<Adres>();
 		ResultSet resultSet;
 		PreparedStatement preparedStatement;
-		String queryPostcodeHuisnummer = null;
 		logger.info("Read adres postcode & huisnummer methode begint ");
 		logger.debug("Postcode is: " + postcode + "\nHuisnummer is: " + huisnummer);
 		
@@ -276,7 +277,6 @@ public abstract class AdresDaoImpl implements AdresDao{
 		List<Adres> adressenStraatnaam = new LinkedList<Adres>();
 		PreparedStatement preparedStatement;
 		ResultSet resultSet;
-		String queryAdressesKlant = null;
 		logger.info("Read adressen klantnummer methode begint");
 		logger.debug("Klantnummer is: " + klant_id );
 		
