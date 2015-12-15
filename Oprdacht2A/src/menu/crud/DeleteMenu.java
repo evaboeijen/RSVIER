@@ -34,9 +34,9 @@ public class DeleteMenu  {
 	Adres teWissenAdres = new Adres();
 	//BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
 	List<Bestelling> lijst = null;
-	KlantDaoImpl klantDaoImpl = new KlantDaoImpl();
+	//KlantDaoImpl klantDaoImpl = new KlantDaoImpl();
 	int gewensteBestelling_id = 0;
-	ArtikelDaoImpl artikelDaoImpl = new ArtikelDaoImpl();
+	//ArtikelDaoImpl artikelDaoImpl = new ArtikelDaoImpl();
 	Klant teWissenKlant = new Klant();
 	int gewensteKlantID = 0;
 	int gewensteArtikel_id = 0;
@@ -349,7 +349,7 @@ public class DeleteMenu  {
             	System.out.println();          
             	System.out.println("Hieronder een overzicht van alle klanten: ");
             		
-            	alleKlanten = klantDaoImpl.read();
+            	alleKlanten = dbKlant.read();
                		            		
             	System.out.println();          		
             	System.out.print("Voer het klant ID van de klant die je wil wissen: ");
