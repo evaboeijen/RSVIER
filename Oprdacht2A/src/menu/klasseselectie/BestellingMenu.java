@@ -12,7 +12,6 @@ import dao.*;
 import menu.HoofdMenu;
 import service.Check;
 import menu.DBConnectivityManagement;
-import menu.DBKeuzeMenu;
 import business.*;
 
 import org.slf4j.Logger;
@@ -42,10 +41,6 @@ public class BestellingMenu  {
 	int gewensteKlantID = 0;
 	double gewensteArtikelPrijs = 0;
 	
-	MySQLBestellingDaoImpl mySQLBestellingDaoImpl = new MySQLBestellingDaoImpl();
-	FireBirdBestellingDaoImpl fireBirdBestellingDaoImpl = new FireBirdBestellingDaoImpl();
-	Check check = new Check();
-	
 	
 	public void toonMenu() {
 				
@@ -68,19 +63,14 @@ public class BestellingMenu  {
 	    
 	    try {
 	    	int keuze = input.nextInt();
-	    	DaoImplKeuze daoKeuze = new DaoImplKeuze();
-	    	BestellingDaoImpl dbBestelling = daoKeuze.BestellingDaoImplKeuze();
-
-	    	if(DBKeuzeMenu.getDBKeuze() == 1) {
-				dbBestelling = new MySQLBestellingDaoImpl();
-			}
-	    	
-	    	else if(DBKeuzeMenu.getDBKeuze() == 2) {
-				dbBestelling = new FireBirdBestellingDaoImpl();
-			}
-            	    	    	
+			DaoImplKeuze daoKeuze = new DaoImplKeuze();
+			AdresDaoImpl dbAdres = daoKeuze.AdresDaoImplKeuze();
+			KlantDaoImpl dbKlant = daoKeuze.KlantDaoImplKeuze();
+			ArtikelDaoImpl dbArtikel = daoKeuze.ArtikelDaoImplKeuze();
+			BestellingDaoImpl dbBestelling = daoKeuze.BestellingDaoImplKeuze();
 			
-			
+			Check check = new Check();   
+	    	    						
 			logger.info("content of variable 'keuze' is : " + keuze);
 		       
 			switch (keuze) {
