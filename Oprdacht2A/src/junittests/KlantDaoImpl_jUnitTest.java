@@ -20,8 +20,8 @@ public class KlantDaoImpl_jUnitTest {
 	 
 	@Test
 	public void testIT(){
-		
-		KlantDaoImpl testKlantDaoImpl = new KlantDaoImpl(); 
+		DaoImplKeuze daoImplKeuze = new DaoImplKeuze();
+		KlantDaoImpl testKlantDaoImpl = daoImplKeuze.KlantDaoImplKeuze(); 
 		
 		
 		// testConnection method	
@@ -73,8 +73,9 @@ public class KlantDaoImpl_jUnitTest {
 	}
 	
 		@Test
-		public void testEquals() {	
-			KlantDaoImpl testKlantDaoImpl1 = new KlantDaoImpl(); 
+		public void testEquals() {
+			DaoImplKeuze daoImplKeuze = new DaoImplKeuze();
+			KlantDaoImpl testKlantDaoImpl1 = daoImplKeuze.KlantDaoImplKeuze(); 
 			KlantDaoImpl testKlantDaoImpl2 = testKlantDaoImpl1; 
 			assertEquals("Objects should be equal", testKlantDaoImpl1, testKlantDaoImpl2);
 		}

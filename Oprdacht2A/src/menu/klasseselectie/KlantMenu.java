@@ -6,18 +6,19 @@
 	import java.util.*;
 	import dao.*;
 	import menu.*;
-import service.DTO;
-import business.*;
+	import service.*;
+	import business.*;
 	
 	import org.slf4j.Logger;
 	import org.slf4j.LoggerFactory;
 
 	public class KlantMenu  {
-		
-		KlantDaoImpl klantDaoImpl = new KlantDaoImpl();
+		DaoImplKeuze daoImplKeuze = new DaoImplKeuze();
+		KlantDaoImpl klantDaoImpl = daoImplKeuze.KlantDaoImplKeuze();
 		DTO dto = new DTO();
 		Klant klant = new Klant();
 		int huidige_klant_id = 0;
+		Check check = new Check();
 		
 		private static final Logger logger =  LoggerFactory.getLogger(KlantMenu.class);
 				
@@ -38,7 +39,8 @@ import business.*;
 		    System.out.print("Voer optie in en druk op Enter:");
 		    
 		   Scanner input = new Scanner(System.in);		     
-	            
+		   try {
+		    			    	   
 				int keuze = input.nextInt();
 				logger.info("Gebruiker koos voor optie: " + keuze);
 			       
@@ -63,7 +65,7 @@ import business.*;
 	            				huidige_klant_id = input.nextInt();
 	    	        				
 	    	        				
-	    	            			while (klantDaoImpl.checkKlant_id(huidige_klant_id)!= true) { 
+	    	            			while (check.checkKlant_id(huidige_klant_id)!= true) { 
 	    	            				System.out.print("\n Incorrecte invoer. Voer uw klant id opnieuw in: ");
 	    	            				huidige_klant_id = input.nextInt();
 	    	            				System.out.println();
@@ -84,7 +86,7 @@ import business.*;
 	            				huidige_klant_id = input.nextInt();
 	        				
 	        				
-	            				while (klantDaoImpl.checkKlant_id(huidige_klant_id)!= true) { 
+	            				while (check.checkKlant_id(huidige_klant_id)!= true) { 
 	            					System.out.print("\n Incorrecte invoer. Voer uw klant id opnieuw in: ");
 	            					huidige_klant_id = input.nextInt();
 	            					System.out.println();
@@ -111,7 +113,7 @@ import business.*;
 	            			huidige_klant_id = input.nextInt();
     				
     				
-	            			while (klantDaoImpl.checkKlant_id(huidige_klant_id)!= true) { 
+	            			while (check.checkKlant_id(huidige_klant_id)!= true) { 
 	        					System.out.print("\n Incorrecte invoer. Voer uw klant id opnieuw in: ");
 	        					huidige_klant_id = input.nextInt();
 	        					System.out.println();
@@ -147,5 +149,8 @@ import business.*;
 				} 
 				
 		}
+		   finally {
+				System.out.println("---Uw keuze is uitgevoerd---");		
+			}	
 	}
-	
+	}

@@ -10,14 +10,12 @@ import org.junit.Test;
 
 public class ArtikelDaoImpl_jUnitTest{
 
-	static ArtikelDaoImpl testArtikelDaoImpl = new ArtikelDaoImpl(); 
-	Artikel testArtikel = new Artikel();
-		
 	
 	@BeforeClass
 	public static void testInitializeDB() {
+		DaoImplKeuze daoImplKeuze = new DaoImplKeuze();
+		ArtikelDaoImpl testArtikelDaoImpl = daoImplKeuze.ArtikelDaoImplKeuze(); 
 		
-		testArtikelDaoImpl = new ArtikelDaoImpl();
 		testArtikelDaoImpl.initializeDB();		
 		assertNotNull("Connection should not be null", testArtikelDaoImpl.connection );
 		
@@ -25,6 +23,9 @@ public class ArtikelDaoImpl_jUnitTest{
 
 	@Test
 	public void testIT() {
+		DaoImplKeuze daoImplKeuze = new DaoImplKeuze();
+		ArtikelDaoImpl testArtikelDaoImpl = daoImplKeuze.ArtikelDaoImplKeuze(); 
+		Artikel testArtikel = new Artikel();
 		
 		// test create method plus test readArtikel method
 		testArtikel.setBestelling_id(56757);
@@ -64,14 +65,18 @@ public class ArtikelDaoImpl_jUnitTest{
 	
 	@Test
 	public void testEquals() {	
-		ArtikelDaoImpl testArtikelDaoImpl1 = new ArtikelDaoImpl();
-		ArtikelDaoImpl testArtikelDaoImpl2  = testArtikelDaoImpl1;
-		assertEquals("These should be equal", testArtikelDaoImpl1, testArtikelDaoImpl2);
+		DaoImplKeuze daoImplKeuze = new DaoImplKeuze();
+		
+		ArtikelDaoImpl testArtikelDaoImpl = daoImplKeuze.ArtikelDaoImplKeuze(); 
+		ArtikelDaoImpl testArtikelDaoImpl2  = testArtikelDaoImpl;
+		assertEquals("These should be equal", testArtikelDaoImpl, testArtikelDaoImpl2);
 }
 
 	@AfterClass
 	public static void testCloseDBConnection() {
-		testArtikelDaoImpl = new ArtikelDaoImpl();
+		DaoImplKeuze daoImplKeuze = new DaoImplKeuze();
+		ArtikelDaoImpl testArtikelDaoImpl = daoImplKeuze.ArtikelDaoImplKeuze(); 
+		
 		testArtikelDaoImpl.closeDBConnection();		
 		assertNull("Connection should be null again", testArtikelDaoImpl.connection );
 }

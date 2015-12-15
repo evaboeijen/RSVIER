@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 	
 
 
-public class KlantDaoImpl implements KlantDao {
+public abstract class KlantDaoImpl implements KlantDao {
 
 	
 	private static final Logger logger =  LoggerFactory.getLogger(KlantDaoImpl.class);
@@ -250,36 +250,6 @@ public class KlantDaoImpl implements KlantDao {
             e.printStackTrace();
         }
         }
-
-    
-    	public boolean checkKlant_id(int klant_id) {	
-    		logger.info("checkKlant_id methode start");
-    		
-			PreparedStatement preparedStatement;
-			ResultSet resultSet;
-			boolean result = false;
-			
-			try {
-				
-				Connection connection = DBConnectivityManagement.getConnectionStatus(); 
-				
-				preparedStatement = connection.prepareStatement("SELECT * FROM Klant WHERE klant_id=?");
-				preparedStatement.setInt(1, klant_id);
-				resultSet = preparedStatement.executeQuery(); 
-				
-				if (resultSet.next()){
-					result = true;
-				} else {
-					System.out.println("Het opgegeven klant_id bevindt zich niet in de database...");
-				}
-
-			} catch (SQLException e) {
-				logger.warn("SQL Exception voor checkKlant_id methode");
-	                e.printStackTrace();	
-			}
-			logger.info("checkKlant_id methode eindigt");
-			return result;
-		}
     	
      
     public void closeDBConnection(){

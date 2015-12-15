@@ -11,7 +11,7 @@ import java.util.Scanner;
 import dao.*;
 import menu.*;
 import menu.klasseselectie.*;
-import service.DTO;
+import service.*;
 import business.*;
 
 import org.slf4j.Logger;
@@ -20,6 +20,10 @@ import org.slf4j.LoggerFactory;
 public class UpdateMenu {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CreateMenu.class);
+	
+	DaoImplKeuze daoImplKeuze = new DaoImplKeuze();
+	Check check = new Check();
+	
 	
 	public void toonMenu() {
 	    System.out.println("\t----------");
@@ -43,7 +47,8 @@ public class UpdateMenu {
 		       
 			switch (keuze) {
             	case 1:
-            		KlantDaoImpl updateKlantDaoImpl = new KlantDaoImpl();
+            		
+            		KlantDaoImpl updateKlantDaoImpl = daoImplKeuze.KlantDaoImplKeuze();
     				
     				System.out.println();
     				System.out.println("Voer uw klant id in, en druk op enter: ");
@@ -53,7 +58,7 @@ public class UpdateMenu {
     				int huidige_klant_id = input.nextInt();
 				
 				
-    				while (updateKlantDaoImpl.checkKlant_id(huidige_klant_id)!= true) { 
+    				while (check.checkKlant_id(huidige_klant_id)!= true) { 
     					System.out.print("\n Incorrecte invoer. Voer uw klant id opnieuw in: ");
     					huidige_klant_id = input.nextInt();
     					System.out.println();
@@ -72,7 +77,7 @@ public class UpdateMenu {
                 
             	case 2:
             	
-            		AdresDaoImpl updateAdresDaoImpl = new AdresDaoImpl();
+            		AdresDaoImpl updateAdresDaoImpl = daoImplKeuze.AdresDaoImplKeuze();
             		System.out.println("Voer de gegevens in van het bij te werken adres ");
             		
             		dto = new DTO();
@@ -87,7 +92,7 @@ public class UpdateMenu {
             		List<Artikel> alleArtikelen = new ArrayList<>();
             		int gewensteArtikel_id = 0;
             		int gewensteAantal = 0;
-            		BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
+            		BestellingDaoImpl bestellingDaoImpl = daoImplKeuze.BestellingDaoImplKeuze();
             		int gewensteBestelling_id = 0;
             	    Artikel artikel = new Artikel(); 
                		String gewensteArtikelNaam = null;
@@ -123,7 +128,7 @@ public class UpdateMenu {
         			gewensteBestelling_id = input.nextInt();
         				
 
-            		while (bestellingDaoImpl.checkBestelling_id(gewensteBestelling_id)!= true) { 
+            		while (check.checkBestelling_id(gewensteBestelling_id)!= true) { 
             			System.out.print("\nVoer een ander bestellingnummer in: ");
             			gewensteBestelling_id = input.nextInt();
             			System.out.println();
@@ -183,8 +188,8 @@ public class UpdateMenu {
             		System.out.println(); 
             		gewensteArtikel_id = input.nextInt();
             		
-            		while (bestellingDaoImpl.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) == true || bestellingDaoImpl.checkArtikel_id(gewensteArtikel_id)!= true) {
-            			if (bestellingDaoImpl.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) == true) {          	
+            		while (check.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) == true || check.checkArtikel_id(gewensteArtikel_id)!= true) {
+            			if (check.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) == true) {          	
             				System.out.print("\nHet opgegeven artikelnummer zit al in deze bestelling. ");
             			}     
             			System.out.println("Voer een ander artikelnummer in: ");
@@ -236,7 +241,7 @@ public class UpdateMenu {
             		System.out.println("U kunt de artikelgegevens wijzigen. Voer het artikelnummer in, en druk op enter");
             		int updateArtikel_id = input.nextInt();
             		
-            		ArtikelDaoImpl updateArtikelDaoImpl = new ArtikelDaoImpl();
+            		ArtikelDaoImpl updateArtikelDaoImpl = daoImplKeuze.ArtikelDaoImplKeuze();
             		dto = new DTO();
             		Artikel updateArtikel = dto.createArtikelObject();
             		updateArtikel.setArtikel_id(updateArtikel_id);

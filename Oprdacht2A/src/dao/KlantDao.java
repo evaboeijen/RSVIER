@@ -12,7 +12,6 @@ public Klant readKlant(String voornaam);
 public void create(Klant klant);   
 public void update(Klant klant);   
 public void delete(Klant klant);
-public boolean checkKlant_id(int klant_id);
 }
 
 

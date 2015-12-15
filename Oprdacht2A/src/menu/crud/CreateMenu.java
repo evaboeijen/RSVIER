@@ -7,7 +7,7 @@ import business.*;
 import dao.*;
 import menu.*;
 import menu.klasseselectie.*;
-import service.DTO;
+import service.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,26 +17,28 @@ public class CreateMenu {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CreateMenu.class);
 	
-	
+	DaoImplKeuze daoImplKeuze = new DaoImplKeuze();
 	List<Artikel> alleArtikelen = new ArrayList<>();
 	int gewensteArtikel_id = 0;
 	int gewensteAantal = 0;
-	BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
+	BestellingDaoImpl bestellingDaoImpl = daoImplKeuze.BestellingDaoImplKeuze();
 	int gewensteBestelling_id = 0;
 	List<Bestelling> lijst = null;
-	KlantDaoImpl klantDaoImpl = new KlantDaoImpl();
+	KlantDaoImpl klantDaoImpl = daoImplKeuze.KlantDaoImplKeuze();
 	List <Klant> alleKlanten = null;            	              			
 	Bestelling nieuweBestelling = new Bestelling();
-	AdresDaoImpl adresDaoImpl = new AdresDaoImpl();
+	AdresDaoImpl adresDaoImpl = daoImplKeuze.AdresDaoImplKeuze();
 	Artikel artikel = new Artikel(); 
 	Bestelling teverwijderenBestelling = new Bestelling();
 	String gewensteArtikelNaam = null;
 	int gewensteKlantID = 0;
 	double gewensteArtikelPrijs = 0;
+	Check check = new Check();
 	
 	
 	public void addKlantToDatabase(){
-		KlantDaoImpl nieuweKlantDaoImpl = new KlantDaoImpl();
+		DaoImplKeuze daoImplKeuze = new DaoImplKeuze();
+		KlantDaoImpl nieuweKlantDaoImpl = daoImplKeuze.KlantDaoImplKeuze();
 		DTO dto = new DTO();
 		Klant nieuweKlant = dto.createKlantObject();
 		
@@ -47,7 +49,8 @@ public class CreateMenu {
 	}
 	
 	public void addAdresToDatabase(){
-		AdresDaoImpl updateAdresDaoImpl = new AdresDaoImpl();
+		DaoImplKeuze daoImplKeuze = new DaoImplKeuze();
+		AdresDaoImpl updateAdresDaoImpl = daoImplKeuze.AdresDaoImplKeuze();
 		DTO dto = new DTO();
 		Adres nieuwAdres = dto.createAdresObject();
 		updateAdresDaoImpl.insert(nieuwAdres);
@@ -134,7 +137,7 @@ public class CreateMenu {
         			gewensteBestelling_id = input.nextInt();
         				
 
-            		while (bestellingDaoImpl.checkBestelling_id(gewensteBestelling_id)!= true) { 
+            		while (check.checkBestelling_id(gewensteBestelling_id)!= true) { 
             			System.out.print("\nVoer een ander bestellingnummer in: ");
             			gewensteBestelling_id = input.nextInt();
             			System.out.println();
@@ -196,8 +199,8 @@ public class CreateMenu {
             		System.out.println(); 
             		gewensteArtikel_id = input.nextInt();
             		
-            		while (bestellingDaoImpl.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) == true || bestellingDaoImpl.checkArtikel_id(gewensteArtikel_id)!= true) {
-            			if (bestellingDaoImpl.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) == true) {          	
+            		while (check.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) == true || check.checkArtikel_id(gewensteArtikel_id)!= true) {
+            			if (check.checkArtikelAlAanwezigInBestelling(gewensteBestelling_id, gewensteArtikel_id) == true) {          	
             				System.out.print("\nHet opgegeven artikelnummer zit al in deze bestelling. ");
             			}     
             			System.out.println("Voer een ander artikelnummer in: ");
@@ -260,14 +263,14 @@ public class CreateMenu {
             			                      	            
             		int gewensteKlant_id = input.nextInt();
             				          		
-                	while (klantDaoImpl.checkKlant_id(gewensteKlant_id)!= true) { 
+                	while (check.checkKlant_id(gewensteKlant_id)!= true) { 
                 		System.out.print("\nVoer een ander klantnummer in: ");
                 		gewensteKlant_id = input.nextInt();
                 		System.out.println();
                 	}    
             		    
                 	nieuweBestelling.setKlant_id(gewensteKlant_id);
-                	nieuweBestelling.setBestelling_id(bestellingDaoImpl.checkHoogste_Bestelling_id() + 1);
+                	nieuweBestelling.setBestelling_id(check.checkHoogste_Bestelling_id() + 1);
             			
                 	System.out.println("Welk artikel wil je in de bestelling plaatsen?");
                 	System.out.println("Hieronder een overzicht van het hele assortiment: ");
@@ -299,7 +302,7 @@ public class CreateMenu {
                 	System.out.print("\nVoer het artikel ID in dat je in de bestelling wil plaatsen: ");
                 	System.out.println(); 
                 	int gewensteArtikel_id = input.nextInt();
-                	while (bestellingDaoImpl.checkArtikel_id(gewensteArtikel_id)!= true) { 
+                	while (check.checkArtikel_id(gewensteArtikel_id)!= true) { 
                 		System.out.print("\nVoer een ander artikelnummer in: ");
                 		gewensteArtikel_id = input.nextInt();
                 		System.out.println();

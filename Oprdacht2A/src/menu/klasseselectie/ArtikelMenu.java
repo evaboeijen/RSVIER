@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 public class ArtikelMenu {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ArtikelMenu.class);
-	
-	ArtikelDaoImpl artikelDaoImpl = new ArtikelDaoImpl();
+	DaoImplKeuze daoImplKeuze = new DaoImplKeuze();
+	ArtikelDaoImpl artikelDaoImpl = daoImplKeuze.ArtikelDaoImplKeuze();
 	Artikel artikel = new Artikel();
 	Check check = new Check();
 	DTO dto = new DTO();

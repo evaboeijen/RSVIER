@@ -10,7 +10,7 @@ import business.*;
 import menu.*;
 import service.Check;
 
-public class ArtikelDaoImpl implements ArtikelDao {
+public abstract class ArtikelDaoImpl implements ArtikelDao {
 	
 private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.class);
     
