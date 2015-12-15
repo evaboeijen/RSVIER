@@ -89,12 +89,11 @@ public class UpdateMenu {
                 
             	case 3:
             		
-            		List<Artikel> alleArtikelen = new ArrayList<>();
             		int gewensteArtikel_id = 0;
             		int gewensteAantal = 0;
             		BestellingDaoImpl bestellingDaoImpl = daoImplKeuze.BestellingDaoImplKeuze();
+            		ArtikelDaoImpl artikelDaoImpl = daoImplKeuze.ArtikelDaoImplKeuze();
             		int gewensteBestelling_id = 0;
-            	    Artikel artikel = new Artikel(); 
                		String gewensteArtikelNaam = null;
             		int gewensteKlantID = 0;
             		double gewensteArtikelPrijs = 0;
@@ -129,6 +128,7 @@ public class UpdateMenu {
         				
 
             		while (check.checkBestelling_id(gewensteBestelling_id)!= true) { 
+            			logger.info("check.checkBestelling_id(gewensteBestelling_id) is: " + check.checkBestelling_id(gewensteBestelling_id));
             			System.out.print("\nVoer een ander bestellingnummer in: ");
             			gewensteBestelling_id = input.nextInt();
             			System.out.println();
@@ -159,30 +159,8 @@ public class UpdateMenu {
             		System.out.println("Welk artikel wil je toevoegen aan de bestelling?");
             		System.out.println();
             		System.out.println("Hieronder een overzicht van alle aanwezige artikelen: ");
-                    
-                	try {
-                		Connection connection = DBConnectivityManagement.getConnectionStatus();
-                        	
-                		Statement statement = connection.createStatement();
-                		
-                		ResultSet resultSet = statement.executeQuery("SELECT DISTINCT(ARTIKEL_ID), ARTIKEL_NAAM, ARTIKEL_PRIJS FROM Artikel"); 
-                        
-                		resultSet.beforeFirst();
-                		
-                		while(resultSet.next()){
-                					
-                			System.out.println("artikel_id: " + resultSet.getInt("Artikel_id") + "\tartikelnaam: " + resultSet.getString("Artikel_naam") + "\tprijs: " + resultSet.getDouble("Artikel_prijs"));  
-                			               			                                                                                                        
-                			alleArtikelen.add(artikel);
-                		}
-                		resultSet.close();
-                		statement.close();                                
-                	} 
-                		
-                	catch (SQLException e) {
-                		logger.warn("SQL error");
-                		e.printStackTrace();
-                	}                                                  			
+            		
+            		artikelDaoImpl.read();
 
             		System.out.print("\nVoer het artikel ID in dat je wil toevoegen aan de bestelling (0 is terug naar het vorige menu): ");
             		System.out.println(); 
@@ -200,7 +178,7 @@ public class UpdateMenu {
                     	System.out.println();
             		}
             		
-            		           		
+            		
             		System.out.print("\nVoer het aantal in dat je aan de bestelling wil toevoegen: ");
             		gewensteAantal = input.nextInt();      
 
@@ -208,20 +186,21 @@ public class UpdateMenu {
             		try {
 
             			Connection connection = DBConnectivityManagement.getConnectionStatus();
-            		  
-            			PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT(ARTIKEL_NAAM), ARTIKEL_PRIJS FROM artikel JOIN bestelling_artikel WHERE (bestelling_artikel.artikel_id = artikel.artikel_id AND artikel.artikel_id=?)");
+            					 
+            			PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT(ARTIKEL_NAAM), ARTIKEL_PRIJS FROM artikel , bestelling_artikel WHERE (bestelling_artikel.artikel_id = artikel.artikel_id AND artikel.artikel_id=?)");
+            			logger.info("Query succesvol uitgevoerd : SELECT DISTINCT(ARTIKEL_NAAM), ARTIKEL_PRIJS FROM artikel , bestelling_artikel WHERE (bestelling_artikel.artikel_id = artikel.artikel_id AND artikel.artikel_id=?)");
             			statement.setInt(1, gewensteArtikel_id);
 
             			ResultSet resultSet = statement.executeQuery();
             				     		
             			while(resultSet.next()){          
-            				  
             				gewensteArtikelNaam = resultSet.getString("Artikel_naam");
             				gewensteArtikelPrijs = resultSet.getInt("Artikel_prijs");
             			}
-            			                			
+            			      
+            			
             			Bestelling aantepassenBestelling = new Bestelling(gewensteBestelling_id, gewensteKlantID, gewensteArtikel_id, gewensteArtikelNaam, gewensteAantal, gewensteArtikelPrijs);
-            				          			          		
+            			          		
             			bestellingDaoImpl.update(aantepassenBestelling);  
             		}
             			
@@ -236,6 +215,7 @@ public class UpdateMenu {
   
                 	toonMenu();          			   			  		          		
                 	break; 
+                	
               
             	case 4:
             		System.out.println("U kunt de artikelgegevens wijzigen. Voer het artikelnummer in, en druk op enter");
