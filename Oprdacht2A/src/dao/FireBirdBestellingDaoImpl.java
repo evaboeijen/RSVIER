@@ -20,20 +20,20 @@ public class FireBirdBestellingDaoImpl extends BestellingDaoImpl{
 		}
 		@Override
 		public List<Bestelling> read() {						
-			queryToonAlleBestellingen = "SELECT * FROM bestelling JOIN bestelling_artikel JOIN artikel WHERE (bestelling.bestelling_id = bestelling_artikel.bestelling_id AND bestelling_artikel.artikel_id = artikel.artikel_id)";
+			queryToonAlleBestellingen = "SELECT * FROM bestelling , bestelling_artikel , artikel WHERE (bestelling.bestelling_id = bestelling_artikel.bestelling_id AND bestelling_artikel.artikel_id = artikel.artikel_id)";
 			logger.info("select query for Firebird executed");
 			return super.read();
 		}
 		@Override
 		public int update(Bestelling bestelling) {
-			queryUpdateBestelling1 = "SELECT * FROM bestelling JOIN bestelling_artikel JOIN artikel WHERE (bestelling.bestelling_id = ? AND bestelling.bestelling_id = bestelling_artikel.bestelling_id AND bestelling_artikel.artikel_id = artikel.artikel_id)";
+			queryUpdateBestelling1 = "SELECT * FROM bestelling , bestelling_artikel , artikel WHERE (bestelling.bestelling_id = ? AND bestelling.bestelling_id = bestelling_artikel.bestelling_id AND bestelling_artikel.artikel_id = artikel.artikel_id)";
 			queryUpdateBestelling2 = "insert into Bestelling_Artikel (bestelling_id, artikel_id, artikel_aantal) values (?, ?, ?)";
 			logger.info("select and insert queries for Firebird executed");
 			return super.update(bestelling);
 		}
 		@Override
 		public int updateAantallen(Bestelling bestelling) {
-			queryUpdateAantallen = "SELECT * FROM bestelling JOIN bestelling_artikel JOIN artikel WHERE (bestelling.bestelling_id = ? AND bestelling.bestelling_id = bestelling_artikel.bestelling_id AND bestelling_artikel.artikel_id = artikel.artikel_id)";
+			queryUpdateAantallen = "SELECT * FROM bestelling , bestelling_artikel , artikel WHERE (bestelling.bestelling_id = ? AND bestelling.bestelling_id = bestelling_artikel.bestelling_id AND bestelling_artikel.artikel_id = artikel.artikel_id)";
 			logger.info("select query for Firebird executed");
 			return super.updateAantallen(bestelling);
 		}
@@ -45,7 +45,7 @@ public class FireBirdBestellingDaoImpl extends BestellingDaoImpl{
 		}
 		@Override
 		public int deleteArtikelFromBestelling(Bestelling bestelling) {
-			queryDeleteArtikelFromBestelling = "DELETE bestelling_artikel FROM bestelling_artikel WHERE bestelling_artikel.artikel_id = ? AND bestelling_artikel.bestelling_id = ?";
+			queryDeleteArtikelFromBestelling = "DELETE FROM bestelling_artikel WHERE bestelling_artikel.artikel_id = ? AND bestelling_artikel.bestelling_id = ?";
 			logger.info("delete query for Firebird executed");
 			return super.deleteArtikelFromBestelling(bestelling);
 		}

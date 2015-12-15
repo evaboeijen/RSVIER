@@ -31,7 +31,7 @@ public class BestellingMenu  {
 	//BestellingDaoImpl bestellingDaoImpl = new BestellingDaoImpl();
 	int gewensteBestelling_id = 0;
 	List<Bestelling> lijst = null;
-	KlantDaoImpl klantDaoImpl = new KlantDaoImpl();
+	//KlantDaoImpl klantDaoImpl = new KlantDaoImpl();
 	List <Klant> alleKlanten = null;            	              			
 	Bestelling nieuweBestelling = new Bestelling();
 	//AdresDaoImpl adresDaoImpl = new AdresDaoImpl();
@@ -79,7 +79,7 @@ public class BestellingMenu  {
             		System.out.println("Je kan hier een bestelling invoeren voor een bestaande klant.");
             		System.out.println("Hieronder een overzicht van alle klanten: ");
             		
-            		alleKlanten = klantDaoImpl.read();
+            		alleKlanten = dbKlant.read();
                		           		
             		System.out.println();          		
             		System.out.println("Voor welke klant wil je een bestelling invoeren?");
@@ -99,8 +99,10 @@ public class BestellingMenu  {
             			
                 	System.out.println("Welk artikel wil je in de bestelling plaatsen?");
                 	System.out.println("Hieronder een overzicht van het hele assortiment: ");
+                	
+                	dbArtikel.read();
                 		                	                      
-                	try {
+                	/* try {
                 		Connection connection = DBConnectivityManagement.getConnectionStatus();
                         	
                 		Statement statement = connection.createStatement();
@@ -118,7 +120,7 @@ public class BestellingMenu  {
                 			*/
                 			 
                 			//  toegevoegd tbv opdracht 5 || AU 26/11/15
-                			System.out.println("artikel_id: " + resultSet.getInt("Artikel_id") + "\tartikelnaam: " + resultSet.getString("Artikel_naam") + "\tprijs: " + resultSet.getDouble("Artikel_prijs"));  
+                			//System.out.println("artikel_id: " + resultSet.getInt("Artikel_id") + "\tartikelnaam: " + resultSet.getString("Artikel_naam") + "\tprijs: " + resultSet.getDouble("Artikel_prijs"));  
                 			               			
                 			/* uitgecomment tbv opdracht 5 || AU 26/11/15
                 			artikel.setArtikel1_id(resultSet.getInt("Artikel1_id"));  
@@ -128,7 +130,7 @@ public class BestellingMenu  {
                 			artikel.setArtikel3_id(resultSet.getInt("Artikel3_id"));
                 			artikel.setArtikel3_naam(resultSet.getString("Artikel3_naam")); */ 
                                                                                                         
-                			alleArtikelen.add(artikel);
+                	/*alleArtikelen.add(artikel);
                 		}
                 		resultSet.close();
                 		statement.close();                                
@@ -137,7 +139,7 @@ public class BestellingMenu  {
                 	catch (SQLException e) {
                 		logger.warn("SQL error");
                 		e.printStackTrace();
-                	}
+                	} */ 
                          	
                 	/* uitgecomment 26/11/15 - AU
                 	 * for(int i = 0; i < alleArtikelen.size(); i++) {
@@ -251,6 +253,7 @@ public class BestellingMenu  {
         				
 
             		while (check.checkBestelling_id(gewensteBestelling_id)!= true) { 
+            			logger.info("check.checkBestelling_id(gewensteBestelling_id) is: " + check.checkBestelling_id(gewensteBestelling_id));
             			System.out.print("\nVoer een ander bestellingnummer in: ");
             			gewensteBestelling_id = input.nextInt();
             			System.out.println();
@@ -284,7 +287,7 @@ public class BestellingMenu  {
             		System.out.println();
             		System.out.println("Hieronder een overzicht van alle aanwezige artikelen: ");
                     
-                	try {
+                	/*try {
                 		Connection connection = DBConnectivityManagement.getConnectionStatus();
                         	
                 		Statement statement = connection.createStatement();
@@ -302,7 +305,7 @@ public class BestellingMenu  {
                 			*/
                 			 
                 			//  toegevoegd tbv opdracht 5 || AU 26/11/15
-                			System.out.println("artikel_id: " + resultSet.getInt("Artikel_id") + "\tartikelnaam: " + resultSet.getString("Artikel_naam") + "\tprijs: " + resultSet.getDouble("Artikel_prijs"));  
+                			//System.out.println("artikel_id: " + resultSet.getInt("Artikel_id") + "\tartikelnaam: " + resultSet.getString("Artikel_naam") + "\tprijs: " + resultSet.getDouble("Artikel_prijs"));  
                 			               			
                 			/* uitgecomment tbv opdracht 5 || AU 26/11/15
                 			artikel.setArtikel1_id(resultSet.getInt("Artikel1_id"));  
@@ -312,7 +315,7 @@ public class BestellingMenu  {
                 			artikel.setArtikel3_id(resultSet.getInt("Artikel3_id"));
                 			artikel.setArtikel3_naam(resultSet.getString("Artikel3_naam")); */ 
                                                                                                         
-                			alleArtikelen.add(artikel);
+                	/*		alleArtikelen.add(artikel);
                 		}
                 		resultSet.close();
                 		statement.close();                                
@@ -321,7 +324,7 @@ public class BestellingMenu  {
                 	catch (SQLException e) {
                 		logger.warn("SQL error");
                 		e.printStackTrace();
-                	}
+                	} 
                          	
                 	/* uitgecomment 26/11/15 - AU
                 	 * for(int i = 0; i < alleArtikelen.size(); i++) {
@@ -329,7 +332,9 @@ public class BestellingMenu  {
                 		//System.out.println("artikel_id: " + alleArtikelen.get(i).getArtikel1_id() + "\tartikel omschrijving: " + alleArtikelen.get(i).getArtikel1_naam() + " " + alleArtikelen.get(i).getArtikel1_prijs());  
                 		System.out.println("artikel_id: " + alleArtikelen.get(2).getArtikel1_id() + "\tartikel omschrijving: " + alleArtikelen.get(0).getArtikel1_naam() + " " + alleArtikelen.get(0).getArtikel1_prijs());  
                 	*/ 
-                                                   			
+                         
+            		
+            		dbArtikel.read();
 
             		System.out.print("\nVoer het artikel ID in dat je wil toevoegen aan de bestelling (0 is terug naar het vorige menu): ");
             		System.out.println(); 
@@ -367,7 +372,8 @@ public class BestellingMenu  {
             			// uitgecomment tbv opdracht 5 | 27/11/15 |AU            		
             			// PreparedStatement statement = connection.prepareStatement("SELECT ARTIKEL1_NAAM, ARTIKEl1_PRIJS FROM Bestelling WHERE Artikel1_id=?");
             			// nieuw tbv opdracht 5 | 27/11/15 |AU     
-            			PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT(ARTIKEL_NAAM), ARTIKEL_PRIJS FROM artikel JOIN bestelling_artikel WHERE (bestelling_artikel.artikel_id = artikel.artikel_id AND artikel.artikel_id=?)");
+            			PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT(ARTIKEL_NAAM), ARTIKEL_PRIJS FROM artikel , bestelling_artikel WHERE (bestelling_artikel.artikel_id = artikel.artikel_id AND artikel.artikel_id=?)");
+            			logger.info("Query succesvol uitgevoerd : SELECT DISTINCT(ARTIKEL_NAAM), ARTIKEL_PRIJS FROM artikel , bestelling_artikel WHERE (bestelling_artikel.artikel_id = artikel.artikel_id AND artikel.artikel_id=?)");
             			statement.setInt(1, gewensteArtikel_id);
 
             			ResultSet resultSet = statement.executeQuery();
@@ -489,7 +495,7 @@ public class BestellingMenu  {
 
             			Connection connection = DBConnectivityManagement.getConnectionStatus();
            					  
-            			PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT(ARTIKEL_NAAM), ARTIKEL_PRIJS FROM artikel JOIN bestelling_artikel WHERE (bestelling_artikel.artikel_id = artikel.artikel_id AND artikel.artikel_id=?)");
+            			PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT(ARTIKEL_NAAM), ARTIKEL_PRIJS FROM artikel , bestelling_artikel WHERE (bestelling_artikel.artikel_id = artikel.artikel_id AND artikel.artikel_id=?)");
             			statement.setInt(1, gewensteArtikel_id);
 
             			ResultSet resultSet = statement.executeQuery();
@@ -659,7 +665,7 @@ public class BestellingMenu  {
             			// uitgecomment tbv opdracht 5 | 27/11/15 |AU            		
             			// PreparedStatement statement = connection.prepareStatement("SELECT ARTIKEL1_NAAM, ARTIKEl1_PRIJS FROM Bestelling WHERE Artikel1_id=?");
             			// nieuw tbv opdracht 5 | 27/11/15 |AU     
-            			PreparedStatement statement = connection.prepareStatement("SELECT ARTIKEL_NAAM, ARTIKEL_PRIJS FROM artikel JOIN bestelling_artikel WHERE (bestelling_artikel.artikel_id = artikel.artikel_id AND artikel.artikel_id=?)");
+            			PreparedStatement statement = connection.prepareStatement("SELECT ARTIKEL_NAAM, ARTIKEL_PRIJS FROM artikel , bestelling_artikel WHERE (bestelling_artikel.artikel_id = artikel.artikel_id AND artikel.artikel_id=?)");
             			statement.setInt(1, gewensteArtikel_id);
 
             			ResultSet resultSet = statement.executeQuery();

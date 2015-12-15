@@ -8,7 +8,7 @@ public class FireBirdConnectionSetup extends DBConnectionMethods{
 	public Connection C3POCPEva() {
 		dbUsername = "SYSDBA";
 		dbPassword =  "masterkey";
-		dbURL = "jdbc:firebirdsql://localhost:3050/C:/Users/kuija/Dropbox/Java/Praktijk gedeelte/Firebird/eva/RSVIER";
+		dbURL = "jdbc:firebirdsql://localhost:3050/C:/Users/kuija/Dropbox/Java/Praktijk gedeelte/Firebird/RSVIER.fdb";
 		return super.C3POCPEva();
 	}
 
@@ -16,7 +16,7 @@ public class FireBirdConnectionSetup extends DBConnectionMethods{
 	public Connection C3POCPAgung() {
 		dbUsername = "SYSDBA";
 		dbPassword =  "masterkey";
-		dbURL = "jdbc:firebirdsql://localhost:3050/C:/Users/kuija/Dropbox/Java/Praktijk gedeelte/Firebird/eva/RSVIER";
+		dbURL = "jdbc:firebirdsql://localhost:3050/C:/Users/kuija/Dropbox/Java/Praktijk gedeelte/Firebird/RSVIER.fdb";
 		return super.C3POCPAgung();
 	}
 
@@ -32,7 +32,7 @@ public class FireBirdConnectionSetup extends DBConnectionMethods{
 	public Connection HikariCPEva() {
 		dbUsername = "SYSDBA";
 		dbPassword =  "masterkey";
-		dbURL = "jdbc:firebirdsql://localhost:3050/C:/Users/kuija/Dropbox/Java/Praktijk gedeelte/Firebird/eva/RSVIER";
+		dbURL = "jdbc:firebirdsql://localhost:3050/C:/Users/kuija/Dropbox/Java/Praktijk gedeelte/Firebird/RSVIER.fdb";
 		return super.HikariCPEva();
 	}
 
@@ -40,7 +40,7 @@ public class FireBirdConnectionSetup extends DBConnectionMethods{
 	public Connection HikariCPAgung() {
 		dbUsername = "SYSDBA";
 		dbPassword =  "masterkey";
-		dbURL = "jdbc:firebirdsql://localhost:3050/C:/Users/kuija/Dropbox/Java/Praktijk gedeelte/Firebird/eva/RSVIER";
+		dbURL = "jdbc:firebirdsql://localhost:3050/C:/Users/kuija/Dropbox/Java/Praktijk gedeelte/Firebird/RSVIER.fdb";
 		return super.HikariCPAgung();
 	}
 

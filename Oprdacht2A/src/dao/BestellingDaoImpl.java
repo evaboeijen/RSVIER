@@ -78,8 +78,10 @@ public abstract class BestellingDaoImpl implements BestellingDao {
 	        	Connection connection = DBConnectivityManagement.getConnectionStatus();
 	        	
 	        	logger.info("Content of connection object is : " + connection);
-	        	           
-	            preparedStatement1 = connection.prepareStatement(queryBestellingToevoegen1);
+	        	
+	        	//connection.setAutoCommit(false);           
+	            
+	        	preparedStatement1 = connection.prepareStatement(queryBestellingToevoegen1);
 	            preparedStatement1.setInt(1, bestelling.getBestelling_id());
 	            preparedStatement1.setInt(2, bestelling.getKlant_id());
 	            
@@ -124,7 +126,7 @@ public abstract class BestellingDaoImpl implements BestellingDao {
 	            preparedStatement2.close();
 	            logger.info("preparedStatement2 closed and is " + preparedStatement2);
 	            
-	        
+	            //connection.setAutoCommit(true); 
 	        
 	            
 	        } catch (SQLException e) {
@@ -186,11 +188,11 @@ public abstract class BestellingDaoImpl implements BestellingDao {
 	                  
 	                    bestellingen.add(bestelling);
 	                }
-	                logger.error("resultSet is " + resultSet);
+	                logger.info("resultSet is " + resultSet);
 	                logger.trace("logtrace");
-	                logger.error("resultSet.close is being called");
+	                logger.info("resultSet.close is being called");
 	                resultSet.close();
-	                logger.error("resultSet is " + resultSet);
+	                logger.info("resultSet is " + resultSet);
 	                statement.close();
 	                 
 	            } catch (SQLException e) {
@@ -227,14 +229,14 @@ public abstract class BestellingDaoImpl implements BestellingDao {
 	   		            ResultSet rset = preparedStatement.executeQuery();
 	   		           		            
 	   		            
-	   		            if (!rset.next()) {
+	   		            /* if (!rset.next()) {
 	   		            	System.out.println();
 	   		            	System.out.println("Het opgegeven bestellings ID / Ordernummer " + bestelling_id + " bestaat niet. \nDerhalve kan er niks aan worden toegevoegd.");	
 	   			   		  	System.out.println("Aantal rijen geupdate : 0");
 	   			   		  	return 0;
-	   		            }
+	   		            } 
 	   		            
-	   		            rset.beforeFirst();
+	   		            rset.beforeFirst(); */
 	   		            
 	   		            System.out.println();
 	   		            System.out.println("Het opgegeven bestellings ID / Ordernummer luidt: " + bestelling_id);
@@ -347,19 +349,21 @@ public int updateAantallen(Bestelling bestelling) {		// added 29-11-15 AU
 	   		            preparedStatement.setInt(1, bestelling_id);	   		                   	            
 	   		            ResultSet rset = preparedStatement.executeQuery();
 	   		           		            
+	   		            logger.info("ResultSet reset is: " + rset);
 	   		            
-	   		            if (!rset.next()) {
+	   		            /* if (!rset.next()) {
 	   		            	System.out.println();
 	   		            	System.out.println("Het opgegeven bestellings ID / Ordernummer " + bestelling_id + " bestaat niet. \nDerhalve kan er niks aan worden toegevoegd.");	
 	   			   		  	System.out.println("Aantal rijen geupdate : 0");
 	   			   		  	return 0;
 	   		            }
 	   		                       		            	   		            
-	   		            rset.beforeFirst();
+	   		            rset.beforeFirst(); */
 	   		           
 	   		            
 	   		            while (rset.next()) {	   		            	
-	   		            	oud_artikel_aantal = rset.getInt("artikel_aantal");	   		            	
+	   		            	oud_artikel_aantal = rset.getInt("artikel_aantal");	 
+	   		            	logger.info("oud_artikel_aantal " + oud_artikel_aantal);
 	   		            }
 	   		            
 	   		            String sql2 = "update Bestelling_Artikel set artikel_aantal = ? WHERE bestelling_id = ? AND artikel_id = ?";
@@ -458,12 +462,17 @@ public int updateAantallen(Bestelling bestelling) {		// added 29-11-15 AU
 	        	logger.info("Content of connection object is : " + connection);
 	        	Connection connection = DBConnectivityManagement.getConnectionStatus();
 	        	logger.info("Content of connection object is : " + connection);
-					
+				
+	        	logger.info("calling queryDeleteArtikelFromBestelling" + queryDeleteArtikelFromBestelling);
 				PreparedStatement statement = connection.prepareStatement(queryDeleteArtikelFromBestelling);
+				logger.info("queryDeleteArtikelFromBestelling uitgevoerd" + queryDeleteArtikelFromBestelling);
 				statement.setInt(1, artikel_id);
 				statement.setInt(2, bestelling_id);
 
 				rowsDeleted = statement.executeUpdate();
+				
+				logger.info("rowsDeleted: " + rowsDeleted);
+				
 				if (rowsDeleted > 0) {
 					System.out.println();
 					System.out.println("Artikel " + artikel_id + " is gewist van bestelling " + bestelling_id + ".");													
@@ -476,7 +485,7 @@ public int updateAantallen(Bestelling bestelling) {		// added 29-11-15 AU
 			} 
 			
 			catch (SQLException e) {
-				logger.warn("SQL exception voor BestellingDaoImpl.deleteARtikelFromBestelling() methode");
+				logger.warn("SQL exception voor BestellingDaoImpl.deleteArtikelFromBestelling() methode");
 				e.printStackTrace();	
 			}
 		

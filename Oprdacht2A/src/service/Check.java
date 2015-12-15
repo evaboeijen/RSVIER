@@ -95,6 +95,10 @@ public class Check {
 			preparedStatement.setInt(1, bestelling_id);
 			resultSet = preparedStatement.executeQuery(); 
 			
+			logger.info("resultSet is: " + resultSet);
+			
+			//logger.info("resultSet.next() is: " + resultSet.next());
+			
 			if (resultSet.next()){
 				result = true;
 			} else {
@@ -105,6 +109,8 @@ public class Check {
 			logger.warn("SQL exception voor checkBestelling_id() methode");
                 e.printStackTrace();	
 		}
+		
+		logger.info("Check Bestellingnummer methode eindigt");
 		return result;
 	}
 	
@@ -126,15 +132,15 @@ public class Check {
             ResultSet resultSet = statement.executeQuery("SELECT MAX(Bestelling_id) FROM bestelling");
                   
             while(resultSet.next()){
-                maxBestellingId = resultSet.getInt("max(bestelling_id)");
-               
+                maxBestellingId = resultSet.getInt(1);
+                logger.info("Hoogste bestelling ID is: " + maxBestellingId);
             }
             
             resultSet.close();
             statement.close();
              
         } catch (SQLException e) {
-        	logger.warn("SQL exception voor BestellingDaoImpl.checkHoogste_Bestelling_id() methode");
+        	logger.warn("SQL exception voor checkHoogste_Bestelling_id() methode");
             e.printStackTrace();
         }
         return maxBestellingId;
@@ -170,7 +176,7 @@ public class Check {
 				} 
 
 			} catch (SQLException e) {
-				logger.warn("SQL exception voor BestellingDaoImpl.checkArtikelAlAanwezigInBestelling() methode");
+				logger.warn("SQL exception voor checkArtikelAlAanwezigInBestelling() methode");
 	                e.printStackTrace();	
 			}
 			return result;
