@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import menu.crud.*;
 import menu.klasseselectie.*;
+import menu.reflection.ReflectionMenu;
 
 
 public class HoofdMenu {
@@ -15,8 +16,9 @@ public class HoofdMenu {
 	    System.out.println("\t----------");
 	    System.out.println("1. C.r.u.d. handelingen");
 	    System.out.println("2. Klasseselectie");
-	    System.out.println("3. Uitloggen");
-	    System.out.println("4. Stoppen");
+	    System.out.println("3. Java Reflection");
+	    System.out.println("4. Uitloggen");
+	    System.out.println("5. Stoppen");
 	    System.out.print("Voer optie in en druk op Enter:");
 
 	    try (Scanner input = new Scanner(System.in);) {		     
@@ -33,12 +35,17 @@ public class HoofdMenu {
             		KlasseSelectieMenu klasseselectiemenu = new KlasseSelectieMenu();
             		klasseselectiemenu.toonMenu();
             		break;
-                
+            		
             	case 3:
+            		ReflectionMenu reflectionmenu = new ReflectionMenu();
+            		reflectionmenu.toonMenu();
+            		break;
+                
+            	case 4:
             		DBConnectivityManagement.logOut(DBConnectivityManagement.connection);
             		break;
                 	
-            	case 4:
+            	case 5:
             		System.out.println("\nTot de volgende keer...");
             		System.exit(1);
             		break;
