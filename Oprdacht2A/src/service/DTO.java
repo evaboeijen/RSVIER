@@ -20,31 +20,32 @@ public class DTO {
 					System.out.println("Klantnummer: ");
 					klant_id = input.nextInt();
 				}
-		System.out.println("Straatnaam: ");
-			String straatnaam = input.next();
+				input.nextLine();
+		System.out.println("\nStraatnaam: ");
+			String straatnaam = input.nextLine();
 				while (straatnaam.length() > 26){
 				System.out.println("Een straatnaam mag niet meer dan 26 karakters bevatten! \nStraatnaam: ");
-					straatnaam = input.next();
+					straatnaam = input.nextLine();
 				}			
-		System.out.println("Postcode:\t\t( zonder spatie ) ");
-			String postcode = input.next();
+		System.out.println("\nPostcode:\t\t( zonder spatie ) ");
+			String postcode = input.nextLine();
 				while (postcode.length() > 6){
 				System.out.println("Een postcode mag niet meer dan 6 karakters bevatten! \nPostcode: ");
-					straatnaam = input.next();
+					straatnaam = input.nextLine();
 				}
-		System.out.println("Toevoeging:\t\t( als geen toevoeging vul - in ) ");
-			String toevoeging = input.next();
+		System.out.println("\nToevoeging:\t\t( als geen toevoeging vul - in ) ");
+			String toevoeging = input.nextLine();
 				while (toevoeging.length() > 6){
 				System.out.println("Een toevoeging mag niet meer dan 6 karakters bevatten! \nToevoeging: ");
-					straatnaam = input.next();
+					straatnaam = input.nextLine();
 				}
-		System.out.println("Huisnummer: ");
+		System.out.println("\nHuisnummer: ");
 			int huisnummer = input.nextInt();
 				while (Integer.toString(huisnummer).length() > 6){
 				System.out.println("Een huisnummer mag niet meer dan 6 karakters bevatten! \nHuisnummer: ");
 					huisnummer = input.nextInt();				
 				}
-		System.out.println("Woonplaats: ");
+		System.out.println("\nWoonplaats: ");
 			String woonplaats = input.next();
 				while (woonplaats.length() > 26){
 				System.out.println("Een woonplaats mag niet meer dan 26 karakters bevatten! \nWoonplaats: ");
