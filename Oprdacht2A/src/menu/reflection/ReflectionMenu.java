@@ -35,8 +35,8 @@ public class ReflectionMenu {
 		    System.out.println("Opdracht 10 - algemene buildInsertStatement methode \nmet als parameter een object van klasse : ");
 		    System.out.println();
 		    System.out.println("2. Klant");
-		    System.out.println("3. Adres");
-		    System.out.println("4. Artikel");
+		    //System.out.println("3. Adres");
+		    System.out.println("3. Artikel");
 		    //System.out.println("5. Bestelling");
 		    System.out.println();
 		    System.out.println("-------------------------------");
@@ -66,20 +66,22 @@ public class ReflectionMenu {
 	            		reflection.insert_buildInsertStatement(query);	           
 	            		toonMenu();
 	            		break;
-	                
-	            	case 3:	            		
-	            		Object adres = dto.createAdresObject();	            		
-	            		query = reflection.buildInsertStatement(adres);	            		
-	            		reflection.insert_buildInsertStatement(query);
-	            		toonMenu();
-	            		break;
-	                	
-	            	case 4:
+	            		
+	            	case 3:
 	            		Object artikel = dto.createArtikelObject();	            		
 	            		query = reflection.buildInsertStatement(artikel);	            		
 	            		reflection.insert_buildInsertStatement(query);
 	            		toonMenu();
 	            		break;
+	                
+	            	/* case 4:	            		
+	            		Object adres = dto.createAdresObject();	            		
+	            		query = reflection.buildInsertStatement(adres);	            		
+	            		reflection.insert_buildInsertStatement(query);
+	            		toonMenu();
+	            		break; */
+	                	
+	            	
 	            		
 	            	/* case 5:
 	            		Object bestelling = dto.createBestellingObject();
