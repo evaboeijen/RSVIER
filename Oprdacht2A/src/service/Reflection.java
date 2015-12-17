@@ -19,8 +19,7 @@ public class Reflection {
 	public String buildInsertStatement(Klant klant) {
 		
 		int variableToInsert = 0;
-		String sqlTableName = Klant.class.getSimpleName().toUpperCase();
-		//String sqlTableName = this.getKlasseNaam(klant).toUpperCase();
+		String sqlTableName = Klant.class.getSimpleName().toUpperCase();		
 		logger.info("sqlTableName is: " + sqlTableName);
 		String buildSqlStatement = "INSERT INTO " + sqlTableName + "(";
 		String valueFieldEnd = "values (";
@@ -61,6 +60,7 @@ public class Reflection {
 	
 public String buildInsertStatement(Object object) {
 		
+
 		int variableToInsert = 0;
 		//String sqlTableName = Object.class.getSimpleName().toUpperCase();	
 		//String sqlTableName = this.getKlasseNaam(object).toUpperCase();		
@@ -68,11 +68,15 @@ public String buildInsertStatement(Object object) {
 		logger.info("sqlTableName is: " + sqlTableName);
 		String buildSqlStatement = "INSERT INTO " + sqlTableName + "(";
 		String valueFieldEnd = "values (";
-		Field[] declaredFields = Object.class.getDeclaredFields();
+		//Field[] declaredFields = Object.class.getDeclaredFields();
+	
+		Class<?> klasse = object.getClass();
+		Field[] declaredFields = klasse.getDeclaredFields();
 		
 		logger.info("array declaredFields VOOR for loop" + declaredFields);
 		
-		
+		logger.info("lengte van declaredFields is: " + declaredFields.length);
+				
 		for (int i = 0; i < declaredFields.length; i++) {			
 			try {				
 				declaredFields[i].setAccessible(true);
@@ -138,8 +142,6 @@ public String buildInsertStatement(Object object) {
 		return isPrimitiveZero;
 	}
 
-
-	
 	
 	
 	/* private String getKlasseNaam(Object object) {
@@ -186,6 +188,7 @@ public String buildInsertStatement(Object object) {
  	        	preparedStatement = connection.prepareStatement(insertStatement);
  	        	logger.info("preparedStatement uitgevoerd, inhoud: " + preparedStatement);
  	        	
+ 	        	logger.info("preparedStatement.executeUpdate() zal nu worden uitgevoerd. In geval van succesvolle transactie laat ie hierna het aantal rowsUpdated zien");
  	        	rowsUpdated = preparedStatement.executeUpdate();
  	        	
  	        	logger.info("preparedStatement.executeUpdate() uitgevoerd, rowsUpdated: " + rowsUpdated);

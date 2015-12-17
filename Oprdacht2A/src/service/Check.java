@@ -14,7 +14,7 @@ import dao.ArtikelDaoImpl;
 import menu.DBConnectivityManagement;
 
 public class Check {
-	private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.class);
+	private static final Logger logger =  LoggerFactory.getLogger(Check.class);
 
 	public boolean checkKlant_id(int klant_id) {
 		PreparedStatement preparedStatement;

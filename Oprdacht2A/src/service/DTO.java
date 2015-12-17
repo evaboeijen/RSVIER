@@ -5,11 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import business.Adres;
 import business.Artikel;
+import business.Bestelling;
 import business.Klant;
 import dao.ArtikelDaoImpl;
 
 public class DTO {
-	private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.class);
+	private static final Logger logger =  LoggerFactory.getLogger(DTO.class);
 	Scanner input = new Scanner(System.in);
 	Check check = new Check();
 
@@ -121,5 +122,45 @@ public class DTO {
 			
 			return artikel;
 		}
+	
+	public Bestelling createBestellingObject() {
+		logger.info("createBestellingObject methode voor gebruiker input in DTO start");
+		
+		Scanner input = new Scanner(System.in);					
+		
+		Bestelling bestelling = new Bestelling();
+		
+		bestelling.setBestelling_id(check.checkHoogste_Bestelling_id() + 1);
+		
+	    System.out.println("Vul de gewenste gegevens : ");
+
+	    System.out.println("\nKlantnummer: ");
+		int klant_id = input.nextInt();
+			while (check.checkKlant_id(klant_id)!= true){
+				System.out.println("Klantnummer: ");
+				klant_id = input.nextInt();
+			}
+		bestelling.setKlant_id(klant_id);	
+			
+				
+        System.out.print("\nVoer het artikel ID in dat je in de bestelling wil plaatsen: ");
+        System.out.println(); 
+        int artikel_id = input.nextInt();
+           	while (check.checkArtikel_id(artikel_id)!= true) { 
+            	System.out.print("\nVoer een ander artikelnummer in: ");
+            	artikel_id = input.nextInt();
+            	}    
+        bestelling.setArtikel_id(artikel_id);	
+				
+		System.out.println("Aantal: ");
+		int artikel_aantal = input.nextInt();
+		bestelling.setArtikel_aantal(artikel_aantal);	
+		
+		//Bestelling bestelling = new Bestelling(klant_id, artikel_id, artikel_aantal);
+				
+		logger.info("createBestellingObject methode in DTO eindigt");
+		
+		return bestelling;
+	}	
 	
 }

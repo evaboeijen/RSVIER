@@ -89,8 +89,7 @@ public class Bestelling {
 		this.artikel3_aantal = artikel3_aantal;
 		this.artikel3_prijs = artikel3_prijs;			
 	} */
-	
-	
+					
 	public int getBestelling_id() {
 		return bestelling_id;
 	}
