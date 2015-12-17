@@ -3,16 +3,11 @@ package service;
 import java.lang.reflect.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import business.Bestelling;
-import dao.BestellingDaoImpl;
 import menu.DBConnectivityManagement;
-import dao.*;
 import business.*;
 
 public class Reflection {
@@ -67,8 +62,9 @@ public class Reflection {
 public String buildInsertStatement(Object object) {
 		
 		int variableToInsert = 0;
-		//String sqlTableName = Object.class.getSimpleName().toUpperCase();
-		String sqlTableName = this.getKlasseNaam(object).toUpperCase();
+		//String sqlTableName = Object.class.getSimpleName().toUpperCase();	
+		//String sqlTableName = this.getKlasseNaam(object).toUpperCase();		
+		String sqlTableName = getClassName(object).toUpperCase();       
 		logger.info("sqlTableName is: " + sqlTableName);
 		String buildSqlStatement = "INSERT INTO " + sqlTableName + "(";
 		String valueFieldEnd = "values (";
@@ -146,7 +142,7 @@ public String buildInsertStatement(Object object) {
 	
 	
 	
-	private String getKlasseNaam(Object object) {
+	/* private String getKlasseNaam(Object object) {
 		String className = object.getClass().toString();
 		String className2 = null;
 		// klassenaam uit class XXXX string halen, class eraf
@@ -164,9 +160,14 @@ public String buildInsertStatement(Object object) {
 		
 		logger.info("className2: " + className2);
 		return className2;
-	}
+	} */
 
 	
+	private String getClassName (Object object) {	
+		String className = object.getClass().getSimpleName();		
+		logger.info("className: " + className);
+		return className;
+	}
 	
 	
 	
@@ -182,11 +183,12 @@ public String buildInsertStatement(Object object) {
  	        	
  	        	logger.info("insertStatement: " + insertStatement);
  	        	
- 	        	preparedStatement = connection.prepareStatement(insertStatement);	   
+ 	        	preparedStatement = connection.prepareStatement(insertStatement);
+ 	        	logger.info("preparedStatement uitgevoerd, inhoud: " + preparedStatement);
  	        	
  	        	rowsUpdated = preparedStatement.executeUpdate();
  	        	
- 	        	
+ 	        	logger.info("preparedStatement.executeUpdate() uitgevoerd, rowsUpdated: " + rowsUpdated);
    	         }
    	         
    	      
