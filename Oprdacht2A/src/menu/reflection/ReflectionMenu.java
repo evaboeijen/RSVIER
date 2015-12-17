@@ -53,44 +53,32 @@ public class ReflectionMenu {
 				int keuze = input.nextInt();
 			       
 				switch (keuze) {
-	            	case 1:
-	            		
-	            		Klant klant = dto.createKlantObject();
-	            		
-	            		String query = reflection.buildInsertStatement(klant);
-	            		
-	            		reflection.insert_buildInsertStatement(query);
-	            		
-	            		
+	            	case 1:	            	
+	            		Klant klant = dto.createKlantObject();	            		
+	            		String query = reflection.buildInsertStatement(klant);	            		
+	            		reflection.insert_buildInsertStatement(query);	            		
+	            		toonMenu();
 	            		break;
 	                
-	            	case 2:
-	            			            		
+	            	case 2:	            			            		
 	            		Object klant2 = dto.createKlantObject();
-	            		
-	            		query = reflection.buildInsertStatement(klant2);
-	            		
-	            		reflection.insert_buildInsertStatement(query);
-	            		
+	           	        query = reflection.buildInsertStatement(klant2);            		
+	            		reflection.insert_buildInsertStatement(query);	           
+	            		toonMenu();
 	            		break;
 	                
-	            	case 3:
-	            		
-	            		Object adres = dto.createAdresObject();
-	            		
-	            		query = reflection.buildInsertStatement(adres);
-	            		
+	            	case 3:	            		
+	            		Object adres = dto.createAdresObject();	            		
+	            		query = reflection.buildInsertStatement(adres);	            		
 	            		reflection.insert_buildInsertStatement(query);
-	            		
+	            		toonMenu();
 	            		break;
 	                	
 	            	case 4:
-	            		Object artikel = dto.createArtikelObject();
-	            		
-	            		query = reflection.buildInsertStatement(artikel);
-	            		
+	            		Object artikel = dto.createArtikelObject();	            		
+	            		query = reflection.buildInsertStatement(artikel);	            		
 	            		reflection.insert_buildInsertStatement(query);
-	            		
+	            		toonMenu();
 	            		break;
 	            		
 	            	/* case 5:
