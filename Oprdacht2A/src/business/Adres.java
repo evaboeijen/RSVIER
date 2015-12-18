@@ -1,7 +1,10 @@
 package business;
 
+import java.lang.annotation.*;
+import service.EntityEva;
+
+@ EntityEva
 public class Adres {
-	
 	private int klant_id;
 	private int adres_id;
 	String straatnaam;
