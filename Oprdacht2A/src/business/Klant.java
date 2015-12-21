@@ -9,10 +9,15 @@ import java.util.Scanner;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
+import java.lang.annotation.*;
+import service.*;
 /**
  *
  * @author Jesse
  */
+
+@EntityJesse(entityName = Klant.class)
+@TableJesse
 public class Klant {
 int    klant_id;
 String voornaam;
@@ -20,12 +25,14 @@ String achternaam;
 String tussenvoegsel;
 String email;
 
+
 public Klant() {}
 
 
 public int getKlant_id() {
     	return klant_id;
 }
+
 public void setKlant_id(int klant_id) {
 	this.klant_id = klant_id;
 }
