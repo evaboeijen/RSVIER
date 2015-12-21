@@ -1,5 +1,8 @@
 package business;
 
+import annotations.*;
+
+@Entity(entityName="Bestelling")
 
 public class Bestelling {
 	private int bestelling_id;
