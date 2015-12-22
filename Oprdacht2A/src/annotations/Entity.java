@@ -7,10 +7,6 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Entity {
 	
-	String entityName();
-
-	//zinnige code
-	
-	
+	String value() default "";
 
 }
