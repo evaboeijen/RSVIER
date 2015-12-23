@@ -9,17 +9,22 @@ import java.util.Scanner;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
-import java.lang.annotation.*;
-import service.*;
-/**
- *
- * @author Jesse
- */
+import annotations.*;
 
-@EntityJesse(entityName = Klant.class)
-@TableJesse
+import java.lang.annotation.*;
+
+
+
+@Entity
+@Table
 public class Klant {
-int    klant_id;
+	
+
+@Column
+@Id
+int klant_id;
+
+@Column
 String voornaam;
 String achternaam;
 String tussenvoegsel;
@@ -32,6 +37,7 @@ public Klant() {}
 public int getKlant_id() {
     	return klant_id;
 }
+
 
 public void setKlant_id(int klant_id) {
 	this.klant_id = klant_id;
@@ -65,6 +71,7 @@ public void setTussenvoegsel(String tussenvoegsel) {
 public String getEmail() {
 	return email;
 }
+
 
 public void setEmail(String email) {
 	EmailValidator emailValidator = EmailValidator.getInstance();

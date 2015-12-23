@@ -1,10 +1,10 @@
 package service;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.*;
 
+@Inherited
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TableJesse {
 
-	String tableName() default "";
+	String value() default "";
 }

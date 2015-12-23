@@ -6,15 +6,15 @@ import business.*;
 
 public class EntityJesseAnnotationParser {
 	
-	public void parse(Class<?> clazz) {
-	     
-		Class<?> entityNaam = null;
-		  try {   
+	public String parse(Class<?> clazz) {
+		String entityNaam = null;
+		
+		 try {   
 		         EntityJesse entityJesse = clazz.getAnnotation(EntityJesse.class);
 		            
-		         entityNaam = entityJesse.entityName();
+		         entityNaam = entityJesse.value();
 		         
-		         System.out.println(entityNaam);
+		         //System.out.println(entityNaam);
 		            
 		            
 		      } catch(Exception e){
@@ -22,6 +22,7 @@ public class EntityJesseAnnotationParser {
 		 	     System.out.println("AnnotationEntityNotFoundException for " + clazz.getSimpleName());
 		 	     e.printStackTrace();
 		      }	
+		 	return entityNaam;
 		 }
 }
 		
