@@ -49,9 +49,7 @@ public class ColumnParser {
 		 						logger.info("tempArray[i][j] :" + tempArray[i][j]);
 		 						 logger.info("waarde van i is" + i);
 		 						 logger.info("waarde van j is" + j);
-		 					} /*else {
-		 						i--;
-		 					} */
+		 				}
 			 			
 			 		}else{	
 			 			if(!fields[i].isAnnotationPresent(Id.class) && fields[i].getType().isPrimitive() || (fields[i].getType()+ "").contains("String")){
@@ -60,9 +58,10 @@ public class ColumnParser {
 		 				 logger.info("waarde van i is" + i);
 		 				 logger.info("waarde van j is" + j);
 		 				
-			 			}else if (!fields[i].isAnnotationPresent(Id.class)){
+			 			}else if (!fields[i].getType().isPrimitive()){
 			 				throw new Exception("DataTypeNotSupportedException"); 
-			 			}
+			 			} 
+			 		
 			 		}
 			 		
 			 		}

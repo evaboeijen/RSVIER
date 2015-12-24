@@ -26,7 +26,7 @@ public String createTable(Object object){
 	
 	
 	String createTable = "CREATE TABLE " + sqlTableName + "(" + primaryKey + 
-			" INT(11) NOT NULL AUTO_INCREMENT ";
+			" INT(11) NOT NULL AUTO_INCREMENT, ";
 	
 	ColumnParser columnParser = new ColumnParser();
 	String[][] columnNamesAndTypes = columnParser.parse(clazz);
@@ -36,14 +36,20 @@ public String createTable(Object object){
 		for(int j = 0; j < columnNamesAndTypes[i].length; j++){
 			
 			if (j==0){
-			
+				if(columnNamesAndTypes[i][j] == null){
+					//doNothing
+				}else{
 				tussenString+= columnNamesAndTypes[i][j] + " ";
+				}
 			}else {
-					
-					if(columnNamesAndTypes[i][j].contains("String")){
+					if(columnNamesAndTypes[i][j] == null){
+						//doNothing
+					}
+					else if(columnNamesAndTypes[i][j].contains("String")){
 						tussenString += "VARCHAR(45), ";
 					}else if (columnNamesAndTypes[i][j].contains("long")|| (columnNamesAndTypes[i][j].contains("int"))){
 						tussenString += "INT(11), ";
+					
 					}
 					else {	
 					 tussenString+= columnNamesAndTypes[i][j] + ", ";
