@@ -23,17 +23,15 @@ public class ColumnParser {
 		int i = 0;
 		int j = 0;
 			
-		 try {   
+		try {   
 		 
-			 	for(i=0; i < numberOfFields; i++ ) {			 				 		
-			 		for(j=0; j < 2; j++ ){
+			 for(i=0; i < numberOfFields; i++ ) {			 				 		
+			 	for(j=0; j < 2; j++ ){
 		 			
 			 		if (j==0){	
 			 			
 			 			if (!fields[i].isAnnotationPresent(Id.class) && fields[i].isAnnotationPresent(Column.class)) {
-		 					logger.info("!fields[i].isAnnotationPresent(Id.class): "+ !fields[i].isAnnotationPresent(Id.class));
-		 					 logger.info("waarde van i is" + i);
-		 					 logger.info("waarde van j is" + j);
+		 					
 		 					Column column = fields[i].getAnnotation(Column.class);
 		 						if("".equals(column.value())){
 					        	tempArray[i][j] = fields[i].getName(); 
@@ -41,32 +39,22 @@ public class ColumnParser {
 					    	     tempArray[i][j] = column.value();
 						 		}
 		 					
-		 					logger.info("tempArray[i][j] :" + tempArray[i][j]);	
-		 					 logger.info("waarde van i is" + i);
-		 					 logger.info("waarde van j is" + j);
 		 				}else if (!fields[i].isAnnotationPresent(Id.class)){
 		 						tempArray[i][j] = fields[i].getName();
-		 						logger.info("tempArray[i][j] :" + tempArray[i][j]);
-		 						 logger.info("waarde van i is" + i);
-		 						 logger.info("waarde van j is" + j);
+		 						
 		 				}
 			 			
 			 		}else{	
 			 			if(!fields[i].isAnnotationPresent(Id.class) && fields[i].getType().isPrimitive() || (fields[i].getType()+ "").contains("String")){
 			 			tempArray[i][j] = ""+fields[i].getType();
-		 				logger.info("tempArray[i][j] :" + tempArray[i][j]);
-		 				 logger.info("waarde van i is" + i);
-		 				 logger.info("waarde van j is" + j);
 		 				
 			 			}else if (!fields[i].getType().isPrimitive()){
 			 				throw new Exception("DataTypeNotSupportedException"); 
-			 			} 
-			 		
-			 		}
-			 		
+			 				} 
 			 		}
 			 	}
-			 }catch(Exception e){
+			 }
+		}catch(Exception e){
 		            	
 		 	     //System.out.println("DataTypeNotSupportedException");
 		 	     e.printStackTrace();

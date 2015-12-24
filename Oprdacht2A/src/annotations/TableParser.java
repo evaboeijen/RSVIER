@@ -1,8 +1,12 @@
 package annotations;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TableParser {
 
+	private static final Logger logger =  LoggerFactory.getLogger(TableParser.class);
+	
 	public String parse(Class<?> clazz) {
 	     // Method[] methods = clazz.getMethods();
 		String tabelNaam = null;
@@ -28,9 +32,10 @@ public class TableParser {
 			
 		 } catch(Exception e){
           	
-		 	     System.out.println("AnnotationTableNotFoundException for " + clazz.getSimpleName());
+		 	    // System.out.println("AnnotationTableNotFoundException for " + clazz.getSimpleName());
 		 	    e.printStackTrace();
 		        }
+		 logger.info("String tabelNaam is: ");
 		 			return tabelNaam;
 	      }
 }
