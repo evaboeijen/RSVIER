@@ -38,7 +38,8 @@ public class BestellingDaoImpl_jUnitTest {
 	@Test
 	public void testInitializeDB() {
 		
-		BestellingDaoImpl testBestellingDaoImpl = new BestellingDaoImpl();
+		DaoImplKeuze daoImplKeuze = new DaoImplKeuze();		
+		BestellingDaoImpl testBestellingDaoImpl = daoImplKeuze.BestellingDaoImplKeuze(); 
 		testBestellingDaoImpl.initializeDB();		
 		assertNotNull("Connection should not be null", testBestellingDaoImpl.connection );
 		
@@ -46,7 +47,8 @@ public class BestellingDaoImpl_jUnitTest {
 
 	@Test
 	public void testCreate() {
-		BestellingDaoImpl testBestellingDaoImpl = new BestellingDaoImpl();
+		DaoImplKeuze daoImplKeuze = new DaoImplKeuze();		
+		BestellingDaoImpl testBestellingDaoImpl = daoImplKeuze.BestellingDaoImplKeuze(); 
 		Bestelling testBestelling = new Bestelling(9000, 9000, 9000, "test jUnit artikel1", 9000, 9000.99);	
 		testBestellingDaoImpl.initializeDB();
 		assertEquals("Number of rows created is 1", 1, testBestellingDaoImpl.create(testBestelling));
@@ -57,7 +59,8 @@ public class BestellingDaoImpl_jUnitTest {
 		
 	@Test
 	public void testRead() {
-		BestellingDaoImpl testBestellingDaoImpl = new BestellingDaoImpl();
+		DaoImplKeuze daoImplKeuze = new DaoImplKeuze();		
+		BestellingDaoImpl testBestellingDaoImpl = daoImplKeuze.BestellingDaoImplKeuze(); 
 		testBestellingDaoImpl.initializeDB();
 		assertEquals("Number of rows is 3", 3 , testBestellingDaoImpl.read().size());
 		testBestellingDaoImpl.closeDBConnection();
@@ -65,7 +68,8 @@ public class BestellingDaoImpl_jUnitTest {
 
 	@Test
 	public void testUpdate() {
-		BestellingDaoImpl testBestellingDaoImpl = new BestellingDaoImpl();
+		DaoImplKeuze daoImplKeuze = new DaoImplKeuze();		
+		BestellingDaoImpl testBestellingDaoImpl = daoImplKeuze.BestellingDaoImplKeuze(); 
 		Bestelling testBestelling = new Bestelling(1111, 6969, 6969, "jUnit test update method", 6969, 6969.99);	
 		testBestellingDaoImpl.initializeDB();
 		assertEquals("Number of rows created is 1", 1, testBestellingDaoImpl.update(testBestelling));
@@ -74,7 +78,8 @@ public class BestellingDaoImpl_jUnitTest {
 
 	@Test
 	public void testDelete() {
-		BestellingDaoImpl testBestellingDaoImpl = new BestellingDaoImpl();
+		DaoImplKeuze daoImplKeuze = new DaoImplKeuze();		
+		BestellingDaoImpl testBestellingDaoImpl = daoImplKeuze.BestellingDaoImplKeuze(); 
 		Bestelling testBestelling = new Bestelling(9000);
 		testBestellingDaoImpl.initializeDB();
 		assertEquals("Number of rows deleted is 1", 1, testBestellingDaoImpl.delete(testBestelling));
@@ -83,23 +88,26 @@ public class BestellingDaoImpl_jUnitTest {
 
 	@Test
 	public void testCloseDBConnection() {
-		BestellingDaoImpl testBestellingDaoImpl = new BestellingDaoImpl();
+		DaoImplKeuze daoImplKeuze = new DaoImplKeuze();		
+		BestellingDaoImpl testBestellingDaoImpl = daoImplKeuze.BestellingDaoImplKeuze(); 
 		testBestellingDaoImpl.closeDBConnection();		
 		assertNull("Connection should be null again", testBestellingDaoImpl.connection );
 	}
 
 	@Test
 	public void testHashCode() {
-		BestellingDaoImpl testBestellingDaoImpl1 = new BestellingDaoImpl();
-		BestellingDaoImpl testBestellingDaoImpl2 = testBestellingDaoImpl1;
+		DaoImplKeuze daoImplKeuze = new DaoImplKeuze();		
+		BestellingDaoImpl testBestellingDaoImpl1 = daoImplKeuze.BestellingDaoImplKeuze(); 
+		BestellingDaoImpl testBestellingDaoImpl2 = daoImplKeuze.BestellingDaoImplKeuze(); 
 		assertTrue( "HashCodes should be equal", testBestellingDaoImpl1.hashCode() == testBestellingDaoImpl2.hashCode() );
 		
 	}
 
 	@Test
 	public void testEquals() {	
-		BestellingDaoImpl testBestellingDaoImpl1 = new BestellingDaoImpl();
-		BestellingDaoImpl testBestellingDaoImpl2 = testBestellingDaoImpl1;
+		DaoImplKeuze daoImplKeuze = new DaoImplKeuze();		
+		BestellingDaoImpl testBestellingDaoImpl1 = daoImplKeuze.BestellingDaoImplKeuze(); 
+		BestellingDaoImpl testBestellingDaoImpl2 = daoImplKeuze.BestellingDaoImplKeuze(); 
 		assertEquals("These should be equal", testBestellingDaoImpl1, testBestellingDaoImpl2);
 	}
 

@@ -25,7 +25,8 @@ public abstract class BestellingDaoImpl implements BestellingDao {
 	String queryUpdateAantallen = null;
 	
 		 
-	/* public void initializeDB() {			oude methode die niet meer gebruikt wordt 
+	// oude methode die niet meer gebruikt wordt - AU 24/12/15
+	public void initializeDB() {			
 			
 		
 	
@@ -54,7 +55,7 @@ public abstract class BestellingDaoImpl implements BestellingDao {
 	            e.printStackTrace();
 	             
 	        }
-	    } */
+	    } 
 	    
 	@Override
 	public int create(Bestelling bestelling){
@@ -496,8 +497,8 @@ public int updateAantallen(Bestelling bestelling) {		// added 29-11-15 AU
 
 		
 		
-	     
-	 /* public void closeDBConnection(){
+	//oude methode die niet meer gebruikt wordt - 14/12/15 AU */   
+	 public void closeDBConnection(){
 	        try {
 	        		Connection connection = DBConnectivityManagement.getConnectionStatus();
 	        	
@@ -511,7 +512,7 @@ public int updateAantallen(Bestelling bestelling) {		// added 29-11-15 AU
 	        }
 	        
 	        
-	 } 	oude methode die niet meer gebruikt wordt - 14/12/15 AU */ 
+	 } 	
 	 
 	 
 }
