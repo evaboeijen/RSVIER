@@ -1,16 +1,46 @@
-package annotations;
+
 
 import java.lang.reflect.Field;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import service.Reflection;
-import service.TableJesse;
+import annotations.ColumnParser;
+import annotations.IdParser;
+import annotations.TableParser;
+import business.*;
 
-public class AnnotationReflectionTest {
+
+
+public class AnnotationOpdracht {
 	
-	private static final Logger logger =  LoggerFactory.getLogger(AnnotationReflectionTest.class);
+	private static final Logger logger =  LoggerFactory.getLogger(AnnotationOpdracht.class);
+	
+	public static void main(String[] args){
+		Klant klant = new Klant();
+		AnnotationOpdracht annotationOpdracht = new AnnotationOpdracht();
+		System.out.println("Create Table query voor klasse Klant: ");
+		System.out.println(annotationOpdracht.createTable(klant));
+		System.out.println();
+		
+		Artikel artikel = new Artikel();
+		System.out.println("Create Table query voor klasse Artikel: ");
+		System.out.println(annotationOpdracht.createTable(artikel));
+		System.out.println();
+		
+		klant.setVoornaam("Test");
+		klant.setTussenvoegsel("de");
+		klant.setAchternaam("AnnotationQuery");
+		klant.setEmail("Annotation@email.com");
+		System.out.println("buildInsertStatement query voor een nieuwe Klant: ");
+		System.out.println(annotationOpdracht.buildInsertStatement(klant));
+		System.out.println();
+		
+		artikel.setArtikel_naam("Java boek");
+		artikel.setArtikel_prijs(49.95);
+		System.out.println("buildInsertStatement query voor een nieuw Artikel: ");
+		System.out.println(annotationOpdracht.buildInsertStatement(artikel));	 
+	}
 	
 	
 public String createTable(Object object){

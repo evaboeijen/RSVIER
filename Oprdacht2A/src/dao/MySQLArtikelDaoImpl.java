@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 public class MySQLArtikelDaoImpl extends ArtikelDaoImpl{
 	
-	private static final Logger logger =  LoggerFactory.getLogger(KlantDaoImpl.class);
+	private static final Logger logger =  LoggerFactory.getLogger(MySQLArtikelDaoImpl.class);
 	
 	@Override
 	public List<Artikel> read(){
@@ -24,10 +24,10 @@ public class MySQLArtikelDaoImpl extends ArtikelDaoImpl{
 		return super.read(artikel);
 	}
 	
-	@Override
+	/*@Override
 	public Artikel readArtikel(int bestelling_id, int artikel_id){
 		return super.readArtikel(bestelling_id, artikel_id);
-	}
+	}*/
 	
 	@Override
 	public void create(Artikel artikel){

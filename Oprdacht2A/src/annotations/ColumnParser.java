@@ -78,28 +78,6 @@ public class ColumnParser {
 		 return tempArray;
 		 }
 	
-	
-	public static void main(String[] args){
-		Klant klant = new Klant();
-		AnnotationReflectionTest testCreateTable = new AnnotationReflectionTest();
-		testCreateTable.createTable(klant);
-		
-		//ColumnParser columnParser = new ColumnParser();
-		//String[][] test = columnParser.parse(Klant.class);
-		//System.out.println(test.toString());
-		
-		/*EntityParser entityParser = new EntityParser();
-		String test2 = entityParser.parse(Klant.class);
-		System.out.println(test2);
-		
-		IdParser idParser = new IdParser();
-		String test3 = idParser.parse(Klant.class);
-		System.out.println(test3);
-		
-		TableParser tableParser = new TableParser();
-		String test4 = tableParser.parse(Klant.class);
-		System.out.println(test4);*/				
-		
-	}
+
 }
 

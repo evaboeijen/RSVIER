@@ -131,7 +131,7 @@ private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.cla
     }
 
 
-@Override
+/*@Override
 public Artikel readArtikel(int bestelling_id, int artikel_id){
 
 	logger.info("readArtikel(int bestelling_id, int artikel_id) methode start voor bestelling_id: " + bestelling_id + " en artikel_id: " + artikel_id);
@@ -162,7 +162,7 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 	            }
 	            
 	            result.close();
-	            preparedStatement.close();
+	            preparedStatement.close();*/
 	            
 	            
 	            //while(result.next()){
@@ -218,13 +218,13 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 	            //}
 	            
 	            
-        }catch (SQLException e){
+       /* }catch (SQLException e){
         	logger.warn("SQL Exception voor readArtikel(int bestelling_id, int artikel_id) methode");
         	e.printStackTrace();
         }
         logger.info("readArtikel(int bestelling_id, int artikel_id) methode voor bestelling_id: " + bestelling_id + " en artikel_id: " + artikel_id + " is beeindigd");
         return artikel;
-}
+}*/
 
   
    @Override

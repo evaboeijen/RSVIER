@@ -22,8 +22,8 @@ public class ReadMenu {
 		System.out.println("5. Read:   Adres            Zoeken op straatnaam");
 		System.out.println("6. Read:   Adres            Zoeken op de combinatie van postcode & huisnummer");
 		System.out.println("7. Read:   Artikel      Volledige tabel");
-		System.out.println("8. Read:   Artikel          Zoeken op de combinatie van bestellingnummer & artikelnummer");
-		System.out.println("9. Read:   Bestelling   Volledige tabel\n");
+		//System.out.println("8. Read:   Artikel          Zoeken op de combinatie van bestellingnummer & artikelnummer");
+		System.out.println("8. Read:   Bestelling   Volledige tabel\n");
 
 		System.out.println("10. Terug naar het vorige menu"); 
 		System.out.println("11. Terug naar het hoofdmenu"); 
@@ -108,16 +108,16 @@ public class ReadMenu {
         			toonMenu();
         			break;
 
-            	case 8:/*Artikel --> artikelnummer & bestellingnummer*/
+            	/*case 8://Artikel --> artikelnummer & bestellingnummer
             		System.out.println("Voer het artikelnummer in: ");
             		int artikel_id = input.nextInt();										// controle geldig artikel id dmv methode
             		System.out.println("Voer het bestellingnummer in ");
             		int bestelling_id = input.nextInt();
             			System.out.println(dbArtikel.readArtikel(bestelling_id, artikel_id));
             		toonMenu();
-            		break;
+            		break;*/
             		
-            	case 9:/*Bestelling --> voledige tabel*/
+            	case 8:/*Bestelling --> voledige tabel*/
             		System.out.println(dbBestelling.read());
             		toonMenu();
             		break;

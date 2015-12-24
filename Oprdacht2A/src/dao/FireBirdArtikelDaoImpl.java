@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 public class FireBirdArtikelDaoImpl extends ArtikelDaoImpl {
 	
-	private static final Logger logger =  LoggerFactory.getLogger(KlantDaoImpl.class);
+	private static final Logger logger =  LoggerFactory.getLogger(FireBirdArtikelDaoImpl.class);
 	
 	
 	@Override
@@ -25,10 +25,10 @@ public class FireBirdArtikelDaoImpl extends ArtikelDaoImpl {
 		return super.read(artikel);
 	}
 	
-	@Override
+	/*@Override
 	public Artikel readArtikel(int bestelling_id, int artikel_id){
 		return super.readArtikel(bestelling_id, artikel_id);
-	}
+	}*/
 	
 	@Override
 	public void create(Artikel artikel){

@@ -1,11 +1,22 @@
 package business;
 
+import annotations.*;
+
+@Entity
+@Table
 public class Artikel {
-int     bestelling_id;
-int     klant_id;
+/*int     bestelling_id;
+int     klant_id;*/
+
+@Id
+@Column
 int 	artikel_id;
+
+@Column
 String 	artikel_naam;
-int 	artikel_aantal;
+//int 	artikel_aantal;
+
+@Column
 double 	artikel_prijs; 
 
 //int    artikel1_id;
@@ -24,7 +35,7 @@ double 	artikel_prijs;
 public Artikel(){
 }
 
-public int getBestelling_id() {
+/*public int getBestelling_id() {
 		return bestelling_id;
 	}
 	
@@ -39,7 +50,7 @@ public int getKlant_id() {
 
 public void setKlant_id(int klant_id) {
 	this.klant_id = klant_id;
-}
+}*/
  
 public int getArtikel_id() {
 	return artikel_id;
@@ -57,13 +68,13 @@ public void setArtikel_naam(String artikel_naam) {
 	this.artikel_naam = artikel_naam;
 }
 
-public int getArtikel_aantal() {
+/*public int getArtikel_aantal() {
 	return artikel_aantal;
 }
 
 public void setArtikel_aantal(int artikel_aantal) {
 	this.artikel_aantal = artikel_aantal;
-}
+}*/
 
 public double getArtikel_prijs() {
 	return artikel_prijs;
@@ -82,7 +93,7 @@ return 	"\nArtikel Id: " + artikel_id +
 }
 
 public int hashCode(){
-return (int) bestelling_id * artikel_id;
+return (int)  artikel_id;
 }
 }
 
