@@ -48,21 +48,8 @@ public class DeleteMenu  {
 	
 
 	public void toonMenu() {
-	    System.out.println("\t-------------");
-	    System.out.println("\tDelete  Menu");
-	    System.out.println("\t-------------");
-	    System.out.println("1. Delete het adres van een bestaande klant");  
-	    System.out.println("2. Delete een artikel van een bestaande bestelling");  
-	    System.out.println("3. Delete een bestaande bestelling");
-	    System.out.println("4. Delete een artikel uit het assortiment");
-	    System.out.println("5. Delete een klant");  		 
-	    System.out.println();	    
-	    System.out.println("10. Terug naar het vorige menu");
-	    System.out.println("11. Terug naar het hoofdmenu"); 
-	    System.out.println("12. Stoppen"); 
-	    System.out.println();
-	    System.out.print("Voer optie in en druk op Enter:");
-		
+	    
+		logger.info("applicatielogica van DeleteMenu() methode wordt aangeroepen");
 	    
 	    try {
 			DaoImplKeuze daoKeuze = new DaoImplKeuze();
@@ -112,7 +99,9 @@ public class DeleteMenu  {
             	teWissenAdres.setWoonplaats("-");
                 	               			
                 dbAdres.deleteAdres(teWissenAdres);
-            
+                
+                CrudMenu crudmenu = new CrudMenu();
+        		crudmenu.viewDeleteMenu();           
             	toonMenu();
             	break;
             			           		          		
@@ -246,6 +235,8 @@ public class DeleteMenu  {
         			// zinnige code
         		}
 
+                CrudMenu crudmenu2 = new CrudMenu();
+        		crudmenu2.viewDeleteMenu();  
             	toonMenu();          			   			  		          		
             	break; 	
             		
@@ -292,6 +283,8 @@ public class DeleteMenu  {
             	teverwijderenBestelling.setBestelling_id(gewensteBestelling_id);         		
             	dbBestelling.delete(teverwijderenBestelling);
             
+                CrudMenu crudmenu3 = new CrudMenu();
+        		crudmenu3.viewDeleteMenu();  
             	toonMenu();
             	break; 
                 	
@@ -341,6 +334,8 @@ public class DeleteMenu  {
             	artikel.setArtikel_id(gewensteArtikel_id);
             	dbArtikel.delete(artikel);
             	
+                CrudMenu crudmenu4 = new CrudMenu();
+        		crudmenu4.viewDeleteMenu();  
             	toonMenu();
             	break; 
             	
@@ -365,14 +360,16 @@ public class DeleteMenu  {
                 			               
                 teWissenKlant.setKlant_id(gewensteKlant_id);
                 dbKlant.delete(teWissenKlant);
-       
+                
+                CrudMenu crudmenu5 = new CrudMenu();
+        		crudmenu5.viewDeleteMenu();  
                 toonMenu();
                 break;
             		            
             		
         		case 10:
-            	CrudMenu crudmenu = new CrudMenu();
-            	crudmenu.toonMenu();
+            	CrudMenu crudmenu6 = new CrudMenu();
+            	crudmenu6.toonMenu();
             	break;
             		
         		case 11:

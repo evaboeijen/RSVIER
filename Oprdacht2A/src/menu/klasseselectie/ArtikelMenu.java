@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 public class ArtikelMenu {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ArtikelMenu.class);
+	
 	DaoImplKeuze daoImplKeuze = new DaoImplKeuze();
 	ArtikelDaoImpl artikelDaoImpl = daoImplKeuze.ArtikelDaoImplKeuze();
 	Artikel artikel = new Artikel();
@@ -20,29 +21,10 @@ public class ArtikelMenu {
 	DTO dto = new DTO();
 	int artikel_id = 0;
 	
+	
 public void toonMenu() {
 		
-	    System.out.println("\t------------");
-	    System.out.println("\tArtikel Menu");
-	    System.out.println("\t------------");
-	   
-	    System.out.println("");
-	    
-	    System.out.println("1. Create:      Voeg een nieuw artikel toe aan het assortiment");
-	    System.out.println("2. Read:        Bekijk alle artikelen uit het assortiment");
-	    System.out.println("3. Update:      Verander de gegevens van een bestaand artikel");
-	    System.out.println("4. Delete:      Verwijder een artikel uit het assortiment");    
-
-	    System.out.println("");
-	    
-	    System.out.println("10. Terug naar het vorige menu"); 	
-	    System.out.println("11. Terug naar het hoofdmenu"); 	
-	    System.out.println("12. Stoppen"); 						
-	    
-	    System.out.println("");
-	    
-	    System.out.println("Voer optie in en druk op Enter:");
-	    
+		logger.info("applicatielogica van ArtikelMenu() methode wordt aangeroepen");
 	    
 	    Scanner input = new Scanner(System.in);    
 		int keuze = input.nextInt();
@@ -53,10 +35,11 @@ public void toonMenu() {
             	case 1:
             		artikel = dto.createArtikelObject();
             		artikelDaoImpl.create(artikel);
-            		
-            		
-            		toonMenu(); 	   			  		          		
-            		break; 
+            		          		
+                    KlasseSelectieMenu klasseselectiemenu = new KlasseSelectieMenu();
+                    klasseselectiemenu.viewArtikelMenu();                    		
+            		toonMenu();
+            		break;
             		
     
             	case 2:
@@ -64,6 +47,8 @@ public void toonMenu() {
             		System.out.println("De volgende artikellen zitten in het assortiment: ");
             		artikelDaoImpl.read();
             		
+                    KlasseSelectieMenu klasseselectiemenu2 = new KlasseSelectieMenu();
+                    klasseselectiemenu2.viewArtikelMenu();                    		
             		toonMenu();
             		break;
                 
@@ -86,6 +71,8 @@ public void toonMenu() {
             		
             		System.out.println("De artikel gegevens zijn aangepast");
             		
+                    KlasseSelectieMenu klasseselectiemenu3 = new KlasseSelectieMenu();
+                    klasseselectiemenu3.viewArtikelMenu();                    		
             		toonMenu();
             		break;
                 	
@@ -105,6 +92,8 @@ public void toonMenu() {
             	           		
             		artikelDaoImpl.delete(artikel);
 
+                    KlasseSelectieMenu klasseselectiemenu4 = new KlasseSelectieMenu();
+                    klasseselectiemenu4.viewArtikelMenu();                    		
             		toonMenu();
             		break;
             	

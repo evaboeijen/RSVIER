@@ -1,15 +1,24 @@
 package menu.klasseselectie;
 
 import java.util.Scanner;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import business.Adres;
 import dao.AdresDaoImpl;
 import dao.DaoImplKeuze;
 import dao.FireBirdAdresDaoImpl;
 import dao.MySQLAdresDaoImpl;
 import menu.*;
+import menu.crud.CrudMenu;
+import menu.crud.ReadMenu;
 import service.*;
 
 public class AdresMenu {
+	
+	private static final Logger logger = LoggerFactory.getLogger(AdresMenu.class);
+	
 	MySQLAdresDaoImpl mySQLAdresDaoImpl = new MySQLAdresDaoImpl();
 	FireBirdAdresDaoImpl fireBirdAdresDaoImpl = new FireBirdAdresDaoImpl();
 	Check check = new Check();
@@ -18,25 +27,10 @@ public class AdresMenu {
 	Scanner input = new Scanner(System.in);
 
 	public void toonMenu() {
+			
+		logger.info("applicatielogica van AdresMenu() methode wordt aangeroepen");
+		
 		Adres adres = null;
-
-		System.out.println("\n\t----------");
-	    System.out.println("\tAdres Menu");
-	    System.out.println("\t----------\n");
-
-	    System.out.println("1. Create:      Creëer een nieuw adres voor bestaande klant");
-	    System.out.println("2. Read:        Lees alle adressen uit de tabel");
-	    System.out.println("3. Read:        Zoek op straatnaam");
-	    System.out.println("4. Read:        Zoek op de combinatie van postcode & huisnummer");
-	    System.out.println("5. Read:        Zoek op klantnummer");
-	    System.out.println("6. Update:      Verander het adres van een bestaande klant");
-	    System.out.println("7. Delete:      Verwijder het adres van een bestaande klant\n");    
-
-	    System.out.println("10. Terug naar het vorige menu"); 
-	    System.out.println("11. Terug naar het hoofdmenu"); 
-	    System.out.println("12. Stoppen\n");
-
-	    System.out.println("Voer optie in en druk op Enter:");
 
 	    try {
 	    	int keuze = input.nextInt();
@@ -54,11 +48,16 @@ public class AdresMenu {
             		System.out.println("Voer het nieuw toetevoegen adres in: ");
             			adres = dto.createAdresObject();
             				 dbAdres.insert(adres);
+            				 
+                    KlasseSelectieMenu klasseselectiemenu = new KlasseSelectieMenu();
+                    klasseselectiemenu.viewAdresMenu();                    		
             		toonMenu();
             		break;
                 
             	case 2://Read --> alle adresen
             		dbAdres.readAllAdresses();
+                    KlasseSelectieMenu klasseselectiemenu2 = new KlasseSelectieMenu();
+                    klasseselectiemenu2.viewAdresMenu();                    		
             		toonMenu();
             		break;
                 
@@ -70,8 +69,10 @@ public class AdresMenu {
             					straatnaam = input.next();
             			}
             			dbAdres.searchAdres(straatnaam);
-            		toonMenu();
-            		break;
+                        KlasseSelectieMenu klasseselectiemenu3 = new KlasseSelectieMenu();
+                        klasseselectiemenu3.viewAdresMenu();                    		
+                		toonMenu();
+                		break;
                 	
             	case 4://Read --> postcode & huisnummer
             		System.out.println("Voer de postcode in, zonder spatie: ");
@@ -87,30 +88,38 @@ public class AdresMenu {
             					huisnummer = input.nextInt();
             			}
             			dbAdres.searchAdres(postcode, huisnummer);
-            		toonMenu();
-            		break;
+                        KlasseSelectieMenu klasseselectiemenu4 = new KlasseSelectieMenu();
+                        klasseselectiemenu4.viewAdresMenu();                    		
+                		toonMenu();
+                		break;
             	
             	case 5: //Read --> alle adressen bij klantnummer
             		System.out.println("Voer klantnummer in waarvan u alle adressen wilt weergeven: ");
             				klant_id = input.nextInt();            		
             				dbAdres.readAdressesFromKlant(klant_id);
-            		toonMenu();
-            		break;
+                            KlasseSelectieMenu klasseselectiemenu5 = new KlasseSelectieMenu();
+                            klasseselectiemenu5.viewAdresMenu();                    		
+                    		toonMenu();
+                    		break;
             		
             	case 6://Update --> adres
             		System.out.println("Voer de gegevens in van het bij te werken adres ");
             			adres = dto.createAdresObject();
             			dbAdres.updateAdres(adres);
-            		toonMenu();
-            		break;
+                        KlasseSelectieMenu klasseselectiemenu6 = new KlasseSelectieMenu();
+                        klasseselectiemenu6.viewAdresMenu();                    		
+                		toonMenu();
+                		break;
             	
             	case 7://Delete --> adres
             		System.out.println("Voer klantnummer van het te verwijderen adres in: ");
             			klant_id = input.nextInt();
             			adres = new Adres(klant_id, "-", "-", "-", 1, "-");
             			dbAdres.deleteAdres(adres);
-            		toonMenu();
-            		break;
+                        KlasseSelectieMenu klasseselectiemenu7 = new KlasseSelectieMenu();
+                        klasseselectiemenu7.viewAdresMenu();                    		
+                		toonMenu();
+                		break;
             	
             	
             	

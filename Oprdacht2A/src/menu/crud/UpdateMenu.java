@@ -19,28 +19,17 @@ import org.slf4j.LoggerFactory;
 
 public class UpdateMenu {
 	
-	private static final Logger logger = LoggerFactory.getLogger(CreateMenu.class);
+	private static final Logger logger = LoggerFactory.getLogger(UpdateMenu.class);
 	
 	DaoImplKeuze daoImplKeuze = new DaoImplKeuze();
 	Check check = new Check();
 	
 	
 	public void toonMenu() {
-	    System.out.println("\t----------");
-	    System.out.println("\tUpdate Menu");
-	    System.out.println("\t----------");
-	    System.out.println("1. Update klant");
-	    System.out.println("2. Update adres");
-	    System.out.println("3. Update bestelling");
-	    System.out.println("4, Update artikel");
-   
-	    	    
-	    System.out.println("10. Terug naar het vorige menu"); 
-	    System.out.println("11. Terug naar het hoofdmenu"); 
-	    System.out.println("12. Stoppen"); 
-	    System.out.print("Voer optie in en druk op Enter:");
+		
+		logger.info("applicatielogica van UpdateMenu() methode wordt aangeroepen");
 	    
-	   Scanner input = new Scanner(System.in);		     
+		Scanner input = new Scanner(System.in);		     
             
 			int keuze = input.nextInt();
 			logger.info("Gebruiker koos voor optie: " + keuze);
@@ -70,9 +59,10 @@ public class UpdateMenu {
     				updateKlantDaoImpl.update(updateKlant);
     				
     				System.out.println("Uw gegevens zijn aanpast");
-            		
-            		toonMenu();
-            		
+    				
+            		CrudMenu crudmenu = new CrudMenu();
+            		crudmenu.viewUpdateMenu();            		
+            		toonMenu();            		
             		break;
                 
             	case 2:
@@ -83,8 +73,10 @@ public class UpdateMenu {
             		dto = new DTO();
         			Adres updateAdres = dto.createAdresObject();
         			updateAdresDaoImpl.updateAdres(updateAdres);
-        			toonMenu();
-        		
+        			
+            		CrudMenu crudmenu2 = new CrudMenu();
+            		crudmenu2.viewUpdateMenu();            		
+            		toonMenu();            		
             		break;
                 
             	case 3:
@@ -213,9 +205,10 @@ public class UpdateMenu {
             			// zinnige code
             		}
   
-                	toonMenu();          			   			  		          		
-                	break; 
-                	
+            		CrudMenu crudmenu3 = new CrudMenu();
+            		crudmenu3.viewUpdateMenu();            		
+            		toonMenu();            		
+            		break;
               
             	case 4:
             		System.out.println("U kunt de artikelgegevens wijzigen. Voer het artikelnummer in, en druk op enter");
@@ -230,8 +223,10 @@ public class UpdateMenu {
             		
             		System.out.println("De artikel gegevens zijn aangepast");
             		
-            		toonMenu();          			   			  		          		
-                	break; 
+            		CrudMenu crudmenu4 = new CrudMenu();
+            		crudmenu4.viewUpdateMenu();            		
+            		toonMenu();            		
+            		break;
             	
 		
 	case 10:

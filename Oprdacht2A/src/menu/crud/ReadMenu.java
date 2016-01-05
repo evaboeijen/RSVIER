@@ -2,34 +2,25 @@ package menu.crud;
 
 import dao.*;
 import java.util.Scanner;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import menu.*;
 import menu.klasseselectie.KlasseSelectieMenu;
 import service.Check;
 
 public class ReadMenu {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ReadMenu.class);
+	
 	Scanner input = new Scanner(System.in);
 	int klant_id;
 
 	public void toonMenu() {
-		System.out.println("\n\t---------");
-		System.out.println("\tRead Menu");
-		System.out.println("\t---------\n");
+		
+		logger.info("applicatielogica van ReadMenu() methode wordt aangeroepen");
 
-		System.out.println("1. Read:   Klant        Volledige tabel");
-		System.out.println("2. Read:   Klant            Zoeken op klantnummer");
-		System.out.println("3. Read:   Klant            Zoeken op voornaam");
-		System.out.println("4. Read:   Adres        Volledige tabel");
-		System.out.println("5. Read:   Adres            Zoeken op straatnaam");
-		System.out.println("6. Read:   Adres            Zoeken op de combinatie van postcode & huisnummer");
-		System.out.println("7. Read:   Artikel      Volledige tabel");
-		//System.out.println("8. Read:   Artikel          Zoeken op de combinatie van bestellingnummer & artikelnummer");
-		System.out.println("8. Read:   Bestelling   Volledige tabel\n");
-
-		System.out.println("10. Terug naar het vorige menu"); 
-		System.out.println("11. Terug naar het hoofdmenu"); 
-		System.out.println("12. Stoppen\n"); 
-
-		System.out.print("Voer optie in en druk op Enter:");
 
 		try {
 			DaoImplKeuze daoKeuze = new DaoImplKeuze();
@@ -45,6 +36,8 @@ public class ReadMenu {
 			switch (keuze) {
             	case 1:/*klant --> voledige tabel*/
             		dbKlant.read();
+            		CrudMenu crudmenu = new CrudMenu();
+            		crudmenu.viewReadMenu();
             		toonMenu();
             		break;
 
@@ -56,6 +49,8 @@ public class ReadMenu {
         				klant_id = input.nextInt();
             		}
             		dbKlant.readKlant(klant_id);
+            		CrudMenu crudmenu2 = new CrudMenu();
+            		crudmenu2.viewReadMenu();
             		toonMenu();
             		break;
 
@@ -67,11 +62,15 @@ public class ReadMenu {
             			voornaam = input.next();
             			}
             		dbKlant.readKlant(voornaam);
+            		CrudMenu crudmenu3 = new CrudMenu();
+            		crudmenu3.viewReadMenu();
             		toonMenu();
             		break;
 
             	case 4:/*Adres --> voledige tabel*/
         			dbAdres.readAllAdresses();
+            		CrudMenu crudmenu4 = new CrudMenu();
+            		crudmenu4.viewReadMenu();
             		toonMenu();
             		break;
             		
@@ -83,6 +82,8 @@ public class ReadMenu {
         					straatnaam = input.next();
         			}
         			dbAdres.searchAdres(straatnaam);
+            		CrudMenu crudmenu5 = new CrudMenu();
+            		crudmenu5.viewReadMenu();
         			toonMenu();
         			break;
 
@@ -100,11 +101,15 @@ public class ReadMenu {
         					huisnummer = input.nextInt();
         			}
         			dbAdres.searchAdres(postcode, huisnummer);
+            		CrudMenu crudmenu6 = new CrudMenu();
+            		crudmenu6.viewReadMenu();
         			toonMenu();
         			break;
 
             	case 7:/*Artikel --> voledige tabel*/
         			System.out.println(dbArtikel.read());
+            		CrudMenu crudmenu7 = new CrudMenu();
+            		crudmenu7.viewReadMenu();
         			toonMenu();
         			break;
 
@@ -119,6 +124,8 @@ public class ReadMenu {
             		
             	case 8:/*Bestelling --> voledige tabel*/
             		System.out.println(dbBestelling.read());
+            		CrudMenu crudmenu8 = new CrudMenu();
+            		crudmenu8.viewReadMenu();
             		toonMenu();
             		break;
 

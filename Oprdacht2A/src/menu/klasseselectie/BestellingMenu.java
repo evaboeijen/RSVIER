@@ -43,24 +43,9 @@ public class BestellingMenu  {
 	
 	
 	public void toonMenu() {
-				
-			
-	    System.out.println("\t---------------");
-	    System.out.println("\tBestelling Menu");
-	    System.out.println("\t---------------");
-	    System.out.println("1. Create nieuwe bestelling voor bestaande klant");  
-	    System.out.println("2. Read alle bestellingen");  
-	    System.out.println("3. Update een bestaande bestelling door toevoegen van artikelen");  
-	    System.out.println("4. Update het aantal van een bepaald artikel in een bepaalde bestelling");  
-	    System.out.println("5. Delete een bepaalde bestelling");  
-	    System.out.println("6. Delete een artikel uit een bepaalde bestelling");  
-	    System.out.println();	    
-	    System.out.println("10. Terug naar het vorige menu");
-	    System.out.println("11. Terug naar het hoofdmenu"); 
-	    System.out.println("12. Stoppen"); 
-	    System.out.println();
-	    System.out.print("Voer optie in en druk op Enter:");
-	    
+		
+		logger.info("applicatielogica van BestellingMenu() methode wordt aangeroepen");
+							    
 	    try {
 	    	int keuze = input.nextInt();
 			DaoImplKeuze daoKeuze = new DaoImplKeuze();
@@ -195,8 +180,10 @@ public class BestellingMenu  {
                 		// zinnige code
                 	}                	
 						      			
-                	toonMenu();          			   			  		          		
-                	break; 
+                    KlasseSelectieMenu klasseselectiemenu = new KlasseSelectieMenu();
+                    klasseselectiemenu.viewBestellingMenu();                    		
+            		toonMenu();
+            		break;
                 	
             		          			           		          		            
             	case 2:         		        			
@@ -218,8 +205,10 @@ public class BestellingMenu  {
             			System.out.println();	
             		}
             		
-            		toonMenu(); 	   			  		          		
-            		break; 
+                    KlasseSelectieMenu klasseselectiemenu2 = new KlasseSelectieMenu();
+                    klasseselectiemenu2.viewBestellingMenu();                    		
+            		toonMenu();
+            		break;
             		
                 
             	case 3:
@@ -411,8 +400,10 @@ public class BestellingMenu  {
             			// zinnige code
             		}
   
-                	toonMenu();          			   			  		          		
-                	break; 
+                    KlasseSelectieMenu klasseselectiemenu3 = new KlasseSelectieMenu();
+                    klasseselectiemenu3.viewBestellingMenu();                    		
+            		toonMenu();
+            		break;
                 	
                 	             	
             	case 4:	// added 29-11-15 AU
@@ -533,8 +524,10 @@ public class BestellingMenu  {
             			// zinnige code
             		}
   
-                	toonMenu();          			   			  		          		
-                	break;  	
+                    KlasseSelectieMenu klasseselectiemenu4 = new KlasseSelectieMenu();
+                    klasseselectiemenu4.viewBestellingMenu();                    		
+            		toonMenu();
+            		break;
                 	
 
                 	
@@ -577,8 +570,10 @@ public class BestellingMenu  {
             		teverwijderenBestelling.setBestelling_id(gewensteBestelling_id);            		
             		dbBestelling.delete(teverwijderenBestelling);
             		
-            		toonMenu(); 	   			  		          		
-            		break; 
+                    KlasseSelectieMenu klasseselectiemenu5 = new KlasseSelectieMenu();
+                    klasseselectiemenu5.viewBestellingMenu();                    		
+            		toonMenu();
+            		break;
             
             		
             	case 6:
@@ -702,12 +697,14 @@ public class BestellingMenu  {
             			// zinnige code
             		}
   
-                	toonMenu();          			   			  		          		
-                	break; 	
+                    KlasseSelectieMenu klasseselectiemenu6 = new KlasseSelectieMenu();
+                    klasseselectiemenu6.viewBestellingMenu();                    		
+            		toonMenu();
+            		break;
             		           		          		          		
             	case 10:
-            		KlasseSelectieMenu klasseselectiemenu = new KlasseSelectieMenu();
-            		klasseselectiemenu.toonMenu();
+            		KlasseSelectieMenu klasseselectiemenu7 = new KlasseSelectieMenu();
+            		klasseselectiemenu7.toonMenu();
             		break;
             		
             	case 11:

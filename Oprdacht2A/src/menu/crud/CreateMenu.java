@@ -60,21 +60,8 @@ public class CreateMenu {
 	}
 
 	public void toonMenu() {
-		System.out.println("\t----------");
-	    System.out.println("\tCreate Menu");
-	    System.out.println("\t----------");
-	    System.out.println("1. Create nieuwe klant");
-	    System.out.println("2. Create nieuwe klant met adres");
-	    System.out.println("3. Create adres voor bestaande klant");
-	    System.out.println("4. Create artikel voor bestaande bestelling");
-	    System.out.println("5. Create bestelling voor nieuwe klant");
-	    
-	 
-	    	    
-	    System.out.println("10. Terug naar het vorige menu"); 
-	    System.out.println("11. Terug naar het hoofdmenu"); 
-	    System.out.println("12. Stoppen"); 
-	    System.out.print("Voer optie in en druk op Enter:");
+
+		logger.info("applicatielogica van CreateMenu() methode wordt aangeroepen");
 	    
 	    Scanner input = new Scanner(System.in);	     
         int keuze = input.nextInt();
@@ -85,6 +72,8 @@ public class CreateMenu {
             		            		
             		CreateMenu createMenu = new CreateMenu();
             		createMenu.addKlantToDatabase();
+            		CrudMenu crudmenu = new CrudMenu();
+            		crudmenu.viewCreateMenu();
             		toonMenu();
             		
             		break;
@@ -96,6 +85,8 @@ public class CreateMenu {
     				
     				System.out.println("Nu volgen de adres gegevens: ");
     				createMenu2.addAdresToDatabase();
+    				CrudMenu crudmenu2 = new CrudMenu();
+            		crudmenu2.viewCreateMenu();
     				toonMenu();
     				
             		break;
@@ -104,6 +95,8 @@ public class CreateMenu {
             	case 3:
             		CreateMenu createMenu3 = new CreateMenu();
             		createMenu3.addAdresToDatabase();
+            		CrudMenu crudmenu3 = new CrudMenu();
+            		crudmenu3.viewCreateMenu();
             		toonMenu();
             		
             		break;
@@ -225,6 +218,9 @@ public class CreateMenu {
             			// zinnige code
             		}
   
+            		
+            		CrudMenu crudmenu4 = new CrudMenu();
+            		crudmenu4.viewCreateMenu();
                 	toonMenu();          			   			  		          		
                 	break; 
                 	
@@ -303,7 +299,9 @@ public class CreateMenu {
                 	finally {
                 		// zinnige code
                 	}                	
-						      			
+						      	
+                	CrudMenu crudmenu5 = new CrudMenu();
+            		crudmenu5.viewCreateMenu();
                 	toonMenu();          			   			  		          		      			   			  		          		
                 	break; 	          		
             		

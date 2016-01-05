@@ -24,22 +24,12 @@
 				
 		
 		public void toonMenu() {
-		    System.out.println("\t-----------");
-		    System.out.println("\tKlant Menu");
-		    System.out.println("\t-----------");
-		    System.out.println("1. Maak een nieuwe Klant id aan");  
-		    System.out.println("2. Lees uw klantgegevens");  
-		    System.out.println("3. Wijzig uw bestaande klantgegevens");  
-		    System.out.println("4. Wis uw klant id en uw gegevens");  		 
-		    System.out.println();	    
-		    System.out.println("10. Terug naar het vorige menu");
-		    System.out.println("11. Terug naar het hoofdmenu"); 
-		    System.out.println("12. Stoppen"); 
-		    System.out.println();
-		    System.out.print("Voer optie in en druk op Enter:");
+			
+			
+			logger.info("applicatielogica van KlantMenu() methode wordt aangeroepen");
 		    
-		   Scanner input = new Scanner(System.in);		     
-		   try {
+			Scanner input = new Scanner(System.in);		     
+			try {
 		    			    	   
 				int keuze = input.nextInt();
 				logger.info("Gebruiker koos voor optie: " + keuze);
@@ -52,8 +42,10 @@
 	            				System.out.println("Een nieuwe klant is aangemaakt");
 	            				klantDaoImpl.read();
 	            				
-	            				toonMenu();
-	            		break; 
+	                            KlasseSelectieMenu klasseselectiemenu = new KlasseSelectieMenu();
+	                            klasseselectiemenu.viewKlantMenu();                    		
+	                    		toonMenu();
+	                    		break;
 	            			           		          		
 	                
 	            	case 2:          		
@@ -73,8 +65,11 @@
 	            				
 	            				System.out.println("Uw huidige gegevens zijn: ");
 	            				klantDaoImpl.readKlant(huidige_klant_id);
-	            				toonMenu();
-	            		break;
+	            				
+	                            KlasseSelectieMenu klasseselectiemenu2 = new KlasseSelectieMenu();
+	                            klasseselectiemenu2.viewKlantMenu();                    		
+	                    		toonMenu();
+	                    		break;
 	            		
 	                
 	            	case 3:
@@ -99,8 +94,10 @@
 	            				
 	            				System.out.println("Uw gegevens zijn aanpast");
 	            				
-	            				toonMenu();
-	            		break;
+	                            KlasseSelectieMenu klasseselectiemenu3 = new KlasseSelectieMenu();
+	                            klasseselectiemenu3.viewKlantMenu();                    		
+	                    		toonMenu();
+	                    		break;
 	            				
 	            		
 	            	case 4:
@@ -123,13 +120,15 @@
 	            		
 	            			klantDaoImpl.delete(klant);
 	            			
-	            			toonMenu();
-	            			break;
+                            KlasseSelectieMenu klasseselectiemenu4 = new KlasseSelectieMenu();
+                            klasseselectiemenu4.viewKlantMenu();                    		
+                    		toonMenu();
+                    		break;
 	            
 	            		
 	            	case 10:
-	            		KlasseSelectieMenu klasseselectiemenu = new KlasseSelectieMenu();
-	            		klasseselectiemenu.toonMenu();
+	            		KlasseSelectieMenu klasseselectiemenu5 = new KlasseSelectieMenu();
+	            		klasseselectiemenu5.toonMenu();
 	            		break;
 	            		
 	            	case 11:
