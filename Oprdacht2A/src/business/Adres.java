@@ -1,9 +1,15 @@
 package business;
 
 import java.lang.annotation.*;
+import service.ColumnEva;
 import service.EntityEva;
+import service.IdEva;
+import service.TableEva;
 
-@ EntityEva
+@ EntityEva(entityName = "Adres")
+@ TableEva(tableName = "Adres")
+@ IdEva(id = "adres_id")
+@ ColumnEva(column = "adres_id")
 public class Adres {
 	private int klant_id;
 	private int adres_id;

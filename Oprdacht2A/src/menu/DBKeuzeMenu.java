@@ -17,46 +17,44 @@ public class DBKeuzeMenu {
 	    System.out.println("\t-------------------");
 	    System.out.println("\tDatasourceselectie");
 	    System.out.println("\t-------------------");
-	    System.out.println("1. MySQL");
-	    System.out.println("2. Firebird");
-	    System.out.println("3. JSON");
-	    System.out.println("4. XML");
+	    System.out.println("MySQL");
+	    System.out.println("Firebird");
+	    System.out.println("JSON");
+	    System.out.println("XML\n");
 	    	   	    
-	    System.out.println("10. Stoppen");
-	    System.out.print("Voer optie in en druk op Enter:");
+	    System.out.println("Stoppen\n");
+	    System.out.print("Typ de naam van de door u gewenste datasource in zonder hoofdletters en druk op Enter:\n");
             
 	    
 	    
-			int keuze = input.nextInt();
+			String keuze = input.next();
 			 
 			switch (keuze) {
-            	case 1:
+            	case "mysql":
             		dbKeuze = 1;
             		inloggen.toonMenu();
             		break;
-            	case 2:
+            	case "firebird":
             		dbKeuze = 2;
             		inloggen.toonMenu();
             		break;
-            	case 3:
+            	case "json":
             		JsonMenu jsonMenu = new JsonMenu();
             		jsonMenu.toonMenu();
             		break;
-            	case 4:
+            	case "xml":
             		XmlMenu xmlMenu = new XmlMenu();
             		xmlMenu.toonMenu();
             		break;
             		
-            	case 10:
+            	case "stoppen":
             		System.exit(0);
             		break;
             		
             	default:
+            		System.out.println("Uw keuze was ongeldig!\n er wordt verder gegaan met de default datasource: MySQL");
             		dbKeuze = 1;
             		inloggen.toonMenu();
-            		
-            
-            	
            }
             		
 }
