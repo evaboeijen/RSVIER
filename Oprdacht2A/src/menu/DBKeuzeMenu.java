@@ -14,12 +14,14 @@ public class DBKeuzeMenu {
 	}
 	
 	public void toonMenu() {
-	    System.out.println("\t-------------");
-	    System.out.println("\tDatabasekeuze");
-	    System.out.println("\t-------------");
+	    System.out.println("\t-------------------");
+	    System.out.println("\tDatasourceselectie");
+	    System.out.println("\t-------------------");
 	    System.out.println("1. MySQL");
 	    System.out.println("2. Firebird");
-	    
+	    System.out.println("3. JSON");
+	    System.out.println("4. XML");
+	    	   	    
 	    System.out.println("10. Stoppen");
 	    System.out.print("Voer optie in en druk op Enter:");
             
@@ -35,6 +37,14 @@ public class DBKeuzeMenu {
             	case 2:
             		dbKeuze = 2;
             		inloggen.toonMenu();
+            		break;
+            	case 3:
+            		JsonMenu jsonMenu = new JsonMenu();
+            		jsonMenu.toonMenu();
+            		break;
+            	case 4:
+            		XmlMenu xmlMenu = new XmlMenu();
+            		xmlMenu.toonMenu();
             		break;
             		
             	case 10:
