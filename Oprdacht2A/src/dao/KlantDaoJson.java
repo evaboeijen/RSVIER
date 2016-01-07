@@ -159,14 +159,7 @@ public class KlantDaoJson {
 		File file = new File("klant" + klant.getKlant_id() + ".json");
 		logger.info("file: " + file);
 		
-		int klant_id_final = klant.getKlant_id();
 		
-		while(!file.exists()) {
-			System.out.println("Het door u opgegeven klant_id bestaat niet.");
-			System.out.println("Voer een ander klant_id in en druk op Enter.");
-			klant_id_final = input.nextInt(); 
-			file = new File("klant" + klant_id_final + ".json");
-		}
 		File updateFile = file;
 		file.delete();
 
@@ -174,7 +167,7 @@ public class KlantDaoJson {
 				
 				JSONObject obj = new JSONObject();
 				
-				obj.put("klant_id", klant_id_final);
+				obj.put("klant_id", klant.getKlant_id());
 				obj.put("voornaam", klant.getVoornaam());
 				obj.put("tussenvoegsel", klant.getTussenvoegsel());
 				obj.put("achternaam", klant.getAchternaam());
@@ -199,7 +192,7 @@ public class KlantDaoJson {
 	    logger.info("delete Klant methode start");  
 	    
 	    Scanner input = new Scanner(System.in);
-		int klant_id_final;
+		int klant_id_final = klant.getKlant_id();
 
 		
 		File file = new File("klant" + klant.getKlant_id() + ".json");
