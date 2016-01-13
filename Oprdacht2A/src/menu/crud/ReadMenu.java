@@ -35,7 +35,7 @@ public class ReadMenu {
 
 			switch (keuze) {
             	case 1:/*klant --> voledige tabel*/
-            		dbKlant.read();
+            		System.out.println(dbKlant.read());
             		CrudMenu crudmenu = new CrudMenu();
             		crudmenu.viewReadMenu();
             		toonMenu();
@@ -48,7 +48,7 @@ public class ReadMenu {
             			System.out.println("Het desbetreffende klantnummer bevind zich niet in de database! \nKlantnummer: ");
         				klant_id = input.nextInt();
             		}
-            		dbKlant.readKlant(klant_id);
+            		System.out.println(dbKlant.readKlant(klant_id));
             		CrudMenu crudmenu2 = new CrudMenu();
             		crudmenu2.viewReadMenu();
             		toonMenu();
@@ -61,14 +61,14 @@ public class ReadMenu {
             			System.out.println("Een voornaam mag niet meer dan 50 karakters bevatten! \nVoornaam: ");
             			voornaam = input.next();
             			}
-            		dbKlant.readKlant(voornaam);
+            		System.out.println(dbKlant.readKlant(voornaam));
             		CrudMenu crudmenu3 = new CrudMenu();
             		crudmenu3.viewReadMenu();
             		toonMenu();
             		break;
 
             	case 4:/*Adres --> voledige tabel*/
-        			dbAdres.readAllAdresses();
+        			System.out.println(dbAdres.readAllAdresses());
             		CrudMenu crudmenu4 = new CrudMenu();
             		crudmenu4.viewReadMenu();
             		toonMenu();
@@ -81,7 +81,7 @@ public class ReadMenu {
         				System.out.println("Een straatnaam mag niet meer dan 26 karakters bevatten! \nStraatnaam: ");
         					straatnaam = input.next();
         			}
-        			dbAdres.searchAdres(straatnaam);
+        			System.out.println(dbAdres.searchAdres(straatnaam));
             		CrudMenu crudmenu5 = new CrudMenu();
             		crudmenu5.viewReadMenu();
         			toonMenu();
@@ -100,7 +100,7 @@ public class ReadMenu {
         					System.out.println("Een huisnummer mag niet meer dan 6 karakters bevatten! \nHuisnummer: ");
         					huisnummer = input.nextInt();
         			}
-        			dbAdres.searchAdres(postcode, huisnummer);
+        			System.out.println(dbAdres.searchAdres(postcode, huisnummer));
             		CrudMenu crudmenu6 = new CrudMenu();
             		crudmenu6.viewReadMenu();
         			toonMenu();
