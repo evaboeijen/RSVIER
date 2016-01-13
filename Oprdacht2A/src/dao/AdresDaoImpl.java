@@ -34,7 +34,7 @@ public abstract class AdresDaoImpl implements AdresDao{
 	String queryAdressesKlant = null;//Search klant_id
 	
 	@Override
-	public void insert(Adres adres) {
+	public Adres insert(Adres adres) {
 		int klant_id = adres.getKlant_id(); 
 		logger.info("Insert adres methode begint");
 		logger.debug("klant_id is : " + klant_id);
@@ -94,11 +94,11 @@ public abstract class AdresDaoImpl implements AdresDao{
 				logger.warn("SQL exeption voor insert adres methode");
 				e.printStackTrace();
 		}
-		System.out.println(adres.toString() + "\nHet nieuwe adres is succesvol gekoppeld aan uw klantnumer.");
+		return adres;
     }
 
 	@Override
-	public void updateAdres(Adres adres) {
+	public Adres updateAdres(Adres adres) {
 		int klant_id = adres.getKlant_id();		
 		logger.info("Update adres methode begint");
 		
@@ -122,13 +122,13 @@ public abstract class AdresDaoImpl implements AdresDao{
 			} catch (SQLException e){
 				logger.warn("SQL exeption voor update adres methode");
 				e.printStackTrace();
-			}
-			System.out.println("Adres is succesvol veranderd");
+			}	
 		}
+		return adres; 
 	}	
 
 	@Override
-	public void deleteAdres(Adres adres) {
+	public Adres deleteAdres(Adres adres) {
 		int klant_id = adres.getKlant_id(); 
 		logger.info("Delete adres methode begint");
 		
@@ -147,14 +147,16 @@ public abstract class AdresDaoImpl implements AdresDao{
 				verwijderKlantBijAdresStatement.setInt(2, adres_id);
 				verwijderKlantBijAdresStatement.executeUpdate();
 				verwijderKlantBijAdresStatement.close();
-
-				System.out.println("Het adres is succesvol verwijderd ");
+				
+				
+				
 				logger.info("Delete adres methode eindigt");
 			}catch (SQLException e){
 				logger.warn("SQL exeption voor delete adres methode");
 				e.printStackTrace();
 			}
 		}
+		return adres;
 	}
 	
 	@Override
@@ -188,7 +190,6 @@ public abstract class AdresDaoImpl implements AdresDao{
 				logger.warn("SQL exeption voor read all adres methode");
 	            e.printStackTrace();
 	        }
-	   System.out.println(adressen);
 	   return adressen;
 	}
 	
@@ -228,8 +229,6 @@ public abstract class AdresDaoImpl implements AdresDao{
 			logger.warn("SQL exeption voor read adres straatnaam methode");
 			e.printStackTrace();
                 }
-   
-		System.out.println(adressenStraatnaam);
 		return adressenStraatnaam;
 	}
 
@@ -268,8 +267,6 @@ public abstract class AdresDaoImpl implements AdresDao{
 			logger.warn("SQL exeption voor read adres postcode & huisnummer methode");
             e.printStackTrace();
             }
-		
-		System.out.println(adressenPostcodeAndHuisnummer);
 		return adressenPostcodeAndHuisnummer;
 	}
 	
@@ -307,8 +304,6 @@ public abstract class AdresDaoImpl implements AdresDao{
 			logger.warn("SQL exeption voor read adressen van klant methode");
 			e.printStackTrace();
                 }
-   
-		System.out.println(adressenStraatnaam);
 		return adressenStraatnaam;
 	}
 

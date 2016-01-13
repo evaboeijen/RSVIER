@@ -8,24 +8,24 @@ import business.Adres;
 public class MySQLAdresDaoImpl extends AdresDaoImpl{
 
 	@Override
-	public void insert(Adres adres) {
+	public Adres insert(Adres adres) {
 		queryBestaandeKlant = "SELECT adres_id FROM adres WHERE straatnaam=? AND postcode=? AND toevoeging=? AND huisnummer=? AND woonplaats=?";
 		queryAdresToevoegen = "INSERT INTO adres (straatnaam, postcode , toevoeging , huisnummer , woonplaats) VALUES (?,?,?,?,?)";
 		queryAdres_Id = "SELECT adres_id FROM adres WHERE straatnaam=? AND postcode=? AND toevoeging=? AND huisnummer=? AND woonplaats=?";
 		queryAdres_IdKoppeling = "INSERT INTO klant_adres (klant_id, adres_id) VALUES (?,?)";
-		super.insert(adres);
+		return super.insert(adres);
 	}
 
 	@Override
-	public void updateAdres(Adres adres) {
+	public Adres updateAdres(Adres adres) {
 		queryDeleteFromKlant_Adres = "DELETE FROM klant_adres WHERE klant_id=? AND adres_id=?";	
-		super.updateAdres(adres);
+		return super.updateAdres(adres);
 	}
 
 	@Override
-	public void deleteAdres(Adres adres) {
+	public Adres deleteAdres(Adres adres) {
 		queryDeleteFromKlant_Adres = "DELETE FROM klant_adres WHERE klant_id=? AND adres_id=?";
-		super.deleteAdres(adres);
+		return super.deleteAdres(adres);
 	}
 
 	@Override

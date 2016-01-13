@@ -44,7 +44,6 @@ public class Check {
 		return result;
 	}
 
-	
 	public boolean checkArtikel_id(int artikel_id) {		// toegevoegd 21/11/15 AU
 		PreparedStatement preparedStatement;
 		ResultSet resultSet;
@@ -68,7 +67,7 @@ public class Check {
 			if (resultSet.next()){
 				result = true;
 			} else {
-				System.out.println("Het opgegeven artikelnummer bevindt zich niet in de database...");
+				System.out.println("Het opgegeven artikelnummer bevindt zich niet in de database..."); 
 			}
 
 		} catch (SQLException e) {
@@ -77,7 +76,6 @@ public class Check {
 		}
 		return result;
 	}
-	
 	
 	public boolean checkBestelling_id(int bestelling_id) {	// toegevoegd 21/11/15 AU
 		PreparedStatement preparedStatement;
@@ -114,11 +112,6 @@ public class Check {
 		return result;
 	}
 	
-	
-	
-	
-	
-	
 	public int checkHoogste_Bestelling_id() {	// toegevoegd 21/11/15 AU
         
 		int maxBestellingId = 0;
@@ -147,7 +140,6 @@ public class Check {
         
 			
 	}
-	
 	
 	public boolean checkArtikelAlAanwezigInBestelling(int bestelling_id, int artikel_id) {		// toegevoegd 28/11/15 AU
 	
@@ -181,7 +173,5 @@ public class Check {
 			}
 			return result;
 		}
-	
-	
-	
+
 }

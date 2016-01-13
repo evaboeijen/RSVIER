@@ -5,7 +5,7 @@ import business.*;
 
 public interface AdresDao {
 
-		public void insert(Adres adres);
+		public Adres insert(Adres adres);
 
 		public List<Adres> readAllAdresses();
 
@@ -13,8 +13,8 @@ public interface AdresDao {
 
 		public List<Adres> searchAdres(String postcode, int huisnummer);
 
-		public void updateAdres(Adres adres);
+		public Adres updateAdres(Adres adres);
 
-		public void deleteAdres(Adres adres);
+		public Adres deleteAdres(Adres adres);
 }
 

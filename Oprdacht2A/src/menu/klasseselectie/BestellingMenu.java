@@ -59,7 +59,7 @@ public class BestellingMenu  {
 			logger.info("content of variable 'keuze' is : " + keuze);
 		       
 			switch (keuze) {
-            	case 1:
+            	case 1:// Create bestelling
             		System.out.println();           		
             		System.out.println("Je kan hier een bestelling invoeren voor een bestaande klant.");
             		System.out.println("Hieronder een overzicht van alle klanten: ");
@@ -167,8 +167,11 @@ public class BestellingMenu  {
                 		}
                         
                 		// System.out.println(nieuweBestelling.getArtikel1_id() + " " + nieuweBestelling.getArtikel1_naam() + " " + nieuweBestelling.getArtikel1_prijs());
-               		                	
-                		dbBestelling.create(nieuweBestelling);  
+               		  
+                		System.out.println("Bestelling met ordernummer " + nieuweBestelling.getBestelling_id() + " voor klantnummer " + nieuweBestelling.getKlant_id() + " succesvol toegevoegd");
+             	        System.out.println("Inhoud van de bestelling: " + nieuweBestelling.getArtikel_aantal() + " stuks " + nieuweBestelling.getArtikel_naam() + " (" + (nieuweBestelling.getArtikel_prijs()*100)/100.00 + " euro per stuk) en met totaalprijs van " + ((nieuweBestelling.getArtikel_aantal() * nieuweBestelling.getArtikel_prijs())*100)/100.00 + " euro.");	         
+             	        System.out.println("Aantal rijen in tabel Bestelling toegevoegd : " + dbBestelling.create(nieuweBestelling));
+             	        System.out.println();
                 	}
                 			
                 	catch (SQLException e) {
@@ -186,7 +189,7 @@ public class BestellingMenu  {
             		break;
                 	
             		          			           		          		            
-            	case 2:         		        			
+            	case 2://Read bestelling         		        			
             		lijst = dbBestelling.read();	// lees en toon alle bestellingen uit de Bestelling tabel
             		
             		System.out.println();

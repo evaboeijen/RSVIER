@@ -134,12 +134,12 @@ public abstract class BestellingDaoImpl implements BestellingDao {
 	        	logger.warn("SQL exception voor BestellingDaoImpl.create() methode");
 	            e.printStackTrace();
 	        }
-	        System.out.println();
+	        /*System.out.println();
 	        System.out.println("Bestelling met ordernummer " + bestelling.getBestelling_id() + " voor klantnummer " + bestelling.getKlant_id() + " succesvol toegevoegd");
 	     // aangepast tbv opdracht 5 || 26/11/15 AU
 	        System.out.println("Inhoud van de bestelling: " + bestelling.getArtikel_aantal() + " stuks " + bestelling.getArtikel_naam() + " (" + (bestelling.getArtikel_prijs()*100)/100.00 + " euro per stuk) en met totaalprijs van " + ((bestelling.getArtikel_aantal() * bestelling.getArtikel_prijs())*100)/100.00 + " euro.");	         
 	        System.out.println("Aantal rijen in tabel Bestelling toegevoegd : " + rowsCreated);
-	        System.out.println();
+	        System.out.println();*/
 	        
 	        return rowsCreated;
 	        

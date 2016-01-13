@@ -31,6 +31,7 @@ public class AdresMenu {
 		logger.info("applicatielogica van AdresMenu() methode wordt aangeroepen");
 		
 		Adres adres = null;
+		Adres returnMethode = null;
 
 	    try {
 	    	int keuze = input.nextInt();
@@ -47,8 +48,8 @@ public class AdresMenu {
             	case 1://Create --> adres
             		System.out.println("Voer het nieuw toetevoegen adres in: ");
             			adres = dto.createAdresObject();
-            				 dbAdres.insert(adres);
-            				 
+            				 returnMethode = dbAdres.insert(adres);
+            				 System.out.println("Adres: " + returnMethode + " is ingevoerd in de database");
                     KlasseSelectieMenu klasseselectiemenu = new KlasseSelectieMenu();
                     klasseselectiemenu.viewAdresMenu();                    		
             		toonMenu();
@@ -68,7 +69,7 @@ public class AdresMenu {
             				System.out.println("Een straatnaam mag niet meer dan 26 karakters bevatten! \nStraatnaam: ");
             					straatnaam = input.next();
             			}
-            			dbAdres.searchAdres(straatnaam);
+            			System.out.println(dbAdres.searchAdres(straatnaam));
                         KlasseSelectieMenu klasseselectiemenu3 = new KlasseSelectieMenu();
                         klasseselectiemenu3.viewAdresMenu();                    		
                 		toonMenu();
@@ -87,7 +88,7 @@ public class AdresMenu {
             				System.out.println("Een huisnummer mag niet meer dan 6 karakters bevatten! \nHuisnummer: ");
             					huisnummer = input.nextInt();
             			}
-            			dbAdres.searchAdres(postcode, huisnummer);
+            			System.out.println(dbAdres.searchAdres(postcode, huisnummer));
                         KlasseSelectieMenu klasseselectiemenu4 = new KlasseSelectieMenu();
                         klasseselectiemenu4.viewAdresMenu();                    		
                 		toonMenu();
@@ -96,7 +97,7 @@ public class AdresMenu {
             	case 5: //Read --> alle adressen bij klantnummer
             		System.out.println("Voer klantnummer in waarvan u alle adressen wilt weergeven: ");
             				klant_id = input.nextInt();            		
-            				dbAdres.readAdressesFromKlant(klant_id);
+            				System.out.println(dbAdres.readAdressesFromKlant(klant_id));
                             KlasseSelectieMenu klasseselectiemenu5 = new KlasseSelectieMenu();
                             klasseselectiemenu5.viewAdresMenu();                    		
                     		toonMenu();
@@ -105,8 +106,9 @@ public class AdresMenu {
             	case 6://Update --> adres
             		System.out.println("Voer de gegevens in van het bij te werken adres ");
             			adres = dto.createAdresObject();
-            			dbAdres.updateAdres(adres);
-                        KlasseSelectieMenu klasseselectiemenu6 = new KlasseSelectieMenu();
+            			returnMethode = dbAdres.updateAdres(adres);
+                        System.out.println("Adres: " + returnMethode + " is succesvol verandert in de database " );
+            			KlasseSelectieMenu klasseselectiemenu6 = new KlasseSelectieMenu();
                         klasseselectiemenu6.viewAdresMenu();                    		
                 		toonMenu();
                 		break;
@@ -115,7 +117,8 @@ public class AdresMenu {
             		System.out.println("Voer klantnummer van het te verwijderen adres in: ");
             			klant_id = input.nextInt();
             			adres = new Adres(klant_id, "-", "-", "-", 1, "-");
-            			dbAdres.deleteAdres(adres);
+            			returnMethode = dbAdres.deleteAdres(adres);
+            			System.out.println("Adres: "+ returnMethode + "is succesvol verwijdert uit de database ");
                         KlasseSelectieMenu klasseselectiemenu7 = new KlasseSelectieMenu();
                         klasseselectiemenu7.viewAdresMenu();                    		
                 		toonMenu();
