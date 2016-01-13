@@ -1,14 +1,25 @@
 package menu;
 
+import java.io.File;
 import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import business.Klant;
+import dao.KlantDaoJson;
+import service.Check;
+import service.DTO;
 
 public class JsonMenu {
-			
+	
 	private static final Logger logger = LoggerFactory.getLogger(JsonMenu.class);
+	
+	KlantDaoJson klantDaoJson = new KlantDaoJson();
+	Klant klant = new Klant();
+	DTO dto = new DTO();
+	int klant_id_final = 0;
+	File file = new File("");
 	
 	public void toonMenu() {
 	    System.out.println("\t----------------------");
@@ -29,30 +40,61 @@ public class JsonMenu {
 		       
 			switch (keuze) {
             	case 1:	   
-            		System.out.println();
-    				System.out.println("To be implemented by Jesse");
+            		klant = dto.createKlantObject();
+    				klantDaoJson.create(klant); 
+    				
     				System.out.println();
+    				System.out.println("Een nieuwe klant is aangemaakt");
+    				System.out.println();
+    				
             		toonMenu();
             		break;
                 
             	case 2:
-            		System.out.println();
-    				System.out.println("To be implemented by Jesse");
-    				System.out.println();
+            		System.out.println(klantDaoJson.read());
             		toonMenu();
             		break;
                 
             	case 3:
-            		System.out.println();
-    				System.out.println("To be implemented by Jesse");
-    				System.out.println();
+            		System.out.println("Voer uw klant nummer in: ");
+            		klant_id_final = input.nextInt();
+            		
+            		file = new File("klant" + klant_id_final  + ".json");
+            		
+            		while(!file.exists()) {
+            			System.out.println("Het door u opgegeven klant_id bestaat niet.");
+            			System.out.println("Voer een ander klant_id in en druk op Enter.");
+            			klant_id_final= input.nextInt(); 
+            			file = new File("klant" + klant_id_final + ".json");
+            		}
+            		
+            		klant = dto.createKlantObject();
+            		klant.setKlant_id(klant_id_final);
+    				klantDaoJson.update(klant); 
+    				
+    				System.out.println("\n" + "Uw gegevens zijn aangepast!" + "\n");
+    				
             		toonMenu();
             		break;
                 	
             	case 4:
             		System.out.println();
-    				System.out.println("To be implemented by Jesse");
-    				System.out.println();
+            		System.out.println("Voer uw klant nummer in: ");
+            		klant_id_final = input.nextInt();
+            		
+            		file = new File("klant" + klant_id_final  + ".json");
+            		
+            		while(!file.exists()) {
+            			System.out.println("Het door u opgegeven klant_id bestaat niet.");
+            			System.out.println("Voer een ander klant_id in en druk op Enter.");
+            			klant_id_final= input.nextInt(); 
+            			file = new File("klant" + klant_id_final + ".json");
+            		}
+            		
+    				klant.setKlant_id(klant_id_final);
+    				klantDaoJson.delete(klant);
+    				System.out.println("\n" + "Uw gegevens zijn gewist" + "\n");
+    			    
             		toonMenu();
             		break;
             		
@@ -76,6 +118,8 @@ public class JsonMenu {
             		this.toonMenu();
 			} 
         
+		}catch (Exception e){
+			e.printStackTrace();
 		}
 		
 		finally {
@@ -83,5 +127,4 @@ public class JsonMenu {
 		}	
 	}
 	
-
 }

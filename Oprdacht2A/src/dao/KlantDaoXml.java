@@ -28,20 +28,9 @@ public class KlantDaoXml  {
 	
 	private static final Logger logger =  LoggerFactory.getLogger(KlantDaoXml.class);
 	
-	
-	
-    public void create(Klant klant) {
+    public String create(Klant klant) {
     	
 		logger.info("Create Klant methode start");
-    	
-    	System.out.println();
-    	System.out.println();
-    	System.out.println("----------------------------------------------------------");
-    	System.out.println("Er zal een klant?.xml bestand aangemaakt worden, voor de nieuwe klant in uw project folder.");
-    	System.out.println("? staat voor het klant_id van de nieuwe klant.");
-    	System.out.println("----------------------------------------------------------");
-    	System.out.println();
-    	System.out.println();
     	
     	File fileToCreate = new File("");
     	int i;
@@ -74,14 +63,15 @@ public class KlantDaoXml  {
 		}
 				      
 		logger.info("Create Klant methode ends");	
+		return klant.toString();
     }
 	
 	
 	
-	public void read() {
+	public List<Klant> read() {
 		
 		logger.info("Read Klant methode start");
-		
+		List<Klant> klanten = new ArrayList<Klant>();
 		
 		FileInputStream fis;
 		File file = new File("");
@@ -100,8 +90,8 @@ public class KlantDaoXml  {
 				BufferedInputStream bis = new BufferedInputStream(fis);
 				XMLDecoder xmlDecoder = new XMLDecoder(bis);
 				Klant klant = (Klant) xmlDecoder.readObject();
-				System.out.println(klant);
-			} 						
+				klanten.add(klant);
+			}
 		} 
 		
 		catch (FileNotFoundException e) {
@@ -109,23 +99,25 @@ public class KlantDaoXml  {
 			e.printStackTrace();
 		}
 		
-		logger.info("Read Klant methode ends");		
+		logger.info("Read Klant methode ends");	
+		return klanten;
 	}
  
 	
-	public void update(int klant_id) {
+	public String update(Klant klant) {
 		logger.info("update Klant methode start"); 
 		
 		Scanner input = new Scanner(System.in);
-		int klant_id_final;
+		/*int klant_id_final;
 		Klant klant = new Klant();
 		String voornaam = null;
 		String achternaam = null;
 		String tussenvoegsel = null;
-		String email = null;
+		String email = null;*/
 		
-		File file = new File("klant" + klant_id + ".xml");
-		while(!file.exists()) {
+		File file = new File("klant" + klant.getKlant_id() + ".xml");
+		
+		/*while(!file.exists()) {
 			System.out.println("Het door u opgegeven klant_id bestaat niet.");
 			System.out.println("Voer een ander klant_id in en druk op Enter.");
 			klant_id_final = input.nextInt(); 
@@ -154,7 +146,7 @@ public class KlantDaoXml  {
 		input.nextLine();
 		System.out.println("Wil je deze veranderen? (J/N)");
 		String jaOfNee = input.nextLine();
-			if (jaOfNee.toLowerCase() == "j") { */
+			if (jaOfNee.toLowerCase() == "j") { 
 				System.out.println("Voer de nieuwe gewenste voornaam in en druk op enter: ");
 				voornaam = input.nextLine();
 						while (voornaam.length() > 50) {
@@ -169,7 +161,7 @@ public class KlantDaoXml  {
 		/* System.out.println();
 		System.out.println("Wil je deze veranderen? (J/N)");
 		jaOfNee = input.nextLine();
-			if (jaOfNee.toLowerCase() == "j") {  */
+			if (jaOfNee.toLowerCase() == "j") {  
 				System.out.println("Voer het nieuwe tussenvoegsel in en druk op enter: ");			
 				tussenvoegsel = input.nextLine();
 				while (tussenvoegsel.length() > 12) {
@@ -184,7 +176,7 @@ public class KlantDaoXml  {
 		System.out.println();
 		/* System.out.println("Wil je deze veranderen? (J/N)");
 		jaOfNee = input.nextLine();
-			if (jaOfNee.toLowerCase() == "j") { */
+			if (jaOfNee.toLowerCase() == "j") { 
 				System.out.println("Voor de nieuwe achternaam in en druk op enter: ");
 				achternaam = input.nextLine();
 					while (achternaam.length() > 51) {
@@ -199,7 +191,7 @@ public class KlantDaoXml  {
 		System.out.println();
 		/* System.out.println("Wil je deze veranderen? (J/N)");
 		jaOfNee = input.nextLine();
-			if (jaOfNee.toLowerCase() == "j") { */
+			if (jaOfNee.toLowerCase() == "j") { 
 				System.out.println("Voer het nieuwe emailadres in en druk op enter: ");
 					email =  input.nextLine();
 						while (email.length() > 80){
@@ -212,7 +204,7 @@ public class KlantDaoXml  {
 		klant.setVoornaam(voornaam);
 		klant.setTussenvoegsel(tussenvoegsel);
 		klant.setAchternaam(achternaam);
-		klant.setEmail(email); 
+		klant.setEmail(email); */
 				
 				
 		try {
@@ -226,41 +218,32 @@ public class KlantDaoXml  {
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
-		
-		System.out.println();				
-		System.out.println();
-		System.out.println("De update is voltooid, de wijzigingen zijn opgeslagen.");
-		System.out.println();
-		System.out.println();
 
         logger.info("update Klant methode eindigt");
+        return klant.toString();
 	}
 
 	
 
    
-	public void delete(int klant_id) {
+	public String delete(int klant_id) {
 	
     logger.info("delete Klant methode start");  
     
     Scanner input = new Scanner(System.in);
-	int klant_id_final;
-	Klant klant = new Klant();
+	//int klant_id_final;
+	//Klant klant = new Klant();
 
-	
 	File file = new File("klant" + klant_id + ".xml");
-	while(!file.exists()) {
-		System.out.println("Het door u opgegeven klant_id bestaat niet.");
-		System.out.println("Voer een ander klant_id in en druk op Enter.");
-		klant_id_final = input.nextInt(); 
-		file = new File("klant" + klant_id_final + ".xml");
-	}
+	//FileInputStream fis;
 	
-	FileInputStream fis;
+	file.delete();
 	
 	
-	try {						
+    logger.info("delete Klant methode eindigt");     
+    return "De gegevens van Klant_id: " + klant_id + "zijn gewist";
+	
+	/*try {						
 			fis = new FileInputStream(file);
 			BufferedInputStream bis = new BufferedInputStream(fis);
 			XMLDecoder xmlDecoder = new XMLDecoder(bis);
@@ -271,7 +254,6 @@ public class KlantDaoXml  {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-    
     
 	System.out.println("Dit is de klant die u wil verwijderen" + klant);
 	System.out.println();
@@ -298,10 +280,6 @@ public class KlantDaoXml  {
 			System.out.println();
 			System.out.println("Het verwijderen is geannuleerd.");
 			System.out.println();
-		}
-	
-	
-    logger.info("delete Klant methode eindigt");     
-    
+		}    */ 
         }    
 }

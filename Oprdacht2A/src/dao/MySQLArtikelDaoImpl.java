@@ -30,22 +30,25 @@ public class MySQLArtikelDaoImpl extends ArtikelDaoImpl{
 	}*/
 	
 	@Override
-	public void create(Artikel artikel){
+	public String create(Artikel artikel){
 		super.create(artikel);
+		return artikel.toString();
 	}
 	
 	@Override
-	public void update(Artikel artikel){
+	public String update(Artikel artikel){
 		super.update(artikel);
+		return artikel.toString();
 	}
 	
-	@Override
+	/*@Override
 	public void delete(int bestelling_id, int artikel_id){
 		super.delete(bestelling_id, artikel_id);
-	}
+	}*/
 	
 	@Override
-	public void delete(Artikel artikel){
+	public String delete(Artikel artikel){
 		super.delete(artikel);
+		return "het artikel " + artikel.getArtikel_naam() + " is gewist";
 	}
 }
