@@ -73,7 +73,7 @@ private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.cla
                    //artikel.setArtikel3_prijs(resultSet.getDouble("Artikel3_prijs"));
                    artikelen.add(artikel);
                    logger.info("");
-                   System.err.println(artikelen);
+                   //System.err.println(artikelen);
                }
                resultSet.close();
                statement.close();
@@ -82,7 +82,7 @@ private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.cla
         	   logger.warn("SQL Exception voor read all artikelen methode");
                e.printStackTrace();
            }
-           System.out.println(artikelen);
+           //System.out.println(artikelen);
            logger.info("read all artikelen methode eindigt");
            return artikelen;
    }
@@ -124,7 +124,7 @@ private static final Logger logger =  LoggerFactory.getLogger(ArtikelDaoImpl.cla
             	logger.warn("SQL Exception voor read Artikel(Artikel artikel) methode");
                 e.printStackTrace();
             }
-            System.out.println(artikel);
+            //System.out.println(artikel);
             logger.info("readArtikel(Artikel artikel) methode voor artikel_id: " + artikel.getArtikel_id() + "eindigt");
             
             return artikel;
@@ -228,7 +228,7 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 
   
    @Override
-    public void create(Artikel artikel){
+    public String create(Artikel artikel){
    
 	   logger.info("create methode start");
 		  
@@ -261,12 +261,11 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
             
         int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
-            System.out.println("Artikel(len) toegevoegd aan het assortiment!");
+            logger.info("Create Artikel methode. Een nieuw artikel: " + artikel.getArtikel_naam() + " met prijs: " + artikel.getArtikel_prijs()
+			  + "is aangemaakt, en toegevoegd aan het assortiment");
         }
             preparedStatement.close();
          
-            logger.info("Create Artikel methode. Een nieuw artikel: " + artikel.getArtikel_naam() + " met prijs: " + artikel.getArtikel_prijs()
-			  + "is aangemaakt, en toegevoegd aan het assortiment");
           
         }catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -276,11 +275,12 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
         } 
         
         logger.info("create Artikel methode eindigt");
+        return artikel.toString();
     }
    
     
    @Override
-  public void update(Artikel artikel) {         
+  public String update(Artikel artikel) {         
 		
 		int artikel_id = artikel.getArtikel_id();
 		
@@ -297,8 +297,8 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 		            
 		            
 		            
-		            System.out.println();
-		            System.out.println("Het opgegeven artikel ID luidt: " + artikel.getArtikel_id());
+		           // System.out.println();
+		           // System.out.println("Het opgegeven artikel ID luidt: " + artikel.getArtikel_id());
 		            
 		            preparedStatement = connection.prepareStatement("update artikel set artikel_naam=?, artikel_prijs=? where artikel_id=?");
 		            preparedStatement.setString(1, artikel.getArtikel_naam());
@@ -307,7 +307,7 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 		            
 		            int rowsUpdated = preparedStatement.executeUpdate();
 			                 if (rowsUpdated > 0) {
-			                 System.out.println("Bij Artikel_id: " + artikel_id + " hoort nu de volgende naam: " + artikel.getArtikel_naam() + " en prijs: " + artikel.getArtikel_prijs());
+			                 logger.info("Bij Artikel_id: " + artikel_id + " hoort nu de volgende naam: " + artikel.getArtikel_naam() + " en prijs: " + artikel.getArtikel_prijs());
 			    
 			                 }
 			                 
@@ -375,12 +375,14 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 		                e.printStackTrace();
 		            }
 	   		     
+	   	         
 	   	         logger.info("Update Artikel methode eindigt");
+	   	         return artikel.toString();
 		  }
   
 
-        @Override
-	public void delete(int bestelling_id, int artikel_id) {
+    /*    @Override
+	public String delete(int bestelling_id, int artikel_id) {
 			Check check = new Check();
 			Scanner input = new Scanner(System.in);
 			
@@ -403,7 +405,7 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
     			            		 
     			            		 int rowsDeleted = preparedStatement.executeUpdate();
     			                     if (rowsDeleted > 0) {
-    			     	System.out.println("Het artikel is gewist uit de bestelling!");
+    			     	logger.info("Het artikel is gewist uit de bestelling!");
     			                     } 
     			          
     			                  
@@ -422,10 +424,10 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
     				}
     	   	         logger.info("delete artikel(int bestelling_id, int artikel_id) methode eindigt");
     	   		               		            
-    		  }
+    		  }*/
       
     @Override
-    public void delete(Artikel artikel) {
+    public String delete(Artikel artikel) {
 			int artikel_id = artikel.getArtikel_id();
 			
         	logger.info("delete artikel(Artikel artikel) methode start");
@@ -439,19 +441,17 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 		            ResultSet result = preparedStatement.executeQuery();
 		            
 		            
-		            System.out.println();
-		            System.out.println("Het opgegeven artikel ID luidt: " + artikel_id);
+		            //System.out.println();
+		            //System.out.println("Het opgegeven artikel ID luidt: " + artikel_id);
   	        	 
   	        	              preparedStatement = connection.prepareStatement("delete from Artikel where artikel_id=?");
 		            		 preparedStatement.setInt(1, artikel_id);
 		            		 
 		            		 int rowsDeleted = preparedStatement.executeUpdate();
 		                     if (rowsDeleted > 0) {
-		     	System.out.println("Het artikel is gewist uit het assortiment!");
+		                    	 logger.info("delete artikel(Artikel artikel). Artikel met artikel_id: " + artikel_id + " en naam: " + artikel.getArtikel_naam() + " is gewist uit het assortiment");
 		                     } 
 		          
-		                  
-		                   logger.info("delete artikel(Artikel artikel). Artikel met artikel_id: " + artikel_id + " en naam: " + artikel.getArtikel_naam() + " is gewist uit het assortiment");
 		                     preparedStatement.close();
 		                     result.close();
 		                     
@@ -461,9 +461,10 @@ public Artikel readArtikel(int bestelling_id, int artikel_id){
 			}
   	         
   	         finally {
-				
+				//zinnige code
 			}
-  		    logger.info("delete artikel(Artikel artikel) methode eindigt");           		            
+  		    logger.info("delete artikel(Artikel artikel) methode eindigt");
+  		    return "het artikel " + artikel.getArtikel_naam() + " is gewist";
 	  }
 
 

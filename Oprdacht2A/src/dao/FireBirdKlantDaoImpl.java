@@ -14,8 +14,9 @@ public class FireBirdKlantDaoImpl extends KlantDaoImpl {
 	
 	
 	@Override
-    public void create(Klant klant){
+    public String create(Klant klant){
 		super.create(klant);
+		return klant.toString();
 	}
 	
 	 @Override
@@ -38,13 +39,16 @@ public class FireBirdKlantDaoImpl extends KlantDaoImpl {
 	 }
 	 
 	 @Override   
-	 public void update(Klant klant){
+	 public String update(Klant klant){
 		 super.update(klant);
+		 return "De gegevens van Klant_id: " + klant.getKlant_id() + "zijn aangepast";
 	 }
 	 
 	 @Override
-	 public void delete(Klant klant){
+	 public String delete(Klant klant){
 		 super.delete(klant);
+		 return "De gegevens van Klant_id: " + klant.getKlant_id() + "zijn gewist";
+		 
 	 }
 }
 

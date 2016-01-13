@@ -64,7 +64,7 @@
 	    	            			}            		
 	            				
 	            				System.out.println("Uw huidige gegevens zijn: ");
-	            				klantDaoImpl.readKlant(huidige_klant_id);
+	            				System.out.println(klantDaoImpl.readKlant(huidige_klant_id));
 	            				
 	                            KlasseSelectieMenu klasseselectiemenu2 = new KlasseSelectieMenu();
 	                            klasseselectiemenu2.viewKlantMenu();                    		
@@ -119,6 +119,7 @@
 	            			klant.setKlant_id(huidige_klant_id);
 	            		
 	            			klantDaoImpl.delete(klant);
+	            			System.out.println("Uw gegevens zijn gewist");
 	            			
                             KlasseSelectieMenu klasseselectiemenu4 = new KlasseSelectieMenu();
                             klasseselectiemenu4.viewKlantMenu();                    		

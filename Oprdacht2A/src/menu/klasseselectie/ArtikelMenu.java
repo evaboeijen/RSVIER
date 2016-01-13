@@ -35,6 +35,8 @@ public void toonMenu() {
             	case 1:
             		artikel = dto.createArtikelObject();
             		artikelDaoImpl.create(artikel);
+            		
+            		System.out.println("\nArtikel succesvol toegevoegd aan assortiment\n");
             		          		
                     KlasseSelectieMenu klasseselectiemenu = new KlasseSelectieMenu();
                     klasseselectiemenu.viewArtikelMenu();                    		
@@ -44,8 +46,8 @@ public void toonMenu() {
     
             	case 2:
             		            		
-            		System.out.println("De volgende artikellen zitten in het assortiment: ");
-            		artikelDaoImpl.read();
+            		System.out.println("\nDe volgende artikellen zitten in het assortiment: ");
+            		System.out.println(artikelDaoImpl.read());
             		
                     KlasseSelectieMenu klasseselectiemenu2 = new KlasseSelectieMenu();
                     klasseselectiemenu2.viewArtikelMenu();                    		
@@ -55,7 +57,7 @@ public void toonMenu() {
             		
             	case 3:
             		   		
-            		System.out.println("U kunt de artikelgegevens wijzigen. Voer het artikelnummer in, en druk op enter");
+            		System.out.println("\nU kunt de artikelgegevens wijzigen. Voer het artikelnummer in, en druk op enter");
             		artikel_id = input.nextInt();
             		
             		while (check.checkArtikel_id(artikel_id)!= true){
@@ -69,7 +71,7 @@ public void toonMenu() {
             		
             		artikelDaoImpl.update(artikel);
             		
-            		System.out.println("De artikel gegevens zijn aangepast");
+            		System.out.println("\nDe artikel gegevens zijn aangepast\n");
             		
                     KlasseSelectieMenu klasseselectiemenu3 = new KlasseSelectieMenu();
                     klasseselectiemenu3.viewArtikelMenu();                    		
@@ -79,7 +81,7 @@ public void toonMenu() {
             		
             	case 4:
             		
-            		System.out.println("Voer het artikelnummer in, en druk op enter");
+            		System.out.println("\nVoer het artikelnummer in, en druk op enter");
             		artikel_id = input.nextInt();
             		
             		while (check.checkArtikel_id(artikel_id)!= true){
@@ -91,6 +93,8 @@ public void toonMenu() {
             		artikel.setArtikel_id(artikel_id);
             	           		
             		artikelDaoImpl.delete(artikel);
+            		
+            		System.out.println("\n" + "Het artikel is verwijdert uit het assortiment");
 
                     KlasseSelectieMenu klasseselectiemenu4 = new KlasseSelectieMenu();
                     klasseselectiemenu4.viewArtikelMenu();                    		

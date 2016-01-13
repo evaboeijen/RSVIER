@@ -9,9 +9,9 @@ public interface KlantDao {
 public List<Klant> read();   
 public Klant readKlant(int klant_id);
 public Klant readKlant(String voornaam);
-public void create(Klant klant);   
-public void update(Klant klant);   
-public void delete(Klant klant);
+public String create(Klant klant);   
+public String update(Klant klant);   
+public String delete(Klant klant);
 }
 
 

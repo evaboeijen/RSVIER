@@ -26,7 +26,7 @@ public class KlantDaoJson {
 
 	private static final Logger logger =  LoggerFactory.getLogger(KlantDaoJson.class);
 	
-	public void create(Klant klant){
+	public String create(Klant klant){
 		
 		File fileToCreate = new File("");
     	int i;
@@ -64,12 +64,12 @@ public class KlantDaoJson {
 			} 
 			finally{
 			//zinnige code
-			System.out.print(klant);
 			} 
+		return klant.toString();
 	}
 	
 	
-	public void read(Klant klant){
+	public Klant read(Klant klant){
 		Scanner input = new Scanner(System.in);
 		JSONParser parser = new JSONParser();
 		Klant readKlant;
@@ -108,6 +108,7 @@ public class KlantDaoJson {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+		return klant;
 	 }
 	
 	public List<Klant> read() {
@@ -148,12 +149,11 @@ public class KlantDaoJson {
 	 		   //zinnige code*/
 	        	} 
 	       }
-	      System.out.println(klanten);
 	 	  return klanten;
 	}
 	
 	
-	public void update(Klant klant){
+	public String update(Klant klant){
 		Scanner input = new Scanner(System.in);
 		
 		File file = new File("klant" + klant.getKlant_id() + ".json");
@@ -162,6 +162,7 @@ public class KlantDaoJson {
 		
 		File updateFile = file;
 		file.delete();
+		logger.info("de doelfile die gewist moet worden bestaat niet: " + file.exists());
 
 		try (FileWriter jsonFile = new FileWriter(updateFile)){
 				
@@ -183,33 +184,25 @@ public class KlantDaoJson {
 			} 
 			finally{
 			//zinnige code
-			System.out.print(klant);
+			//System.out.print(klant);
 			} 
+		return "De gegevens van Klant_id: " + klant.getKlant_id() + "zijn aangepast";
 	}
 	
-	public void delete(Klant klant) {
+	public String delete(Klant klant) {
 		
 	    logger.info("delete Klant methode start");  
 	    
-	    Scanner input = new Scanner(System.in);
-		int klant_id_final = klant.getKlant_id();
-
+	    File file = new File("klant" + klant.getKlant_id() + ".json");
+		logger.info("file: " + file);
 		
-		File file = new File("klant" + klant.getKlant_id() + ".json");
-		while(!file.exists()) {
-			System.out.println("Het door u opgegeven klant_id bestaat niet.");
-			System.out.println("Voer een ander klant_id in en druk op Enter.");
-			klant_id_final = input.nextInt(); 
-			file = new File("klant" + klant_id_final + ".json");
-		}
-	    
-	    
+		File updateFile = file;
 		file.delete();
-	    System.out.println();
-	    System.out.println("Uw klant gegevens zijn gewist uit de database. De file is verwijderd!");
-	    System.out.println();	
+		logger.info("de doelfile die gewist moet worden bestaat niet: " + file.exists());
+			
 		
 	    logger.info("delete Klant methode eindigt");     
+	    return "De gegevens van Klant_id: " + klant.getKlant_id() + " en bijbehorende file " + updateFile + " zijn gewist";
 	    
 	        }    
 	}

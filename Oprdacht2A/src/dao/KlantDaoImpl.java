@@ -49,7 +49,7 @@ public abstract class KlantDaoImpl implements KlantDao {
     }
     
    @Override
-    public void create(Klant klant){
+    public String create(Klant klant){
         
 	logger.info("Create Klant methode start");
                    
@@ -68,7 +68,7 @@ public abstract class KlantDaoImpl implements KlantDao {
             int rowsInserted = preparedStatement.executeUpdate();
             
             if (rowsInserted > 0) {
-            System.out.println("Een nieuwe klant is succesvol toegevoegd aan de database");
+            logger.info("Een nieuwe klant is succesvol toegevoegd aan de database");
         }
             
             logger.info("create Klant methode: een nieuwe klant " + klant.getVoornaam() +  
@@ -83,8 +83,9 @@ public abstract class KlantDaoImpl implements KlantDao {
         	logger.warn("SQL exception bij create klant methode");
             e.printStackTrace();
         }
-       
+        
         logger.info("Create klant methode eindigt");
+        return klant.toString();
     }
  
    @Override
@@ -117,8 +118,7 @@ public abstract class KlantDaoImpl implements KlantDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        
-            System.out.println(klanten);
+
             logger.info("read all Klanten methode eindigt");
             return klanten;
     }
@@ -155,7 +155,7 @@ public abstract class KlantDaoImpl implements KlantDao {
             e.printStackTrace();
            
         }
-       System.out.println(klant);
+       
        logger.info("readKlant(int klant_id) methode voor klant_id: " + klant_id + " is beeindigd");
        return klant;
 }
@@ -192,13 +192,13 @@ public abstract class KlantDaoImpl implements KlantDao {
             e.printStackTrace();
            
         }
-       System.out.println(klant);
+        
        logger.info("readKlant(String voornaam) methode start voor voornaam: " + voornaam);
        return klant;
 }
         
 	@Override
-	public void update(Klant klant) {
+	public String update(Klant klant) {
 		logger.info("update Klant methode start"); 
                                     
             try {
@@ -214,8 +214,8 @@ public abstract class KlantDaoImpl implements KlantDao {
 
                 int rowsUpdated = statement.executeUpdate();
                 if (rowsUpdated > 0) {
-	System.out.println("De gegevens van de bestaande klant zijn aangepast!");
-}
+                	logger.info("De gegevens van de bestaande klant zijn aangepast!");
+                }
              logger.info("update klant methode. De gegevens van de volgende klant id " + klant.getKlant_id() + " zijn geupdate naar naam:" + klant.getVoornaam() +  
              		" " + klant.getTussenvoegsel() + " " + klant.getAchternaam() + " met email: " + klant.getEmail());   
              statement.close();
@@ -224,11 +224,13 @@ public abstract class KlantDaoImpl implements KlantDao {
             	logger.warn("SQL Exception voor update Klant methode");
                 e.printStackTrace();
             } 
+            
             logger.info("update Klant methode eindigt");
+            return "De gegevens van klant_id " + klant.getKlant_id() + "zijn aangepast";
 	}
 
         @Override
-	public void delete(Klant klant) {
+	public String delete(Klant klant) {
 		// TODO Auto-generated method stub
     logger.info("delete Klant methode start");     	
         	
@@ -240,7 +242,7 @@ public abstract class KlantDaoImpl implements KlantDao {
 
                 int rowsDeleted = statement.executeUpdate();
                 if (rowsDeleted > 0) {
-	System.out.println("De klant is gewist uit de database");
+	logger.info("De klant is gewist uit de database");
         }
                 logger.info("delete klant methode. De gegevens van de klant met klant id: " + klant.getKlant_id() + " zijn gewist uit de database");
                 statement.close();
@@ -249,6 +251,7 @@ public abstract class KlantDaoImpl implements KlantDao {
 			logger.warn("SQL Exception voor delete klant methode");
             e.printStackTrace();
         }
+            return "De gegevens van Klant_id: " + klant.getKlant_id() + "zijn gewist";
         }
     	
      
