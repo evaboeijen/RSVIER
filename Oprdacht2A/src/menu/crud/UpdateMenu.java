@@ -58,7 +58,7 @@ public class UpdateMenu {
     				updateKlant.setKlant_id(huidige_klant_id);
     				updateKlantDaoImpl.update(updateKlant);
     				
-    				System.out.println("Uw gegevens zijn aanpast");
+    				System.out.println("\nUw gegevens zijn aanpast\n");
     				
             		CrudMenu crudmenu = new CrudMenu();
             		crudmenu.viewUpdateMenu();            		
@@ -68,7 +68,7 @@ public class UpdateMenu {
             	case 2:
             	
             		AdresDaoImpl updateAdresDaoImpl = daoImplKeuze.AdresDaoImplKeuze();
-            		System.out.println("Voer de gegevens in van het bij te werken adres ");
+            		System.out.println("\nVoer de gegevens in van het bij te werken adres\n ");
             		
             		dto = new DTO();
         			Adres updateAdres = dto.createAdresObject();
@@ -152,7 +152,7 @@ public class UpdateMenu {
             		System.out.println();
             		System.out.println("Hieronder een overzicht van alle aanwezige artikelen: ");
             		
-            		artikelDaoImpl.read();
+            		System.out.println(artikelDaoImpl.read());
 
             		System.out.print("\nVoer het artikel ID in dat je wil toevoegen aan de bestelling (0 is terug naar het vorige menu): ");
             		System.out.println(); 
@@ -211,7 +211,7 @@ public class UpdateMenu {
             		break;
               
             	case 4:
-            		System.out.println("U kunt de artikelgegevens wijzigen. Voer het artikelnummer in, en druk op enter");
+            		System.out.println("\nU kunt de artikelgegevens wijzigen. Voer het artikelnummer in, en druk op enter");
             		int updateArtikel_id = input.nextInt();
             		
             		ArtikelDaoImpl updateArtikelDaoImpl = daoImplKeuze.ArtikelDaoImplKeuze();

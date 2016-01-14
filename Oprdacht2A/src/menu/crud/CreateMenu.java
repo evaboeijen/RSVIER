@@ -45,8 +45,8 @@ public class CreateMenu {
 		
 		nieuweKlantDaoImpl.create(nieuweKlant);
 		System.out.println();
-		System.out.println("Een nieuwe klant is aangemaakt ");
-		nieuweKlantDaoImpl.read();
+		System.out.println("\nEen nieuwe klant is aangemaakt\n ");
+		System.out.println(nieuweKlantDaoImpl.read());
 	}
 	
 	public void addAdresToDatabase(){
@@ -56,7 +56,7 @@ public class CreateMenu {
 		Adres nieuwAdres = dto.createAdresObject();
 		updateAdresDaoImpl.insert(nieuwAdres);
 		
-		System.out.println("Adres is toegevoegd aan klantgegevens");
+		System.out.println("\nAdres is toegevoegd aan klantgegevens\n");
 	}
 
 	public void toonMenu() {
@@ -82,8 +82,8 @@ public class CreateMenu {
             	case 2:
             		CreateMenu createMenu2 = new CreateMenu();
             		createMenu2.addKlantToDatabase();
-    				
-    				System.out.println("Nu volgen de adres gegevens: ");
+    				            		
+    				System.out.println("\nNu volgen de adres gegevens: ");
     				createMenu2.addAdresToDatabase();
     				CrudMenu crudmenu2 = new CrudMenu();
             		crudmenu2.viewCreateMenu();
@@ -165,7 +165,7 @@ public class CreateMenu {
             		System.out.println();
             		System.out.println("Hieronder een overzicht van alle aanwezige artikelen: ");
             		
-            		artikelDaoImpl.read();
+            		System.out.println(artikelDaoImpl.read());
 
             		System.out.print("\nVoer het artikel ID in dat je wil toevoegen aan de bestelling (0 is terug naar het vorige menu): ");
             		System.out.println(); 
@@ -255,7 +255,7 @@ public class CreateMenu {
                 	System.out.println("Welk artikel wil je in de bestelling plaatsen?");
                 	System.out.println("Hieronder een overzicht van het hele assortiment: ");
                 	
-                	artikelDaoImpl.read();
+                	System.out.println(artikelDaoImpl.read());
                 		                	                      
                 	                               			
                 	System.out.print("\nVoer het artikel ID in dat je in de bestelling wil plaatsen: ");

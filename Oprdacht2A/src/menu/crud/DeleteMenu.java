@@ -71,10 +71,10 @@ public class DeleteMenu  {
 
         		System.out.println();
             	
-            	System.out.println("Je kan hier het adres van een bestaande klant wissen.");
+            	System.out.println("\nJe kan hier het adres van een bestaande klant wissen.");
             	System.out.println("Hieronder een overzicht van alle klanten: ");
             		
-            	alleKlanten = dbKlant.read();
+            	System.out.println(dbKlant.read());
                		          		
             	System.out.println();          		
             	System.out.println("Van welke klant wil je het adres wissen?");
@@ -344,7 +344,7 @@ public class DeleteMenu  {
             	System.out.println();          
             	System.out.println("Hieronder een overzicht van alle klanten: ");
             		
-            	alleKlanten = dbKlant.read();
+            	System.out.println(dbKlant.read());
                		            		
             	System.out.println();          		
             	System.out.print("Voer het klant ID van de klant die je wil wissen: ");
